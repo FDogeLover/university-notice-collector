@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大学信息收集 · 高校官网通知聚合</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <!-- 顶部导航 -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <div>
+          <div class="brand-name">大学信息收集</div>
+          <div class="brand-sub">高校官网通知聚合 · 全程可溯源</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span id="crawlState" class="crawl-state"></span>
+        <button id="btnAddSchool" class="btn btn-outline" title="在页面上添加新的学校与栏目">添加学校</button>
+        <button id="btnCrawl" class="btn btn-primary">触发采集</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero 统计区 -->
+  <section class="hero">
+    <div class="container">
+      <h1 class="hero-title">高校官网通知，一站聚合</h1>
+      <p class="hero-sub">汇聚各校研究生院 / 招生网 / 信息公开栏目通知，每条绑定官方原文链接与快照，可溯源、可检索。</p>
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-num" id="statSchools">-</div>
+          <div class="stat-label">覆盖学校</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statNotices">-</div>
+          <div class="stat-label">已收录通知</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statTypes">-</div>
+          <div class="stat-label">通知类型</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num stat-num-sm" id="statLast">-</div>
+          <div class="stat-label">最近更新</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 筛选工具栏 -->
+  <section class="toolbar">
+    <div class="container toolbar-inner">
+      <select id="filterSchool" class="select">
+        <option value="">全部学校</option>
+      </select>
+      <select id="filterType" class="select">
+        <option value="">全部类型</option>
+      </select>
+      <input id="filterKeyword" class="input" type="text"
+             placeholder="关键词（标题 / 正文，如 推免、夏令营）">
+      <button id="btnSearch" class="btn btn-outline">搜索</button>
+      <div class="toolbar-total" id="resultTotal"></div>
+    </div>
+  </section>
+
+  <!-- 采集进度面板 -->
+  <section id="crawlPanel" class="crawl-panel" hidden>
+    <div class="crawl-panel-inner">
+      <div class="crawl-panel-head">
+        <span class="crawl-panel-title">采集进度</span>
+        <span id="crawlPanelStatus" class="crawl-panel-status"></span>
+      </div>
+      <pre id="crawlLog" class="crawl-log"></pre>
+    </div>
+  </section>
+
+  <!-- 通知列表 -->
+  <main class="container">
+    <div id="noticeList" class="notice-list"></div>
+    <div id="listState" class="list-state"></div>
+    <div class="loadmore-wrap">
+      <button id="btnMore" class="btn btn-ghost" hidden>加载更多</button>
+    </div>
+  </main>
+
+  <!-- 详情弹窗 -->
+  <div id="modal" class="modal-mask" hidden>
+    <div class="modal">
+      <div class="modal-head">
+        <h2 id="modalTitle" class="modal-title"></h2>
+        <button id="modalClose" class="modal-close" aria-label="关闭">×</button>
+      </div>
+      <div class="modal-toolbar">
+        <div class="modal-meta" id="modalMeta"></div>
+        <a id="modalSource" class="btn-source" href="#" target="_blank" rel="noopener">
+          官方原文 ↗
+        </a>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- AI 助手：聊天面板 -->
+  <button id="btnAI" class="ai-fab" title="打开 AI 助手">AI</button>
+
+  <div id="aiPanel" class="ai-panel" hidden>
+    <div class="ai-panel-head">
+      <span class="ai-panel-title">AI 助手</span>
+      <div class="ai-panel-actions">
+        <label class="ai-switch" title="回答时自动检索库内已采集的通知作为依据">
+          <input id="aiUseDb" type="checkbox" checked>
+          <span>结合库内通知</span>
+        </label>
+        <button id="btnAIClear" class="ai-btn-icon" title="清空会话">清空</button>
+        <button id="btnAISettings" class="ai-btn-icon" title="设置 API 配置">设置</button>
+        <button id="btnAIClose" class="ai-btn-icon" title="收起">收起</button>
+      </div>
+    </div>
+    <input id="aiSystem" class="input ai-system" type="text"
+           placeholder="System Prompt（可选，例如：你是招生政策专家）">
+    <div id="aiMessages" class="ai-messages">
+      <div class="ai-welcome">配置好 API Key 后即可开始对话。</div>
+    </div>
+    <div class="ai-inputbar">
+      <textarea id="aiInput" class="ai-input" rows="1"
+                placeholder="输入问题，Enter 发送，Shift+Enter 换行"></textarea>
+      <button id="btnAISend" class="btn btn-primary ai-send">发送</button>
+      <button id="btnAIStop" class="btn ai-stop" hidden>停止</button>
+    </div>
+  </div>
+
+  <!-- AI 助手：设置弹窗 -->
+  <div id="aiSettings" class="modal-mask" hidden>
+    <div class="modal ai-modal">
+      <div class="modal-head">
+        <h2 class="modal-title">AI 助手设置</h2>
+        <button id="aiSettingsClose" class="modal-close" aria-label="关闭">×</button>
+      </div>
+      <div class="ai-form">
+        <div class="ai-field">
+          <span class="ai-label">供应商预设</span>
+          <select id="aiProvider" class="select ai-select"></select>
+        </div>
+        <div class="ai-field">
+          <span class="ai-label">协议</span>
+          <select id="aiProtocol" class="select ai-select">
+            <option value="openai">OpenAI 兼容协议</option>
+            <option value="anthropic">Anthropic 原生协议</option>
+          </select>
+        </div>
+        <div class="ai-field">
+          <span class="ai-label">Base URL</span>
+          <input id="aiBaseUrl" class="input" type="text"
+                 placeholder="https://api.deepseek.com/v1" autocomplete="off">
+        </div>
+        <div class="ai-field">
+          <span class="ai-label">API Key</span>
+          <div class="ai-key-row">
+            <input id="aiApiKey" class="input" type="password"
+                   placeholder="sk-..." autocomplete="off">
+            <button id="aiKeyToggle" class="btn btn-ghost ai-key-toggle" type="button">显示</button>
+          </div>
+        </div>
+        <div class="ai-field">
+          <span class="ai-label">模型名</span>
+          <input id="aiModel" class="input" type="text"
+                 placeholder="deepseek-chat" autocomplete="off">
+        </div>
+        <div id="aiTestResult" class="ai-test-result" hidden></div>
+        <div class="ai-form-actions">
+          <button id="btnAITest" class="btn btn-outline" type="button">测试连接</button>
+          <button id="btnAISave" class="btn btn-primary" type="button">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 添加学校弹窗 -->
+  <div id="addSchoolModal" class="modal-mask" hidden>
+    <div class="modal as-modal">
+      <div class="modal-head">
+        <h2 class="modal-title">添加学校</h2>
+        <button id="addSchoolClose" class="modal-close" aria-label="关闭">×</button>
+      </div>
+      <div class="ai-form">
+        <div class="ai-field">
+          <span class="ai-label">AI 智能填写（可选，输学校名即可）</span>
+          <div class="as-ai-row">
+            <input id="asAiHint" class="input" type="text"
+                   placeholder="例如：四川大学（可附官网链接提高准确度）" autocomplete="off">
+            <button id="btnAsAi" class="btn btn-outline" type="button">AI 智能填写</button>
+          </div>
+          <div id="asAiLoading" class="as-ai-loading" hidden>AI 正在查找该校信息，请稍候…</div>
+        </div>
+        <div class="ai-field">
+          <span class="ai-label">学校名称</span>
+          <input id="asName" class="input" type="text"
+                 placeholder="例如：四川大学" autocomplete="off">
+        </div>
+        <div class="ai-field">
+          <span class="ai-label">官方域名（不带 http://）</span>
+          <input id="asDomain" class="input" type="text"
+                 placeholder="例如：scu.edu.cn" autocomplete="off">
+        </div>
+        <div class="ai-field">
+          <span class="ai-label">栏目入口（列表页，可增删）</span>
+          <div id="asSources"></div>
+          <button id="asAddSource" class="btn btn-ghost" type="button">+ 添加栏目</button>
+        </div>
+        <div id="asResult" class="ai-test-result" hidden></div>
+        <div class="ai-form-actions">
+          <button id="btnAsSave" class="btn btn-primary" type="button">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      大学信息收集 · 数据来源于各高校官网官方公告，每条信息均附原文链接，可点击核对
+    </div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+  <script src="/static/ai.js"></script>
+</body>
+</html>

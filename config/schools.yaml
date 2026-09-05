@@ -1,0 +1,85 @@
+# 高校官网信息采集 - 试点学校入口清单
+# 添加学校：在 schools 下新增一项，填写 name / domain / sources
+# sources 为该校需要采集的栏目入口（研究生院 / 招生网 / 信息公开网 / 通知公告等）
+# category 取值建议：招生 / 通知公告 / 信息公开
+# browser: true 表示该栏目启用 Playwright 真实浏览器抓取（用于过反爬，如北邮的 JS 挑战）
+# 注意：url 必须是该校官方域名下的地址，采集时会做域名过滤
+schools:
+- name: 南京理工大学
+  domain: njust.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.njust.edu.cn/
+    category: 通知公告
+  - name: 研究生招生网
+    url: https://gs.njust.edu.cn/zsw/
+    category: 招生
+  - name: 信息公开（招生）
+    url: https://xxgk.njust.edu.cn/14426/list.htm
+    category: 信息公开
+- name: 西安电子科技大学
+  domain: xidian.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gr.xidian.edu.cn/
+    category: 通知公告
+  - name: 研究生招生信息
+    url: https://gr.xidian.edu.cn/yjsy/yjszs.htm
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.xidian.edu.cn/
+    category: 信息公开
+- name: 北京邮电大学
+  domain: bupt.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://grs.bupt.edu.cn/
+    category: 通知公告
+    browser: true
+    real_browser: true
+  - name: 研究生招生网
+    url: https://yzb.bupt.edu.cn/
+    category: 招生
+    browser: true
+    real_browser: true
+  - name: 信息公开网
+    url: https://xxgk.bupt.edu.cn/
+    category: 信息公开
+    browser: true
+    real_browser: true
+- name: 深圳大学
+  domain: szu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gra.szu.edu.cn/
+    category: 通知公告
+  - name: 研究生招生网（含推免公告列表）
+    url: https://yz.szu.edu.cn/sszs/gg.htm
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.szu.edu.cn/
+    category: 信息公开
+- name: 华东师范大学
+  domain: ecnu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjsy.ecnu.edu.cn/
+    category: 通知公告
+  - name: 研究生招生信息网
+    url: https://yjszs.ecnu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.ecnu.edu.cn/
+    category: 信息公开
+- name: 华中科技大学
+  domain: hust.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.hust.edu.cn/
+    category: 通知公告
+  - name: 研究生招生信息网
+    url: https://gszs.hust.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.hust.edu.cn/
+    category: 信息公开
