@@ -227,7 +227,7 @@ def http_get(url, timeout=20, retries=2, encoding=None, use_browser=False,
     for i in range(retries + 1):
         try:
             resp = requests.get(
-                url, headers=_browser_headers(url), timeout=timeout, verify=False
+                url, headers=_browser_headers(url), timeout=timeout, verify=True
             )
             resp.raise_for_status()
             if encoding:
@@ -246,7 +246,7 @@ def http_get_bytes(url, timeout=30, retries=2):
     for i in range(retries + 1):
         try:
             resp = requests.get(
-                url, headers=_browser_headers(url), timeout=timeout, verify=False
+                url, headers=_browser_headers(url), timeout=timeout, verify=True
             )
             resp.raise_for_status()
             return resp.content
