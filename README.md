@@ -46,8 +46,11 @@ python web/app.py
 ```text
 你是资深 Python 后端工程师。请按以下步骤在本机运行并验证这个仓库项目：
 
+0. 【先确认安装目录】动手前，先向用户确认项目克隆/安装的目标目录
+   （例如 D:\projects\ 或 ~/projects/），以用户指定的路径为准；
+   不要擅自选目录，也不要克隆到系统目录（如 C:\Windows\ 等）。
 1. 克隆仓库：git clone https://github.com/FDogeLover/university-notice-collector
-   并进入项目根目录。
+   到确认好的目录下，并进入项目根目录。
 2. 安装依赖：pip install fastapi uvicorn httpx requests beautifulsoup4 pyyaml
 3. 初始化并查看配置：python run.py --list
    （首次运行会自动创建数据库 data/university.db 并导入学校/栏目）
@@ -61,6 +64,7 @@ python web/app.py
 
 注意事项：
 - 需要 Python 3.10+，Windows 下使用 PowerShell 执行命令。
+- 安装/运行目录以用户确认为准，开始执行任何命令前先报出即将使用的目录路径。
 - AI 助手功能（页面右下角"AI"按钮）需要用户自行配置 API Key，
   不要向用户索要或读取 Key；配置入口在页面"设置"里，未配置时提示用户即可。
 - data/ 目录是运行时数据（数据库、AI 配置），已被 .gitignore 忽略，
