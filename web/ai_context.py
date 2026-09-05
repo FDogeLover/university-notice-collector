@@ -25,6 +25,21 @@ PUNCT_SPLIT = re.compile(r"[，。？！、；：“”‘’（）【】《》\
 # 整段即停用词（不作为检索词）
 WHOLE_STOP = {"学校", "大学", "学院", "我", "你", "它", "这", "那"}
 
+# 高频子词：长复合检索词按此拆细（按出现顺序匹配）
+SUBWORD_SPLIT = (
+    "预报名", "推免", "夏令营", "复试", "调剂", "录取", "名单",
+    "公示", "招生", "报名", "通知", "公告", "简章", "初审",
+)
+_SUB_RE = re.compile("(" + "|".join(SUBWORD_SPLIT) + ")")
+
+
+def _split_long_term(term):
+    """长度 >=5 的检索词，按高频子词拆成多个（保留非空、>=2 字的段）。"""
+    if len(term) < 5:
+        return [term]
+    parts = [p for p in _SUB_RE.split(term) if p and len(p.strip()) >= 2]
+    return parts or [term]
+
 # 学校简称 → 配置中的全名（用于识别"北邮"这类俗称）
 SCHOOL_ABBRS = {
     "北邮": "北京邮电大学",
@@ -54,8 +69,11 @@ def extract_terms(question, school_names):
             part = part.strip()
             if len(part) < 2 or part in WHOLE_STOP:
                 continue
-            if part not in terms:
-                terms.append(part)
+            # 长复合词按高频子词拆细（如"推免预报名"→"推免"+"预报名"），
+            # 避免 LIKE 连续串匹配不到"推荐免试…预报名"这类官方表述
+            for sub in _split_long_term(part):
+                if sub not in terms:
+                    terms.append(sub)
     return hit_schools, terms[:6]
 
 
