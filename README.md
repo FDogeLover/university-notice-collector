@@ -39,6 +39,38 @@ python web/app.py
 # 打开 http://127.0.0.1:8000/
 ```
 
+## 给 AI Agent 的启动指令
+
+把下面这段提示词直接发给 AI 编程助手（TRAE / Claude / Cursor / Copilot 等），即可让它自动完成"下载 → 装依赖 → 初始化 → 启动 → 验证"全流程：
+
+```text
+你是资深 Python 后端工程师。请按以下步骤在本机运行并验证这个仓库项目：
+
+1. 克隆仓库：git clone https://github.com/FDogeLover/university-notice-collector
+   并进入项目根目录。
+2. 安装依赖：pip install fastapi uvicorn httpx requests beautifulsoup4 pyyaml
+3. 初始化并查看配置：python run.py --list
+   （首次运行会自动创建数据库 data/university.db 并导入学校/栏目）
+4. 可选——小规模采集验证：python run.py --school 深圳大学 --max-items 20 --no-detail
+5. 启动 Web 界面：python web/app.py
+   然后访问 http://127.0.0.1:8000/ 验证。
+6. 验证标准：
+   - 页面顶部统计卡显示学校/通知数量，通知列表有卡片数据；
+   - curl http://127.0.0.1:8000/api/stats 返回 JSON；
+   - 能通过关键词筛选搜索（如"推免"）。
+
+注意事项：
+- 需要 Python 3.10+，Windows 下使用 PowerShell 执行命令。
+- AI 助手功能（页面右下角"AI"按钮）需要用户自行配置 API Key，
+  不要向用户索要或读取 Key；配置入口在页面"设置"里，未配置时提示用户即可。
+- data/ 目录是运行时数据（数据库、AI 配置），已被 .gitignore 忽略，
+  不要提交也不要删除；数据库缺失时会自动重建。
+- 添加学校请引导用户使用页面"添加学校"按钮（支持 AI 智能填写），
+  或编辑 config/schools.yaml，不要擅自改代码。
+- 不要为了"跑通"而修改 crawler 抓取逻辑；采集失败属正常网络现象，
+  如实报告即可。
+```
+
 ## AI 助手配置
 
 1. 打开页面 → 右下角 **AI** 按钮 → **设置**
