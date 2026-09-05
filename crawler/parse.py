@@ -341,6 +341,40 @@ def _content_img_heavy(soup):
     return False
 
 
+def _extract_iframe_text(soup, page_url, max_frames=2):
+    """从页面内嵌的**同域 iframe** 提取正文（content.jsp 类 CMS 常见）。
+
+    页面正文常被塞进 <iframe>（同站子页），直接解析拿不到。此处逐个抓取
+    同域 iframe 内页，再用正文定位逻辑抽取文本，拼接到一起。
+    """
+    from crawler.fetch import http_get
+
+    frames = [f for f in soup.find_all("iframe") if f.get("src")]
+    parts = []
+    for f in frames[:max_frames]:
+        src = (f.get("src") or "").strip()
+        if not src or src.lower().startswith(("javascript:", "data:", "about:")):
+            continue
+        frame_url = urljoin(page_url, src)
+        # 只处理同域 iframe（跨域无权限且多为无关内容）
+        if not same_domain(frame_url, urlparse(page_url).netloc):
+            continue
+        try:
+            frame_html = http_get(frame_url, timeout=20, retries=1)
+            fsoup = BeautifulSoup(frame_html, "html.parser")
+            for tag in fsoup(["script", "style", "nav", "footer", "header", "aside"]):
+                tag.decompose()
+            fcontainer, _ = _find_content_container(fsoup)
+            flines = _extract_block_text(fcontainer) if fcontainer else []
+            ftext = "\n".join(flines).strip()
+            ftext = re.sub(r"\n{3,}", "\n\n", ftext)
+            if ftext and _content_quality_ok(ftext, min_len=60):
+                parts.append(f"【内嵌正文（iframe）】\n{ftext[:20000]}")
+        except Exception:  # noqa: BLE001
+            continue
+    return "\n\n".join(parts).strip()
+
+
 def parse_detail(html, url):
     """抽取详情页的标题、发布时间、正文文本（转近似 Markdown/纯文本快照）。"""
     soup = BeautifulSoup(html, "html.parser")
@@ -376,7 +410,11 @@ def parse_detail(html, url):
         text = text[:20000] + "\n……（正文过长已截断）"
     min_len = 40 if explicit else 80
     if not explicit or len(text) < 200:
-        # 正文不可靠或过短时，尝试 PDF 附件/内嵌 PDF 提取
+        # 正文不可靠或过短时：先尝试同域 iframe（content.jsp 类 CMS 正文嵌在 iframe）
+        iframe_text = _extract_iframe_text(soup, url)
+        if iframe_text:
+            text = (text + "\n\n" + iframe_text).strip()
+        # 仍不足时再尝试 PDF 附件/内嵌 PDF 提取
         pdf_text = extract_pdf_text(soup, url)
         if pdf_text and len(pdf_text) > len(text):
             text = (text + "\n\n" + pdf_text).strip()

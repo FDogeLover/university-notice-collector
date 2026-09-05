@@ -379,6 +379,12 @@
           loadSchools();
           loadTypes();
           loadNotices(true);
+          // 后端已自动启动该校采集：打开进度面板并轮询
+          if (d.crawl && d.crawl.started) {
+            $("#crawlPanel").hidden = false;
+            $("#crawlLog").textContent = "正在启动自动采集…";
+            pollCrawl();
+          }
         }
       })
       .catch(function () {

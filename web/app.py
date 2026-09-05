@@ -193,7 +193,19 @@ def add_school(payload: dict):
                                      "sources": clean_sources}])
     finally:
         conn.close()
-    return {"ok": True, "name": name, "message": f"学校「{name}」已添加，可点击「触发采集」获取通知"}
+    # 保存成功后自动开始采集该校；若已有任务在跑则提示稍后手动触发
+    if _crawl_state["running"]:
+        return {
+            "ok": True, "name": name,
+            "message": f"学校「{name}」已添加（已有采集任务运行中，稍后可手动触发采集）",
+            "crawl": {"started": False, "message": "已有采集任务运行中"},
+        }
+    threading.Thread(target=_run_crawl_worker, args=(60, name), daemon=True).start()
+    return {
+        "ok": True, "name": name,
+        "message": f"学校「{name}」已添加，正在自动采集该校通知",
+        "crawl": {"started": True, "message": f"已开始采集「{name}」"},
+    }
 
 
 # ---------- AI 智能填写学校信息 ----------
@@ -400,17 +412,20 @@ def notice_detail(notice_id: int):
     return row
 
 
-# ---------- 触发采集（手动，带实时进度） ----------
-def _run_crawl_worker(max_items=60):
+# ---------- 触发采集（手动/自动，带实时进度） ----------
+def _run_crawl_worker(max_items=60, school=None):
+    """后台采集：school 指定时只采该校（添加学校后自动采集用）。"""
     _crawl_state["running"] = True
     _crawl_state["log"].clear()
     _crawl_state["started_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
+    cmd = [sys.executable, "-u", str(ROOT / "run.py"),
+           "--max-items", str(max_items), "--sleep", "0.3"]
+    if school:
+        cmd += ["--school", school]
     try:
         proc = subprocess.Popen(
-            [sys.executable, "-u", str(ROOT / "run.py"),
-             "--max-items", str(max_items), "--sleep", "0.3"],
-            cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+            cmd, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
             text=True, encoding="utf-8", errors="replace", env=env,
         )
         assert proc.stdout is not None

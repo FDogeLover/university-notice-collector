@@ -6,19 +6,54 @@
 """
 import time
 from pathlib import Path
+from urllib.parse import urlparse
 
 import requests
 import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+# UA 池：轮换使用，降低被单一 UA 反爬识别/拦截的概率
+UA_POOL = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) "
+    "Gecko/20100101 Firefox/127.0",
+]
+_ua_idx = 0
+
+
+def _next_ua():
+    global _ua_idx
+    ua = UA_POOL[_ua_idx % len(UA_POOL)]
+    _ua_idx += 1
+    return ua
+
+
+def _browser_headers(url):
+    """带浏览器特征与动态 Referer 的请求头。"""
+    headers = dict(HEADERS)
+    headers["User-Agent"] = _next_ua()
+    p = urlparse(url)
+    if p.scheme and p.netloc:
+        headers["Referer"] = f"{p.scheme}://{p.netloc}/"
+    return headers
+
+
 HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
-    ),
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,"
+              "image/avif,image/webp,*/*;q=0.8",
     "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "Upgrade-Insecure-Requests": "1",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "same-origin",
 }
 
 # Playwright 浏览器复用实例
@@ -192,7 +227,7 @@ def http_get(url, timeout=20, retries=2, encoding=None, use_browser=False,
     for i in range(retries + 1):
         try:
             resp = requests.get(
-                url, headers=HEADERS, timeout=timeout, verify=False
+                url, headers=_browser_headers(url), timeout=timeout, verify=False
             )
             resp.raise_for_status()
             if encoding:
@@ -211,7 +246,7 @@ def http_get_bytes(url, timeout=30, retries=2):
     for i in range(retries + 1):
         try:
             resp = requests.get(
-                url, headers=HEADERS, timeout=timeout, verify=False
+                url, headers=_browser_headers(url), timeout=timeout, verify=False
             )
             resp.raise_for_status()
             return resp.content

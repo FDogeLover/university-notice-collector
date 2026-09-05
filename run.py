@@ -80,10 +80,24 @@ def crawl_source(conn, school, school_id, source, args):
         html = fetch.http_get(url, use_browser=use_browser,
                               use_real_browser=use_real)
     except Exception as e:  # noqa: BLE001
-        store.log_fetch(conn, source_id, school_id, "error", 0, str(e))
-        return 0
+        # 列表页 requests 抓取失败 → 自动降级 Playwright 渲染（未启用真实浏览器时）
+        if not use_real:
+            try:
+                html = fetch.http_get(url, use_browser=True)
+            except Exception:  # noqa: BLE001
+                store.log_fetch(conn, source_id, school_id, "error", 0, str(e))
+                print(f"  !! [{school['name']}][{source['name']}] 抓取失败: {e}")
+                return 0
+        else:
+            store.log_fetch(conn, source_id, school_id, "error", 0, str(e))
+            print(f"  !! [{school['name']}][{source['name']}] 抓取失败: {e}")
+            return 0
 
     items = parse.parse_list(html, url, domain, max_items=args.max_items)
+    if not items:
+        # 列表页无有效通知：可能是导航页 / 反爬拦截 / URL 错误，醒目标注便于清理配置
+        print(f"  ⚠ [{school['name']}][{source['name']}] 列表页未解析到有效通知："
+              f"可能是导航页 / 反爬拦截 / 栏目 URL 错误")
     new_count = 0
     for it in items:
         title, item_url = it["title"], it["url"]
