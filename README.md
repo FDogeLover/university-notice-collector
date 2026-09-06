@@ -16,7 +16,7 @@
   - 多轮流式对话（SSE）、停止生成、自定义 System Prompt、会话本地持久化
   - **库内检索作答**：提问时自动检索已采集通知作为依据，注明出处，库内没有不编造
 - **结构化字段**：自动从正文提取**截止日期**、起止时间、招生对象、学院等字段入库（`notice_meta`），详情弹窗与 AI 问答直接引用；存量数据可用 `python run.py --backfill-meta` 补齐
-- **静态展示站**：`python build_site.py` 一键把库内成果导出为纯展示静态网站（无 AI、无采集），双击 `site/index.html` 即可打开，整目录上传 GitHub Pages / 服务器即可发布
+- **静态展示站**：`python build_site.py` 一键把库内成果导出为纯展示静态网站（无 AI、无采集），双击 `site/index.html` 即可打开；`python deploy_site.py` 一键**发布到 GitHub Pages**（参考 AUV 站的同形态部署，因数据在本地库改为本地构建 + gh-pages 分支发布）
   - API Key 本地存储，绝不入库、不提交 Git
 - **前端添加学校**：页面上直接添加学校与栏目，或输入校名由 **AI 智能填写** 生成域名与栏目入口
 

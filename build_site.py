@@ -108,6 +108,7 @@ def write_site(out_dir, notices, stats, deadlines, content_dir_ids):
         shutil.rmtree(out)
     (out / "assets").mkdir(parents=True)
     (out / "data" / "content").mkdir(parents=True)
+    (out / ".nojekyll").write_text("", encoding="utf-8")  # 跳过 GitHub Pages 的 Jekyll 处理
 
     # 静态资源与页面模板
     for name in ("index.html", "style.css", "app.js"):
