@@ -5,7 +5,7 @@
   var DATA = window.SITE_DATA || {};
   var NOTICES = DATA.notices || [];
   var LIMIT = 30;
-  var state = { offset: 0, filtered: [], keyword: "", school: "", type: "", days: 0 };
+  var state = { offset: 0, filtered: [], keyword: "", school: "", type: "", days: 0, highlightWords: [] };
 
   var $ = function (sel) { return document.querySelector(sel); };
 
@@ -28,7 +28,7 @@
   }
   function highlight(text) {
     var safe = esc(text);
-    kwTokens().forEach(function (w) {
+    (state.highlightWords || kwTokens()).forEach(function (w) {
       var pattern = w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       safe = safe.replace(new RegExp(pattern, "gi"), function (m) {
         return "<mark>" + m + "</mark>";
@@ -83,13 +83,48 @@
   }
 
   /* ---------- 筛选与列表 ---------- */
+  /* 分组搜索（与主站同语义）：学校简称/全名各自成组（组内 OR），
+     其余词合并成一组（组内 OR），组间 AND */
+  function buildGroups() {
+    var abbrs = DATA.abbrs || {};
+    var names = (DATA.stats.by_school || []).map(function (kv) { return kv[0]; });
+    var rest = state.keyword;
+    var groups = [], words = [];
+    Object.keys(abbrs).forEach(function (ab) {
+      if (rest.indexOf(ab) !== -1) {
+        rest = rest.split(ab).join(" ");
+        groups.push([ab, abbrs[ab]]);
+        words.push(ab, abbrs[ab]);
+      }
+    });
+    names.forEach(function (n) {
+      if (rest.indexOf(n) !== -1) {
+        rest = rest.split(n).join(" ");
+        groups.push([n]);
+        words.push(n);
+      }
+    });
+    var other = [];
+    rest.split(/[\s,，、;；]+/).forEach(function (w) {
+      if (w.length >= 2 && words.indexOf(w) === -1 && other.indexOf(w) === -1) {
+        other.push(w);
+      }
+    });
+    if (other.length) {
+      groups.push(other);
+      words = words.concat(other);
+    }
+    return { groups: groups, words: words };
+  }
+
   function applyFilter() {
     // 与主站一致：每次筛选都从控件读取当前值
     state.school = $("#filterSchool").value;
     state.type = $("#filterType").value;
     state.keyword = $("#filterKeyword").value.trim();
-    var kw = state.keyword.toLowerCase();
-    var tokens = kwTokens().map(function (w) { return w.toLowerCase(); });
+    var built = buildGroups();
+    var groups = built.groups;
+    state.highlightWords = built.words;
     var today = (DATA.generatedAt || "");
     state.filtered = NOTICES.filter(function (n) {
       if (state.school && n.school !== state.school) return false;
@@ -98,9 +133,12 @@
         if (!n.date) return false;
         if (new Date(today) - new Date(n.date) > state.days * 86400000) return false;
       }
-      if (tokens.length) {
+      if (groups.length) {
         var hay = (n.title + " " + n.excerpt + " " + n.school).toLowerCase();
-        if (!tokens.every(function (t) { return hay.indexOf(t) !== -1; })) return false;
+        var allHit = groups.every(function (g) {
+          return g.some(function (t) { return hay.indexOf(t.toLowerCase()) !== -1; });
+        });
+        if (!allHit) return false;
       }
       return true;
     });

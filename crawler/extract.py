@@ -45,10 +45,15 @@ _DEADLINE_PATTERNS = [
         r"(?:截止|截至|关闭|报名截止)[：:（(\s]*"
         r"((?:20\d{2}年)?\d{1,2}月\d{1,2}日)"
     ),
-    # "截止时间/截止日期（为/是）X" 句式
+    # "截止时间/截止日期（为/是）X" 句式（中文日期，年份可缺省）
     re.compile(
         r"(?:报名|申请|材料|提交)?(?:截止时间|截止日期)\s*(?:为|是)?\s*[:：]?\s*"
         r"((?:20\d{2}年)?\d{1,2}月\d{1,2}日)"
+    ),
+    # 数字日期句式："报名截止时间 2026-10-20" / "截止日期：2026/10/20"
+    re.compile(
+        r"(?:报名|申请|材料|提交|网上)?(?:截止时间|截止日期|报名截止|申请截止)"
+        r"\s*(?:为|是)?\s*[:：]?\s*((?:20\d{2})[-/.]\d{1,2}[-/.]\d{1,2})"
     ),
     re.compile(
         r"((?:20\d{2}年)?\d{1,2}月\d{1,2}日)\s*(?:为)?\s*"
@@ -122,15 +127,24 @@ def clean_notice_title(title):
 
 
 def normalize_deadline(text, published_at=""):
-    """把中文截止日期归一化为 ISO 日期（YYYY-MM-DD），失败返回 ""。
+    """把截止日期归一化为 ISO 日期（YYYY-MM-DD），失败返回 ""。
 
-    支持 "2026年9月30日" / "9月30日"（年份缺省时依次取发布年份、当前年份）。
-    用于排序与"即将截止"筛选；仅接受未过期的合理日期。
+    支持 "2026年9月30日" / "9月30日"（年份缺省时依次取发布年份、当前年份）
+    与数字日期 "2026-10-20" / "2026/10/20" / "2026.10.20"。
+    用于排序与"即将截止"筛选。
     """
     m = re.search(
         r"(?:(20\d{2})年)?\s*(\d{1,2})月(\d{1,2})日", text or "")
     if not m:
-        return ""
+        m = re.search(r"(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})", text or "")
+        if not m:
+            return ""
+        year = int(m.group(1))
+        month, day = int(m.group(2)), int(m.group(3))
+        try:
+            return date(year, month, day).isoformat()
+        except ValueError:
+            return ""
     year = int(m.group(1)) if m.group(1) else None
     month, day = int(m.group(2)), int(m.group(3))
     if not (1 <= month <= 12 and 1 <= day <= 31):

@@ -20,11 +20,16 @@ def test_deadline_patterns():
         assert hl.get("deadline") == expected, text
 
 
-@pytest.mark.xfail(strict=True,
-                   reason="已知缺口：'2026-10-20' 等数字日期句式未覆盖")
-def test_deadline_numeric_date_not_covered():
+def test_deadline_numeric_date():
+    from crawler.extract import normalize_deadline
+
     assert extract_highlights(
         "网上报名截止时间2026-10-20。")["deadline"] == "2026-10-20"
+    assert extract_highlights(
+        "材料提交截止日期：2026/10/25")["deadline"] == "2026/10/25"
+    # normalize_deadline 支持数字日期
+    assert normalize_deadline("2026-10-20") == "2026-10-20"
+    assert normalize_deadline("2026/10/25") == "2026-10-25"
 
 
 def test_deadline_shi_phrase():
@@ -90,9 +95,7 @@ def test_standardize_order():
 def test_normalize_deadline():
     from datetime import date
 
-    from crawler.extract import normalize_deadline
-
-    nd = normalize_deadline
+    from crawler.extract import normalize_deadline as nd
     assert nd("报名截止时间为2026年9月30日") == "2026-09-30"
     assert nd("9月30日", "2026-08-01") == "2026-09-30"   # 年份缺省取发布年份
     assert nd("9月30日") == f"{date.today().year}-09-30"  # 都没有则取当前年份

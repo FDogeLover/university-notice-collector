@@ -28,6 +28,7 @@ from crawler.extract import (  # noqa: E402
     standardize_highlights,
 )
 from db import store  # noqa: E402
+from web.ai_context import SCHOOL_ABBRS  # noqa: E402
 
 TEMPLATE_DIR = ROOT / "web" / "static_site"
 
@@ -120,6 +121,7 @@ def write_site(out_dir, notices, stats, deadlines, content_dir_ids):
         "stats": stats,
         "deadlines": deadlines,
         "notices": notices,
+        "abbrs": SCHOOL_ABBRS,   # 学校简称映射，供前端分组搜索
     }
     (out / "data" / "notices.js").write_text(
         "window.SITE_DATA = "
