@@ -84,7 +84,11 @@
 
   /* ---------- 筛选与列表 ---------- */
   function applyFilter() {
-    var kw = state.keyword.trim().toLowerCase();
+    // 与主站一致：每次筛选都从控件读取当前值
+    state.school = $("#filterSchool").value;
+    state.type = $("#filterType").value;
+    state.keyword = $("#filterKeyword").value.trim();
+    var kw = state.keyword.toLowerCase();
     var tokens = kwTokens().map(function (w) { return w.toLowerCase(); });
     var today = (DATA.generatedAt || "");
     state.filtered = NOTICES.filter(function (n) {
@@ -197,14 +201,10 @@
 
   /* ---------- 事件 ---------- */
   $("#btnSearch").addEventListener("click", applyFilter);
-  $("#filterSchool").addEventListener("change", function () {
-    state.school = this.value; applyFilter();
-  });
-  $("#filterType").addEventListener("change", function () {
-    state.type = this.value; applyFilter();
-  });
+  $("#filterSchool").addEventListener("change", applyFilter);
+  $("#filterType").addEventListener("change", applyFilter);
   $("#filterKeyword").addEventListener("keydown", function (e) {
-    if (e.key === "Enter") { state.keyword = this.value.trim(); applyFilter(); }
+    if (e.key === "Enter") applyFilter();
   });
   $("#btnMore").addEventListener("click", renderPage);
   $("#modalClose").addEventListener("click", closeModal);

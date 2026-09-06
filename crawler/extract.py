@@ -77,9 +77,10 @@ _COLLEGE_STOP = set("在由是为于从到向把请交送至对按根经需应�
 _COLLEGE_MAX_NAME = 12
 
 # 泛指性提法（"报考学院/我校相关学院"等）不是具体学院名
-_COLLEGE_GENERIC = re.compile(r"^(我校|报考|录取|相关|所在|承办|所属|课程|接收|招生)")
-# 名字里含虚词的一定不是学院名（如"…模板的学院"）
-_COLLEGE_INVALID = re.compile(r"[的了们呢吗吧呀让被给]")
+_COLLEGE_GENERIC = re.compile(
+    r"^(我校|报考|录取|相关|所在|承办|所属|课程|接收|招生|符合|考生|关注)")
+# 名字里含虚词的一定不是学院名（如"…模板的学院"）；含报考/考生/成绩等同理
+_COLLEGE_INVALID = re.compile(r"[的了们呢吗吧呀让被给]|报考|考生|成绩|录取|招生|关注|符合")
 
 
 def _find_college(head):
