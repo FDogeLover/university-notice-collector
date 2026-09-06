@@ -7,6 +7,7 @@
     offset: 0,
     total: 0,
     loading: false,
+    tag: "",
     school: "",
     type: "",
     keyword: "",
@@ -108,6 +109,7 @@
       school: state.school,
       type: state.type,
       keyword: state.keyword,
+      tag: state.tag,
       days: state.days,
       limit: LIMIT,
       offset: state.offset,
@@ -139,6 +141,13 @@
     return "color-mix(in srgb, " + color + " 12%, #ffffff)";
   }
 
+  /* 学校层级徽章：985 / 211 */
+  function schoolBadges(tags) {
+    return (tags || "").split(",").filter(Boolean).map(function (t) {
+      return '<span class="school-tag school-tag-' + t + '">' + t + "</span>";
+    }).join("");
+  }
+
   function renderCards(items) {
     var box = $("#noticeList");
     items.forEach(function (n) {
@@ -159,6 +168,7 @@
         '<div class="card-meta">' +
         '<span class="tag" style="color:' + color + ";background:" + tint(color) + '">' + esc(type) + "</span>" +
         '<span class="card-school">' + esc(n.school_name) + "</span>" +
+        schoolBadges(n.school_tags) +
         '<span class="card-source">' + esc(n.source_name || "") + "</span>" +
         '<span class="card-date">' + (n.published_at ? "发布 " + esc(n.published_at) : "时间未知") + "</span>" +
         "</div>" +
@@ -292,6 +302,9 @@
 
   /* ---------- 事件绑定 ---------- */
   $("#btnSearch").addEventListener("click", function () { applyFilter(); });
+  $("#filterTag").addEventListener("change", function () {
+    state.tag = this.value; loadNotices(true);
+  });
   $("#filterSchool").addEventListener("change", function () {
     state.school = this.value; loadNotices(true);
   });

@@ -5,7 +5,10 @@
   var DATA = window.SITE_DATA || {};
   var NOTICES = DATA.notices || [];
   var LIMIT = 30;
-  var state = { offset: 0, filtered: [], keyword: "", school: "", type: "", days: 0, highlightWords: [] };
+  var state = {
+    offset: 0, filtered: [], keyword: "", school: "", type: "",
+    tag: "", days: 0, highlightWords: [],
+  };
 
   var $ = function (sel) { return document.querySelector(sel); };
 
@@ -138,14 +141,20 @@
     // 与主站一致：每次筛选都从控件读取当前值
     state.school = $("#filterSchool").value;
     state.type = $("#filterType").value;
+    state.tag = $("#filterTag").value;
     state.keyword = $("#filterKeyword").value.trim();
     var built = buildGroups();
     var groups = built.groups;
     state.highlightWords = built.words;
+    var schoolTags = DATA.schoolTags || {};
     var today = (DATA.generatedAt || "");
     state.filtered = NOTICES.filter(function (n) {
       if (state.school && n.school !== state.school) return false;
       if (state.type && n.type !== state.type) return false;
+      if (state.tag) {
+        var stags = (schoolTags[n.school] || "").split(",");
+        if (stags.indexOf(state.tag) === -1) return false;
+      }
       if (state.days) {
         if (!n.date) return false;
         if (new Date(today) - new Date(n.date) > state.days * 86400000) return false;
@@ -164,6 +173,12 @@
     renderPage();
   }
 
+  function schoolBadges(tags) {
+    return (tags || "").split(",").filter(Boolean).map(function (t) {
+      return '<span class="school-tag school-tag-' + t + '">' + t + "</span>";
+    }).join("");
+  }
+
   function renderPage() {
     var box = $("#noticeList");
     var page = state.filtered.slice(state.offset, state.offset + LIMIT);
@@ -179,6 +194,7 @@
         '<div class="card-meta">' +
         '<span class="tag" style="color:' + color + ";background:" + tint(color) + '">' + esc(n.type) + "</span>" +
         '<span class="card-school">' + esc(n.school) + "</span>" +
+        schoolBadges(n.school_tags) +
         '<span class="card-source">' + esc(n.source) + "</span>" +
         '<span class="card-date">' + (n.published ? "发布 " + esc(n.published) : "时间未知") + "</span>" +
         "</div>" +
@@ -256,6 +272,7 @@
 
   /* ---------- 事件 ---------- */
   $("#btnSearch").addEventListener("click", applyFilter);
+  $("#filterTag").addEventListener("change", applyFilter);
   $("#filterSchool").addEventListener("change", applyFilter);
   $("#filterType").addEventListener("change", applyFilter);
   $("#filterKeyword").addEventListener("keydown", function (e) {

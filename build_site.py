@@ -39,10 +39,12 @@ def _iso(published_at):
 
 
 def collect(conn, max_content):
-    """从库中取全部启用学校的通知与统计，返回 (notices, stats, deadlines)。"""
+    """从库中取全部启用学校的通知与统计。
+    返回 (notices, stats, deadlines, content_dir_ids, school_tags)。"""
     rows = conn.execute(
         "SELECT n.id, n.title, n.url, n.type_tag, n.published_at, n.fetched_at,"
-        "       n.content_md, sc.name AS school_name, s.name AS source_name "
+        "       n.content_md, sc.name AS school_name, sc.tags AS school_tags,"
+        "       s.name AS source_name "
         "FROM notices n "
         "JOIN schools sc ON sc.id = n.school_id "
         "LEFT JOIN sources s ON s.id = n.source_id "
@@ -51,6 +53,11 @@ def collect(conn, max_content):
         " n.published_at DESC, n.fetched_at DESC",
     ).fetchall()
     meta_maps = store.notice_meta_maps(conn, [r["id"] for r in rows])
+    school_tags = {
+        r["name"]: (r["tags"] or "")
+        for r in conn.execute(
+            "SELECT name, tags FROM schools WHERE enabled=1")
+    }
 
     notices = []
     content_dir_ids = []
@@ -67,6 +74,7 @@ def collect(conn, max_content):
             "url": r["url"],
             "type": r["type_tag"] or "未分类",
             "school": r["school_name"],
+            "school_tags": r["school_tags"] or "",
             "source": r["source_name"] or "",
             "published": r["published_at"] or "",
             "date": _iso(r["published_at"]),
@@ -99,10 +107,11 @@ def collect(conn, max_content):
         for n in sorted(notices, key=lambda x: x["deadline"])
         if n["deadline"] and today.isoformat() <= n["deadline"] <= until.isoformat()
     ][:50]
-    return notices, stats, deadlines, content_dir_ids
+    return notices, stats, deadlines, content_dir_ids, school_tags
 
 
-def write_site(out_dir, notices, stats, deadlines, content_dir_ids):
+def write_site(out_dir, notices, stats, deadlines, content_dir_ids,
+               school_tags=None):
     out = Path(out_dir)
     if out.exists():
         shutil.rmtree(out)
@@ -122,7 +131,8 @@ def write_site(out_dir, notices, stats, deadlines, content_dir_ids):
         "stats": stats,
         "deadlines": deadlines,
         "notices": notices,
-        "abbrs": SCHOOL_ABBRS,   # 学校简称映射，供前端分组搜索
+        "abbrs": SCHOOL_ABBRS,     # 学校简称映射，供前端分组搜索
+        "schoolTags": school_tags,  # 学校标签（985/211），供徽章与筛选
     }
     (out / "data" / "notices.js").write_text(
         "window.SITE_DATA = "
@@ -152,10 +162,11 @@ def main():
     conn = store.connect()
     try:
         store.init_db(conn)
-        notices, stats, deadlines, contents = collect(conn, args.max_content)
+        notices, stats, deadlines, contents, school_tags = collect(
+            conn, args.max_content)
     finally:
         conn.close()
-    out = write_site(args.out, notices, stats, deadlines, contents)
+    out = write_site(args.out, notices, stats, deadlines, contents, school_tags)
     n_files = len(list((out / "data" / "content").glob("*.js")))
     print(f"静态站已生成：{out}")
     print(f"  通知 {len(notices)} 条（{n_files} 条含正文快照），"

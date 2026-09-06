@@ -137,9 +137,9 @@ def stats():
 # ---------- 学校 / 类型 ----------
 @app.get("/api/schools")
 def schools():
-    """学校清单（含停用项，前端管理面板用 enabled 区分）。"""
+    """学校清单（含停用项与标签，前端管理面板/筛选用）。"""
     return _rows(
-        "SELECT sc.id, sc.name, sc.domain, sc.enabled,"
+        "SELECT sc.id, sc.name, sc.domain, sc.enabled, sc.tags,"
         "       (SELECT COUNT(*) FROM sources s WHERE s.school_id=sc.id) AS source_count,"
         "       (SELECT COUNT(*) FROM notices n WHERE n.school_id=sc.id) AS notice_count "
         "FROM schools sc ORDER BY sc.enabled DESC, sc.id"
@@ -415,12 +415,16 @@ def notices(
     school: str = Query(""),
     type: str = Query(""),
     keyword: str = Query(""),
+    tag: str = Query("", pattern="^(|985|211)$"),
     days: int = Query(0, ge=0, le=3650),
     limit: int = Query(30, ge=1, le=100),
     offset: int = Query(0, ge=0),
 ):
     conds, params = [], []
     conds.append("sc.enabled=1")  # 停用学校的数据保留但不显示
+    if tag:
+        conds.append("(',' || COALESCE(sc.tags,'') || ',') LIKE ?")
+        params.append(f"%,{tag},")
     words = []  # 供排序使用：有关键词时标题命中优先
     if days:
         from datetime import date, timedelta
@@ -471,7 +475,8 @@ def notices(
             params += [f"%{kw}%", f"%{kw}%"]
     where = (" WHERE " + " AND ".join(conds)) if conds else ""
 
-    base = ("SELECT n.*, sc.name AS school_name, s.name AS source_name "
+    base = ("SELECT n.*, sc.name AS school_name, sc.tags AS school_tags, "
+            "s.name AS source_name "
             "FROM notices n JOIN schools sc ON sc.id=n.school_id "
             "LEFT JOIN sources s ON s.id=n.source_id" + where)
     total = _row(f"SELECT COUNT(*) AS c FROM ({base})", params)["c"]

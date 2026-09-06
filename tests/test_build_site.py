@@ -29,10 +29,11 @@ def test_build_site_generates_valid_files(tmp_path, monkeypatch):
     nid = _seed(conn)
     from build_site import collect, write_site
 
-    notices, stats, deadlines, contents = collect(conn, 20000)
+    notices, stats, deadlines, contents, school_tags = collect(conn, 20000)
     conn.close()
 
-    out = write_site(tmp_path / "site", notices, stats, deadlines, contents)
+    out = write_site(tmp_path / "site", notices, stats, deadlines, contents,
+                     school_tags)
     assert (out / "index.html").exists()
     assert (out / "assets" / "app.js").exists()
     assert (out / "assets" / "style.css").exists()
@@ -62,6 +63,6 @@ def test_build_site_excludes_disabled_school(tmp_path, monkeypatch):
     conn.commit()
     from build_site import collect
 
-    notices, stats, _, _ = collect(conn, 20000)
+    notices, stats, _, _, _ = collect(conn, 20000)
     conn.close()
     assert notices == [] and stats["notices"] == 0

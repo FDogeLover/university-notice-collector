@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS schools (
     name        TEXT NOT NULL UNIQUE,          -- 学校名
     domain      TEXT,                          -- 官方域名（用于链接域名过滤）
     note        TEXT,
-    enabled     INTEGER NOT NULL DEFAULT 1     -- 停用=0：数据保留但不显示、不采集
+    enabled     INTEGER NOT NULL DEFAULT 1,    -- 停用=0：数据保留但不显示、不采集
+    tags        TEXT                           -- 标签，逗号分隔：985 / 211
 );
 
 -- 采集入口（栏目）

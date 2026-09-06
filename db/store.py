@@ -43,6 +43,8 @@ def _migrate(conn):
     if "enabled" not in cols:
         conn.execute(
             "ALTER TABLE schools ADD COLUMN enabled INTEGER NOT NULL DEFAULT 1")
+    if "tags" not in cols:
+        conn.execute("ALTER TABLE schools ADD COLUMN tags TEXT")
     from crawler.extract import clean_notice_title  # 延迟导入避免循环依赖
 
     for r in conn.execute("SELECT id, title FROM notices").fetchall():
@@ -61,10 +63,12 @@ def _cleanup_orphans(conn):
 def import_schools(conn, schools):
     """把 yaml 中的学校与栏目写入数据库（已存在则更新）。"""
     for s in schools:
+        tags = ",".join(s["tags"]) if s.get("tags") else None
         conn.execute(
-            "INSERT INTO schools(name, domain) VALUES(?,?) "
-            "ON CONFLICT(name) DO UPDATE SET domain=excluded.domain",
-            (s["name"], s.get("domain")),
+            "INSERT INTO schools(name, domain, tags) VALUES(?,?,?) "
+            "ON CONFLICT(name) DO UPDATE SET domain=excluded.domain, "
+            "tags=COALESCE(excluded.tags, schools.tags)",
+            (s["name"], s.get("domain"), tags),
         )
         school_id = conn.execute(
             "SELECT id FROM schools WHERE name=?", (s["name"],)

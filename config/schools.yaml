@@ -4,186 +4,1493 @@
 # category 取值建议：招生 / 通知公告 / 信息公开
 # browser: true 表示该栏目启用 Playwright 真实浏览器抓取（用于过反爬，如北邮的 JS 挑战）
 # 注意：url 必须是该校官方域名下的地址，采集时会做域名过滤
-
 schools:
-  - name: 南京理工大学
-    domain: njust.edu.cn
-    sources:
-      - name: 研究生院
-        url: https://gs.njust.edu.cn/
-        category: 通知公告
-      - name: 研究生招生网
-        url: https://gs.njust.edu.cn/zsw/
-        category: 招生
-      - name: 信息公开（招生）
-        url: https://xxgk.njust.edu.cn/14426/list.htm
-        category: 信息公开
-
-  - name: 西安电子科技大学
-    domain: xidian.edu.cn
-    sources:
-      - name: 研究生院
-        url: https://gr.xidian.edu.cn/
-        category: 通知公告
-      - name: 研究生招生信息
-        url: https://gr.xidian.edu.cn/yjsy/yjszs.htm
-        category: 招生
-      - name: 信息公开网
-        url: https://xxgk.xidian.edu.cn/
-        category: 信息公开
-
-  - name: 北京邮电大学
-    domain: bupt.edu.cn
-    sources:
-      - name: 研究生院
-        url: https://grs.bupt.edu.cn/
-        category: 通知公告
-        browser: true
-        real_browser: true
-      - name: 研究生招生网
-        url: https://yzb.bupt.edu.cn/
-        category: 招生
-        browser: true
-        real_browser: true
-      - name: 信息公开网
-        url: https://xxgk.bupt.edu.cn/
-        category: 信息公开
-        browser: true
-        real_browser: true
-
-  - name: 深圳大学
-    domain: szu.edu.cn
-    sources:
-      - name: 研究生院
-        url: https://gra.szu.edu.cn/
-        category: 通知公告
-      - name: 研究生招生网（含推免公告列表）
-        url: https://yz.szu.edu.cn/sszs/gg.htm
-        category: 招生
-      - name: 信息公开网
-        url: https://xxgk.szu.edu.cn/
-        category: 信息公开
-
-  - name: 华东师范大学
-    domain: ecnu.edu.cn
-    sources:
-      - name: 研究生院
-        url: https://yjsy.ecnu.edu.cn/
-        category: 通知公告
-      - name: 研究生招生信息网
-        url: https://yjszs.ecnu.edu.cn/
-        category: 招生
-      - name: 信息公开网
-        url: https://xxgk.ecnu.edu.cn/
-        category: 信息公开
-
-  - name: 华中科技大学
-    domain: hust.edu.cn
-    sources:
-      - name: 研究生院
-        url: https://gs.hust.edu.cn/
-        category: 通知公告
-      - name: 研究生招生信息网
-        url: https://gszs.hust.edu.cn/
-        category: 招生
-      - name: 信息公开网
-        url: https://xxgk.hust.edu.cn/
-        category: 信息公开
-
-  - name: 四川大学
-    domain: scu.edu.cn
-    sources:
-      - name: 研究生招生信息网
-        url: https://yz.scu.edu.cn/
-        category: 招生
-      - name: 研究生院
-        url: https://gs.scu.edu.cn/
-        category: 通知公告
-
-  - name: 武汉大学
-    domain: whu.edu.cn
-    sources:
-      - name: 研究生招生服务平台
-        url: http://yz.whu.edu.cn/
-        category: 招生
-        browser: true   # JS 渲染页面，requests 拿不到列表
-      - name: 研究生院
-        url: http://gs.whu.edu.cn/
-        category: 通知公告
-
-  - name: 中山大学
-    domain: sysu.edu.cn
-    sources:
-      - name: 研究生招生网
-        url: https://graduate.sysu.edu.cn/zsw/
-        category: 招生
-      - name: 研究生院
-        url: https://graduate.sysu.edu.cn/
-        category: 通知公告
-
-  - name: 山东大学
-    domain: sdu.edu.cn
-    sources:
-      - name: 研究生招生信息网
-        url: https://www.yz.sdu.edu.cn/
-        category: 招生
-      - name: 研究生院
-        url: https://www.grad.sdu.edu.cn/
-        category: 通知公告
-
-  - name: 厦门大学
-    domain: xmu.edu.cn
-    sources:
-      - name: 研究生院
-        url: https://gs.xmu.edu.cn/
-        category: 通知公告
-      - name: 研究生招生网
-        url: https://zs.xmu.edu.cn/
-        category: 招生
-
-  - name: 吉林大学
-    domain: jlu.edu.cn
-    sources:
-      - name: 研究生招生信息网
-        url: https://yzb.jlu.edu.cn/
-        category: 招生
-      - name: 研究生院
-        url: https://gs.jlu.edu.cn/
-        category: 通知公告
-
-  - name: 湖南大学
-    domain: hnu.edu.cn
-    sources:
-      - name: 研究生院
-        url: https://gra.hnu.edu.cn/
-        category: 通知公告
-
-  - name: 重庆大学
-    domain: cqu.edu.cn
-    sources:
-      - name: 研究生招生信息网
-        url: https://yz.cqu.edu.cn/
-        category: 招生
-      - name: 研究生院
-        url: https://graduate.cqu.edu.cn/
-        category: 通知公告
-
-  - name: 兰州大学
-    domain: lzu.edu.cn
-    sources:
-      - name: 研究生招生信息网
-        url: https://yz.lzu.edu.cn/
-        category: 招生
-        browser: true
-        real_browser: true
-      - name: 学位与研究生教育网（通知公告）
-        url: https://ge.lzu.edu.cn/tongzhigonggao/
-        category: 通知公告
-
-  - name: 大连理工大学
-    domain: dlut.edu.cn
-    sources:
-      - name: 研究生院
-        url: https://gs.dlut.edu.cn/
-        category: 通知公告
-      # 研究生报考服务系统（yjszs.dlut.edu.cn）已下线（仅返回 nginx 默认页），移除
+- name: 南京理工大学
+  domain: njust.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.njust.edu.cn/
+    category: 通知公告
+  - name: 研究生招生网
+    url: https://gs.njust.edu.cn/zsw/
+    category: 招生
+  - name: 信息公开（招生）
+    url: https://xxgk.njust.edu.cn/14426/list.htm
+    category: 信息公开
+  tags:
+  - '211'
+- name: 西安电子科技大学
+  domain: xidian.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gr.xidian.edu.cn/
+    category: 通知公告
+  - name: 研究生招生信息
+    url: https://gr.xidian.edu.cn/yjsy/yjszs.htm
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.xidian.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 北京邮电大学
+  domain: bupt.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://grs.bupt.edu.cn/
+    category: 通知公告
+    browser: true
+    real_browser: true
+  - name: 研究生招生网
+    url: https://yzb.bupt.edu.cn/
+    category: 招生
+    browser: true
+    real_browser: true
+  - name: 信息公开网
+    url: https://xxgk.bupt.edu.cn/
+    category: 信息公开
+    browser: true
+    real_browser: true
+  tags:
+  - '211'
+- name: 深圳大学
+  domain: szu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gra.szu.edu.cn/
+    category: 通知公告
+  - name: 研究生招生网（含推免公告列表）
+    url: https://yz.szu.edu.cn/sszs/gg.htm
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.szu.edu.cn/
+    category: 信息公开
+- name: 华东师范大学
+  domain: ecnu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjsy.ecnu.edu.cn/
+    category: 通知公告
+  - name: 研究生招生信息网
+    url: https://yjszs.ecnu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.ecnu.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 华中科技大学
+  domain: hust.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.hust.edu.cn/
+    category: 通知公告
+  - name: 研究生招生信息网
+    url: https://gszs.hust.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.hust.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 四川大学
+  domain: scu.edu.cn
+  sources:
+  - name: 研究生招生信息网
+    url: https://yz.scu.edu.cn/
+    category: 招生
+  - name: 研究生院
+    url: https://gs.scu.edu.cn/
+    category: 通知公告
+  tags:
+  - '985'
+- name: 武汉大学
+  domain: whu.edu.cn
+  sources:
+  - name: 研究生招生服务平台
+    url: http://yz.whu.edu.cn/
+    category: 招生
+    browser: true
+  - name: 研究生院
+    url: http://gs.whu.edu.cn/
+    category: 通知公告
+  tags:
+  - '985'
+- name: 中山大学
+  domain: sysu.edu.cn
+  sources:
+  - name: 研究生招生网
+    url: https://graduate.sysu.edu.cn/zsw/
+    category: 招生
+  - name: 研究生院
+    url: https://graduate.sysu.edu.cn/
+    category: 通知公告
+  tags:
+  - '985'
+- name: 山东大学
+  domain: sdu.edu.cn
+  sources:
+  - name: 研究生招生信息网
+    url: https://www.yz.sdu.edu.cn/
+    category: 招生
+  - name: 研究生院
+    url: https://www.grad.sdu.edu.cn/
+    category: 通知公告
+  tags:
+  - '985'
+- name: 厦门大学
+  domain: xmu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.xmu.edu.cn/
+    category: 通知公告
+  - name: 研究生招生网
+    url: https://zs.xmu.edu.cn/
+    category: 招生
+  tags:
+  - '985'
+- name: 吉林大学
+  domain: jlu.edu.cn
+  sources:
+  - name: 研究生招生信息网
+    url: https://yzb.jlu.edu.cn/
+    category: 招生
+  - name: 研究生院
+    url: https://gs.jlu.edu.cn/
+    category: 通知公告
+  tags:
+  - '985'
+- name: 湖南大学
+  domain: hnu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gra.hnu.edu.cn/
+    category: 通知公告
+  tags:
+  - '985'
+- name: 重庆大学
+  domain: cqu.edu.cn
+  sources:
+  - name: 研究生招生信息网
+    url: https://yz.cqu.edu.cn/
+    category: 招生
+  - name: 研究生院
+    url: https://graduate.cqu.edu.cn/
+    category: 通知公告
+  tags:
+  - '985'
+- name: 兰州大学
+  domain: lzu.edu.cn
+  sources:
+  - name: 研究生招生信息网
+    url: https://yz.lzu.edu.cn/
+    category: 招生
+    browser: true
+    real_browser: true
+  - name: 学位与研究生教育网（通知公告）
+    url: https://ge.lzu.edu.cn/tongzhigonggao/
+    category: 通知公告
+  tags:
+  - '985'
+- name: 大连理工大学
+  domain: dlut.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.dlut.edu.cn/
+    category: 通知公告
+  tags:
+  - '985'
+- name: 清华大学
+  domain: tsinghua.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.tsinghua.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yz.tsinghua.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://info.tsinghua.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 北京大学
+  domain: pku.edu.cn
+  sources:
+  - name: 北京大学研究生招生网
+    url: https://admission.pku.edu.cn/
+    category: 招生
+  - name: 北京大学研究生院
+    url: https://grs.pku.edu.cn/
+    category: 招生
+  - name: 北京大学信息公开网
+    url: https://xxgk.pku.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 北京航空航天大学
+  domain: buaa.edu.cn
+  sources:
+  - name: 研究生招生网
+    url: https://yzb.buaa.edu.cn
+    category: 招生
+  - name: 研究生院
+    url: https://gs.buaa.edu.cn
+    category: 通知公告
+  - name: 信息公开网
+    url: https://xxgk.buaa.edu.cn
+    category: 信息公开
+  tags:
+  - '985'
+- name: 中国人民大学
+  domain: ruc.edu.cn
+  sources:
+  - name: 研究生招生网
+    url: https://pgs.ruc.edu.cn
+    category: 招生
+  - name: 研究生院
+    url: https://gs.ruc.edu.cn
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.ruc.edu.cn
+    category: 信息公开
+  tags:
+  - '985'
+- name: 北京理工大学
+  domain: bit.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://grd.bit.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yz.bit.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.bit.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 北京师范大学
+  domain: bnu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.bnu.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yz.bnu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.bnu.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 中国农业大学
+  domain: cau.edu.cn
+  sources:
+  - name: 研究生招生信息网
+    url: https://yz.cau.edu.cn/
+    category: 招生
+  - name: 研究生院
+    url: https://grad.cau.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.cau.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 中央民族大学
+  domain: muc.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://grs.muc.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zs.muc.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.muc.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 天津大学
+  domain: tju.edu.cn
+  sources:
+  - name: 天津大学本科招生网
+    url: https://zs.tju.edu.cn/
+    category: 招生
+  - name: 天津大学研究生招生网
+    url: https://yzb.tju.edu.cn/
+    category: 招生
+  - name: 天津大学信息公开网
+    url: https://xxgk.tju.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 东北大学
+  domain: neu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://graduate.neu.edu.cn/
+    category: 招生
+  - name: 研究生招生信息网
+    url: https://yz.neu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.neu.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 南开大学
+  domain: nankai.edu.cn
+  sources:
+  - name: 南开大学研究生院
+    url: https://graduate.nankai.edu.cn/
+    category: 招生
+  - name: 南开大学研究生招生网
+    url: https://yzb.nankai.edu.cn/
+    category: 招生
+  - name: 南开大学信息公开网
+    url: https://xxgk.nankai.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 复旦大学
+  domain: fudan.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.fudan.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yz.fudan.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.fudan.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 上海交通大学
+  domain: sjtu.edu.cn
+  sources:
+  - name: 研究生招生网
+    url: https://yzb.sjtu.edu.cn/
+    category: 招生
+  - name: 研究生院
+    url: https://www.gs.sjtu.edu.cn/
+    category: 通知公告
+  - name: 信息公开网
+    url: https://info.sjtu.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 同济大学
+  domain: tongji.edu.cn
+  sources:
+  - name: 研究生招生网
+    url: https://yz.tongji.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://bkzs.tongji.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.tongji.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 哈尔滨工业大学
+  domain: hit.edu.cn
+  sources:
+  - name: 哈尔滨工业大学研究生招生网
+    url: https://yzb.hit.edu.cn/
+    category: 招生
+  - name: 哈尔滨工业大学研究生院
+    url: https://hitgs.hit.edu.cn/
+    category: 通知公告
+  - name: 哈尔滨工业大学信息公开网
+    url: https://xxgk.hit.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 南京大学
+  domain: nju.edu.cn
+  sources:
+  - name: 南京大学研究生院
+    url: https://grawww.nju.edu.cn/
+    category: 招生
+  - name: 南京大学研究生招生网
+    url: https://yzb.nju.edu.cn/
+    category: 招生
+  - name: 南京大学信息公开网
+    url: https://xxgk.nju.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 东南大学
+  domain: seu.edu.cn
+  sources:
+  - name: 东南大学研究生院
+    url: https://seugs.seu.edu.cn/
+    category: 通知公告
+  - name: 东南大学研究生招生网
+    url: https://yzb.seu.edu.cn/
+    category: 招生
+  - name: 东南大学信息公开网
+    url: https://xxgk.seu.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 浙江大学
+  domain: zju.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.zju.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yzb.zju.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.zju.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 中南大学
+  domain: csu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gra.csu.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yz.csu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.csu.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 中国海洋大学
+  domain: ouc.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://grad.ouc.edu.cn
+    category: 通知公告
+  - name: 研究生招生信息网
+    url: https://yz.ouc.edu.cn
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.ouc.edu.cn
+    category: 信息公开
+  tags:
+  - '985'
+- name: 华南理工大学
+  domain: scut.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.scut.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yz.scut.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.scut.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 中国科学技术大学
+  domain: ustc.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gradschool.ustc.edu.cn/
+    category: 通知公告
+  - name: 研究生招生在线
+    url: https://yz.ustc.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.ustc.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 电子科技大学
+  domain: uestc.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gr.uestc.edu.cn/
+    category: 通知公告
+  - name: 研究生招生网
+    url: https://yz.uestc.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.uestc.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 西北农林科技大学
+  domain: nwsuaf.edu.cn
+  sources:
+  - name: 研究生招生信息网
+    url: https://yz.nwsuaf.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zsb.nwsuaf.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.nwsuaf.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 西安交通大学
+  domain: xjtu.edu.cn
+  sources:
+  - name: 西安交通大学研究生院
+    url: https://gs.xjtu.edu.cn/
+    category: 通知公告
+  - name: 西安交通大学研究生招生信息网
+    url: https://yz.xjtu.edu.cn/
+    category: 招生
+  - name: 西安交通大学信息公开网
+    url: https://xxgk.xjtu.edu.cn/
+    category: 信息公开
+  tags:
+  - '985'
+- name: 西北工业大学
+  domain: nwpu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.nwpu.edu.cn
+    category: 通知公告
+  - name: 研究生招生信息网
+    url: https://yzb.nwpu.edu.cn
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.nwpu.edu.cn
+    category: 信息公开
+  tags:
+  - '985'
+- name: 北京交通大学
+  domain: bjtu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.bjtu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.bjtu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 北京化工大学
+  domain: buct.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://graduate.buct.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.buct.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 北京科技大学
+  domain: ustb.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.ustb.edu.cn/
+    category: 通知公告
+  - name: 研究生招生信息网
+    url: https://yz.ustb.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.ustb.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 北京工业大学
+  domain: bjut.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjsy.bjut.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yanzhao.bjut.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.bjut.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 北京中医药大学
+  domain: bucm.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjsy.bucm.edu.cn
+    category: 招生
+  tags:
+  - '211'
+- name: 北京林业大学
+  domain: bjfu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://graduate.bjfu.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yz.bjfu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.bjfu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 中国传媒大学
+  domain: cuc.edu.cn
+  sources:
+  - name: 研究生招生网
+    url: https://yz.cuc.edu.cn/
+    category: 招生
+  - name: 研究生院
+    url: https://gs.cuc.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.cuc.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 北京外国语大学
+  domain: bfsu.edu.cn
+  sources:
+  - name: 研究生招生网
+    url: https://yz.bfsu.edu.cn/
+    category: 招生
+  - name: 研究生院
+    url: https://graduate.bfsu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.bfsu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 对外经济贸易大学
+  domain: uibe.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjsy.uibe.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yz.uibe.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.uibe.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 中央财经大学
+  domain: cufe.edu.cn
+  sources:
+  - name: 研究生招生网
+    url: https://yz.cufe.edu.cn/
+    category: 招生
+  - name: 研究生院
+    url: https://gs.cufe.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.cufe.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 中国政法大学
+  domain: cupl.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjsy.cupl.edu.cn/
+    category: 招生
+  - name: 本科招生信息网
+    url: https://bkzs.cupl.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.cupl.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 华北电力大学
+  domain: ncepu.edu.cn
+  sources:
+  - name: 本科招生网
+    url: https://bkzs.ncepu.edu.cn/
+    category: 招生
+  - name: 研究生院
+    url: https://yjsy.ncepu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.ncepu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 中国矿业大学（北京）
+  domain: cumtb.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjsy.cumtb.edu.cn
+    category: 招生
+  - name: 研究生招生网
+    url: https://yzb.cumtb.edu.cn
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.cumtb.edu.cn
+    category: 信息公开
+  tags:
+  - '211'
+- name: 中国地质大学（北京）
+  domain: cugb.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://graduate.cugb.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zhsh.cugb.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.cugb.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 中国石油大学（北京）
+  domain: cup.edu.cn
+  sources:
+  - name: 研究生招生信息网
+    url: https://yz.cup.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zs.cup.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.cup.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 天津医科大学
+  domain: tmu.edu.cn
+  sources:
+  - name: 本科招生网
+    url: https://zs.tmu.edu.cn
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.tmu.edu.cn
+    category: 信息公开
+  tags:
+  - '211'
+- name: 内蒙古大学
+  domain: imu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.imu.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zs.imu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.imu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 太原理工大学
+  domain: tyut.edu.cn
+  sources:
+  - name: 太原理工大学研究生院
+    url: https://graduate.tyut.edu.cn/
+    category: 招生
+  - name: 太原理工大学研究生招生网
+    url: https://yz.tyut.edu.cn/
+    category: 招生
+  - name: 太原理工大学信息公开网
+    url: https://xxgk.tyut.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 河北工业大学
+  domain: hebut.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjs.hebut.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zs.hebut.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.hebut.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 大连海事大学
+  domain: dlmu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://grs.dlmu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.dlmu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 延边大学
+  domain: ybu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjs.ybu.edu.cn
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.ybu.edu.cn
+    category: 信息公开
+  tags:
+  - '211'
+- name: 辽宁大学
+  domain: lnu.edu.cn
+  sources:
+  - name: 辽宁大学研究生院
+    url: https://gs.lnu.edu.cn/
+    category: 招生
+  - name: 辽宁大学招生网
+    url: https://zs.lnu.edu.cn/
+    category: 招生
+  - name: 辽宁大学信息公开网
+    url: https://xxgk.lnu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 东北师范大学
+  domain: nenu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://grs.nenu.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zsb.nenu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.nenu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 哈尔滨工程大学
+  domain: hrbeu.edu.cn
+  sources:
+  - name: 研究生招生信息网
+    url: https://yzb.hrbeu.edu.cn/
+    category: 招生
+  - name: 研究生院
+    url: https://gs.hrbeu.edu.cn/
+    category: 通知公告
+  - name: 信息公开网
+    url: https://xxgk.hrbeu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 东北林业大学
+  domain: nefu.edu.cn
+  sources:
+  - name: 本科招生网
+    url: https://zsb.nefu.edu.cn
+    category: 招生
+  - name: 研究生院
+    url: https://yjsy.nefu.edu.cn
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.nefu.edu.cn
+    category: 信息公开
+  tags:
+  - '211'
+- name: 华东理工大学
+  domain: ecust.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.ecust.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yz.ecust.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.ecust.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 东华大学
+  domain: dhu.edu.cn
+  sources:
+  - name: 本科招生网
+    url: https://zs.dhu.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yjszs.dhu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.dhu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 上海外国语大学
+  domain: shisu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://graduate.shisu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.shisu.edu.cn/
+    category: 信息公开
+  - name: 本科招生网
+    url: https://admissions.shisu.edu.cn/
+    category: 招生
+  tags:
+  - '211'
+- name: 东北农业大学
+  domain: neau.edu.cn
+  sources:
+  - name: 东北农业大学研究生院
+    url: https://yjsy.neau.edu.cn/
+    category: 招生
+  - name: 东北农业大学本科招生信息网
+    url: https://zsb.neau.edu.cn/
+    category: 招生
+  - name: 东北农业大学信息公开网
+    url: https://xxgk.neau.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 上海财经大学
+  domain: sufe.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.sufe.edu.cn/
+    category: 通知公告
+  - name: 研究生招生网
+    url: https://yz.sufe.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.sufe.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 苏州大学
+  domain: suda.edu.cn
+  sources:
+  - name: 苏州大学研究生院
+    url: https://yjs.suda.edu.cn/
+    category: 招生
+  - name: 苏州大学本科招生网
+    url: https://zsb.suda.edu.cn/
+    category: 招生
+  - name: 苏州大学信息公开网
+    url: https://xxgk.suda.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 河海大学
+  domain: hhu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjsy.hhu.edu.cn
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.hhu.edu.cn
+    category: 信息公开
+  tags:
+  - '211'
+- name: 上海大学
+  domain: shu.edu.cn
+  sources:
+  - name: 上海大学研究生院
+    url: https://gs.shu.edu.cn/
+    category: 招生
+  - name: 上海大学研究生招生网
+    url: https://yjszs.shu.edu.cn/
+    category: 招生
+  - name: 上海大学信息公开网
+    url: https://xxgk.shu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 南京航空航天大学
+  domain: nuaa.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.nuaa.edu.cn
+    category: 通知公告
+  - name: 研究生招生网
+    url: https://yzb.nuaa.edu.cn
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.nuaa.edu.cn
+    category: 信息公开
+  tags:
+  - '211'
+- name: 江南大学
+  domain: jiangnan.edu.cn
+  sources:
+  - name: 江南大学研究生院
+    url: https://gs.jiangnan.edu.cn/
+    category: 通知公告
+  - name: 江南大学研究生招生网
+    url: https://yz.jiangnan.edu.cn/
+    category: 招生
+  - name: 江南大学信息公开网
+    url: https://xxgk.jiangnan.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 南京农业大学
+  domain: njau.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://grs.njau.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zsb.njau.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.njau.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 南京师范大学
+  domain: njnu.edu.cn
+  sources:
+  - name: 研究生招生网
+    url: https://yz.njnu.edu.cn/
+    category: 招生
+  - name: 研究生院
+    url: https://grad.njnu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.njnu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 中国矿业大学
+  domain: cumt.edu.cn
+  sources:
+  - name: 研究生招生网
+    url: https://yzb.cumt.edu.cn/
+    category: 招生
+  - name: 研究生院
+    url: https://gs.cumt.edu.cn/
+    category: 通知公告
+  - name: 信息公开网
+    url: https://xxgk.cumt.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 中国药科大学
+  domain: cpu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjsy.cpu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.cpu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 中国石油大学（华东）
+  domain: upc.edu.cn
+  sources:
+  - name: 本科招生网
+    url: https://zs.upc.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yz.upc.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.upc.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 福州大学
+  domain: fzu.edu.cn
+  sources:
+  - name: 研究生招生网
+    url: https://yz.fzu.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zs.fzu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.fzu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 安徽大学
+  domain: ahu.edu.cn
+  sources:
+  - name: 安徽大学研究生院
+    url: https://grs.ahu.edu.cn/
+    category: 招生
+  - name: 安徽大学本科招生网
+    url: https://zsb.ahu.edu.cn/
+    category: 招生
+  - name: 安徽大学信息公开网
+    url: https://xxgk.ahu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 合肥工业大学
+  domain: hfut.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjsy.hfut.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.hfut.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 郑州大学
+  domain: zzu.edu.cn
+  sources:
+  - name: 郑州大学研究生院
+    url: https://gs.zzu.edu.cn/
+    category: 招生
+  - name: 郑州大学研究生招生网
+    url: https://yz.zzu.edu.cn/
+    category: 招生
+  - name: 郑州大学信息公开网
+    url: https://xxgk.zzu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 武汉理工大学
+  domain: whut.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.whut.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zs.whut.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.whut.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 华中农业大学
+  domain: hzau.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjsy.hzau.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zs.hzau.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.hzau.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 中南财经政法大学
+  domain: zuel.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjsy.zuel.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://bkzs.zuel.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.zuel.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 华中师范大学
+  domain: ccnu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.ccnu.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zs.ccnu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.ccnu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 中国地质大学（武汉）
+  domain: cug.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://graduate.cug.edu.cn/
+    category: 招生
+  - name: 研究生招生信息网
+    url: https://yz.cug.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.cug.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 湖南师范大学
+  domain: hunnu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjsy.hunnu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.hunnu.edu.cn/
+    category: 信息公开
+  - name: 本科招生网
+    url: https://zsb.hunnu.edu.cn/
+    category: 招生
+  tags:
+  - '211'
+- name: 华南师范大学
+  domain: scnu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.scnu.edu.cn/
+    category: 招生
+  - name: 研究生招生信息网
+    url: https://yz.scnu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.scnu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 暨南大学
+  domain: jnu.edu.cn
+  sources:
+  - name: 暨南大学研究生院
+    url: https://gs.jnu.edu.cn
+    category: 招生
+  - name: 暨南大学研究生招生信息网
+    url: https://yz.jnu.edu.cn
+    category: 招生
+  - name: 暨南大学信息公开网
+    url: https://xxgk.jnu.edu.cn
+    category: 信息公开
+  tags:
+  - '211'
+- name: 南昌大学
+  domain: ncu.edu.cn
+  sources:
+  - name: 南昌大学招生信息网
+    url: https://zhaosheng.ncu.edu.cn/
+    category: 招生
+  - name: 南昌大学研究生院
+    url: https://yjsy.ncu.edu.cn/
+    category: 招生
+  - name: 南昌大学信息公开网
+    url: https://xxgk.ncu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 广西大学
+  domain: gxu.edu.cn
+  sources:
+  - name: 广西大学招生信息网
+    url: https://zs.gxu.edu.cn/
+    category: 招生
+  - name: 广西大学研究生院
+    url: https://yjsy.gxu.edu.cn/
+    category: 招生
+  - name: 广西大学信息公开网
+    url: https://xxgk.gxu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 西南交通大学
+  domain: swjtu.edu.cn
+  sources:
+  - name: 研究生招生网
+    url: https://yz.swjtu.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zsb.swjtu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.swjtu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 西南财经大学
+  domain: swufe.edu.cn
+  sources:
+  - name: 西南财经大学研究生院
+    url: https://gs.swufe.edu.cn/
+    category: 招生
+  - name: 西南财经大学本科招生网
+    url: https://zb.swufe.edu.cn/
+    category: 招生
+  - name: 西南财经大学信息公开网
+    url: https://xxgk.swufe.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 四川农业大学
+  domain: sicau.edu.cn
+  sources:
+  - name: 本科招生网
+    url: https://zs.sicau.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yz.sicau.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.sicau.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 海南大学
+  domain: hainanu.edu.cn
+  sources:
+  - name: 海南大学研究生院
+    url: https://gs.hainanu.edu.cn/
+    category: 招生
+  - name: 海南大学本科招生网
+    url: https://zs.hainanu.edu.cn/
+    category: 招生
+  - name: 海南大学信息公开网
+    url: https://xxgk.hainanu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 云南大学
+  domain: ynu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://www.grs.ynu.edu.cn
+    category: 招生
+  - name: 本科招生网
+    url: https://zsb.ynu.edu.cn
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.ynu.edu.cn
+    category: 信息公开
+  tags:
+  - '211'
+- name: 贵州大学
+  domain: gzu.edu.cn
+  sources:
+  - name: 贵州大学研究生院
+    url: https://gs.gzu.edu.cn
+    category: 招生
+  - name: 贵州大学本科招生网
+    url: https://zs.gzu.edu.cn
+    category: 招生
+  - name: 贵州大学信息公开网
+    url: https://xxgk.gzu.edu.cn
+    category: 信息公开
+  tags:
+  - '211'
+- name: 西藏大学
+  domain: utibet.edu.cn
+  sources:
+  - name: 西藏大学研究生院
+    url: https://yjsy.utibet.edu.cn/
+    category: 招生
+  tags:
+  - '211'
+- name: 西北大学
+  domain: nwu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://yjs.nwu.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zsb.nwu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.nwu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 长安大学
+  domain: chd.edu.cn
+  sources:
+  - name: 长安大学研究生招生网
+    url: https://yzb.chd.edu.cn/
+    category: 招生
+  - name: 长安大学研究生院
+    url: https://gs.chd.edu.cn/
+    category: 招生
+  - name: 长安大学信息公开网
+    url: https://xxgk.chd.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 陕西师范大学
+  domain: snnu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.snnu.edu.cn/
+    category: 招生
+  - name: 研究生招生网
+    url: https://yz.snnu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.snnu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 宁夏大学
+  domain: nxu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://gs.nxu.edu.cn/
+    category: 招生
+  - name: 本科招生网
+    url: https://zs.nxu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.nxu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 新疆大学
+  domain: xju.edu.cn
+  sources:
+  - name: 新疆大学研究生招生信息网
+    url: https://yz.xju.edu.cn/
+    category: 招生
+  - name: 新疆大学研究生院
+    url: https://gs.xju.edu.cn/
+    category: 招生
+  - name: 新疆大学信息公开网
+    url: https://xxgk.xju.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 青海大学
+  domain: qhu.edu.cn
+  sources:
+  - name: 研究生院
+    url: https://grs.qhu.edu.cn/
+    category: 招生
+  - name: 招生信息网
+    url: https://zs.qhu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.qhu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 石河子大学
+  domain: shzu.edu.cn
+  sources:
+  - name: 本科招生网
+    url: https://zsb.shzu.edu.cn/
+    category: 招生
+  - name: 研究生院
+    url: https://yjsy.shzu.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.shzu.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
+- name: 中央音乐学院
+  domain: ccom.edu.cn
+  sources:
+  - name: 本科招生
+    url: https://zhaoban.ccom.edu.cn/
+    category: 招生
+  - name: 研究生部
+    url: https://yjsb.ccom.edu.cn/
+    category: 招生
+  - name: 信息公开网
+    url: https://xxgk.ccom.edu.cn/
+    category: 信息公开
+  tags:
+  - '211'
