@@ -63,23 +63,40 @@
     });
   }
 
+  /* ---------- 即将截止（超出可视宽度时自动横向滚动轮播，悬停暂停） ---------- */
+  function deadlineItemHtml(n) {
+    return '<button class="deadline-item" data-id="' + n.id + '">' +
+      '<span class="deadline-date">' + esc(n.deadline) + "</span>" +
+      '<span class="deadline-title">' + esc(n.title) + "</span>" +
+      '<span class="deadline-school">' + esc(n.school) + "</span>" +
+      "</button>";
+  }
+
   function renderDeadlines() {
     var list = DATA.deadlines || [];
     var strip = $("#deadlineStrip");
     var box = $("#deadlineList");
-    box.innerHTML = "";
+    var track = $("#deadlineTrack");
     if (!list.length) { strip.hidden = true; return; }
-    list.slice(0, 12).forEach(function (n) {
-      var el = document.createElement("button");
-      el.className = "deadline-item";
-      el.innerHTML =
-        '<span class="deadline-date">' + esc(n.deadline) + "</span>" +
-        '<span class="deadline-title">' + esc(n.title) + "</span>" +
-        '<span class="deadline-school">' + esc(n.school) + "</span>";
-      el.addEventListener("click", function () { openDetail(n.id); });
-      box.appendChild(el);
+    var half = list.map(deadlineItemHtml).join("");
+    track.innerHTML = '<div class="deadline-half">' + half + '</div>' +
+                      '<div class="deadline-half">' + half + "</div>";
+    $("#deadlineLabel").textContent =
+      "⏰ 即将截止（" + list.length + " 条）";
+    track.querySelectorAll(".deadline-item").forEach(function (el, i) {
+      el.addEventListener("click",
+        function () { openDetail(list[i % list.length].id); });
     });
     strip.hidden = false;
+    requestAnimationFrame(function () {
+      var halfEl = track.children[0];
+      var overflow = halfEl.scrollWidth > box.clientWidth + 1;
+      track.classList.toggle("marquee", overflow);
+      if (overflow) {
+        var dur = Math.max(15, Math.round(halfEl.scrollWidth / 40));
+        track.style.setProperty("--marquee-dur", dur + "s");
+      }
+    });
   }
 
   /* ---------- 筛选与列表 ---------- */

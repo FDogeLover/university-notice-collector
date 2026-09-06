@@ -101,9 +101,19 @@ button { font-family: inherit; }
   border-bottom: 1px solid #fde8cf;
 }
 .deadline-inner { display: flex; align-items: center; gap: 14px; padding: 10px 0; }
-.deadline-label { font-size: 13px; font-weight: 700; color: #c2410c; flex: none; }
-.deadline-list { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
-.deadline-list::-webkit-scrollbar { display: none; }
+.deadline-label { font-size: 13px; font-weight: 700; color: #c2410c; flex: none; white-space: nowrap; }
+.deadline-list { flex: 1; min-width: 0; overflow: hidden; }
+.deadline-track { display: flex; width: max-content; }
+.deadline-half { display: flex; gap: 8px; padding-right: 8px; }
+.deadline-track.marquee { animation: deadlineMarquee var(--marquee-dur, 30s) linear infinite; }
+.deadline-strip:hover .deadline-track.marquee { animation-play-state: paused; }
+@keyframes deadlineMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .deadline-track.marquee { animation: none; }
+}
 .deadline-item {
   display: flex; align-items: center; gap: 8px; flex: none;
   background: #fff; border: 1px solid #fed7aa; border-radius: 999px;
