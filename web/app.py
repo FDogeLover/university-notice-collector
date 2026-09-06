@@ -30,6 +30,7 @@ sys.path.insert(0, str(ROOT))
 
 from db import store  # noqa: E402
 from crawler.extract import clean_summary, extract_highlights, standardize_highlights  # noqa: E402
+from crawler.parse import SOURCE_TYPES  # noqa: E402
 from web.ai_client import (  # noqa: E402
     AIError,
     PROVIDERS,
@@ -169,13 +170,17 @@ def add_school(payload: dict):
         sname = (s.get("name") or "").strip()
         surl = (s.get("url") or "").strip()
         scat = (s.get("category") or "").strip() or "通知公告"
+        sstype = (s.get("stype") or "").strip()
+        if sstype not in SOURCE_TYPES:
+            sstype = "研究生教育"
         if not sname or not surl:
             errors.append(f"第 {i} 个栏目：名称和 URL 不能为空")
             continue
         if not surl.startswith(("http://", "https://")):
             errors.append(f"栏目「{sname}」的 URL 需以 http(s):// 开头")
             continue
-        clean_sources.append({"name": sname, "url": surl, "category": scat})
+        clean_sources.append({"name": sname, "url": surl, "category": scat,
+                              "stype": sstype})
     if errors:
         return JSONResponse({"errors": errors}, status_code=400)
 
@@ -416,12 +421,16 @@ def notices(
     type: str = Query(""),
     keyword: str = Query(""),
     tag: str = Query("", pattern="^(|985|211)$"),
+    stype: str = Query(""),
     days: int = Query(0, ge=0, le=3650),
     limit: int = Query(30, ge=1, le=100),
     offset: int = Query(0, ge=0),
 ):
     conds, params = [], []
     conds.append("sc.enabled=1")  # 停用学校的数据保留但不显示
+    if stype:
+        conds.append("COALESCE(s.stype,'研究生教育')=?")
+        params.append(stype)
     if tag:
         conds.append("(',' || COALESCE(sc.tags,'') || ',') LIKE ?")
         params.append(f"%,{tag},")
@@ -476,7 +485,7 @@ def notices(
     where = (" WHERE " + " AND ".join(conds)) if conds else ""
 
     base = ("SELECT n.*, sc.name AS school_name, sc.tags AS school_tags, "
-            "s.name AS source_name "
+            "s.name AS source_name, COALESCE(s.stype,'研究生教育') AS source_type "
             "FROM notices n JOIN schools sc ON sc.id=n.school_id "
             "LEFT JOIN sources s ON s.id=n.source_id" + where)
     total = _row(f"SELECT COUNT(*) AS c FROM ({base})", params)["c"]

@@ -44,7 +44,7 @@ def collect(conn, max_content):
     rows = conn.execute(
         "SELECT n.id, n.title, n.url, n.type_tag, n.published_at, n.fetched_at,"
         "       n.content_md, sc.name AS school_name, sc.tags AS school_tags,"
-        "       s.name AS source_name "
+        "       s.name AS source_name, COALESCE(s.stype,'研究生教育') AS stype "
         "FROM notices n "
         "JOIN schools sc ON sc.id = n.school_id "
         "LEFT JOIN sources s ON s.id = n.source_id "
@@ -76,6 +76,7 @@ def collect(conn, max_content):
             "school": r["school_name"],
             "school_tags": r["school_tags"] or "",
             "source": r["source_name"] or "",
+            "stype": r["stype"],
             "published": r["published_at"] or "",
             "date": _iso(r["published_at"]),
             "excerpt": clean_summary(content, r["title"], max_len=120),

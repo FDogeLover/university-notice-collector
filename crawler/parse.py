@@ -19,6 +19,28 @@ KEYWORDS = re.compile(
     re.I,
 )
 
+# 各信息领域的链接过滤白名单：按栏目 stype 选择。
+# 存量栏目均为"研究生教育"（沿用原全局 KEYWORDS，行为不变）；
+# 新领域通过在 schools.yaml 栏目上声明 stype 来扩展采集面。
+TYPE_KEYWORDS = {
+    "研究生教育": KEYWORDS,
+    "本科招生": re.compile(
+        r"(高考|本科|录取分数|招生章程|招生计划|分省|新生|强基|"
+        r"艺术类|体育类|专项计划|保送|综合评价|报名|录取|招生)",
+        re.I,
+    ),
+    "讲座学术": re.compile(
+        r"(讲座|报告会|论坛|研讨会|学术|沙龙|会议|研修|直播|开班)", re.I),
+    "就业招聘": re.compile(
+        r"(招聘|就业|双选会|宣讲会|校园招聘|人才引进|招考|事业单位|求职|用人)", re.I),
+    "奖助资助": re.compile(
+        r"(奖学金|助学金|资助|贷款|补贴|津贴|评定|助管|助教|三助)", re.I),
+    "综合信息": re.compile(r"(通知|公告|公示|启事|安排|通报|任免|招标|采购)", re.I),
+}
+
+# 全部已知领域（供 API/前端下拉使用）
+SOURCE_TYPES = ["研究生教育", "本科招生", "讲座学术", "就业招聘", "奖助资助", "综合信息"]
+
 
 def same_domain(url, domain):
     host = (urlparse(url).netloc or "").lower()
@@ -79,12 +101,13 @@ def _extract_published(html, soup):
     return ""
 
 
-def parse_list(html, base_url, domain, max_items=50):
+def parse_list(html, base_url, domain, max_items=50, stype=None):
     """从栏目列表页抽取相关通知链接。
 
-    返回 [{title, url}]，只保留同域名、标题含关键词、且不是导航/栏目页的链接，
-    按出现顺序去重。
+    返回 [{title, url}]，只保留同域名、标题命中该栏目领域白名单
+    （stype 缺省为研究生教育）、且不是导航/栏目页的链接，按出现顺序去重。
     """
+    keyword = TYPE_KEYWORDS.get(stype or "研究生教育", KEYWORDS)
     soup = BeautifulSoup(html, "html.parser")
     items, seen = [], set()
     for a in soup.find_all("a", href=True):
@@ -103,7 +126,7 @@ def parse_list(html, base_url, domain, max_items=50):
             continue
         if any(h in url.lower() for h in _INDEX_URL_HINTS):
             continue
-        if not KEYWORDS.search(title):
+        if not keyword.search(title):
             continue
         if url in seen:
             continue

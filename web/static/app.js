@@ -10,6 +10,7 @@
     tag: "",
     school: "",
     type: "",
+    stype: "",
     keyword: "",
     days: 0,
     crawlTimer: null,
@@ -110,6 +111,7 @@
       type: state.type,
       keyword: state.keyword,
       tag: state.tag,
+      stype: state.stype,
       days: state.days,
       limit: LIMIT,
       offset: state.offset,
@@ -169,6 +171,8 @@
         '<span class="tag" style="color:' + color + ";background:" + tint(color) + '">' + esc(type) + "</span>" +
         '<span class="card-school">' + esc(n.school_name) + "</span>" +
         schoolBadges(n.school_tags) +
+        (n.source_type && n.source_type !== "研究生教育"
+          ? '<span class="domain-tag">' + esc(n.source_type) + "</span>" : "") +
         '<span class="card-source">' + esc(n.source_name || "") + "</span>" +
         '<span class="card-date">' + (n.published_at ? "发布 " + esc(n.published_at) : "时间未知") + "</span>" +
         "</div>" +
@@ -310,6 +314,9 @@
   });
   $("#filterType").addEventListener("change", function () {
     state.type = this.value; loadNotices(true);
+  });
+  $("#filterStype").addEventListener("change", function () {
+    state.stype = this.value; loadNotices(true);
   });
   $("#filterKeyword").addEventListener("keydown", function (e) {
     if (e.key === "Enter") applyFilter();

@@ -186,7 +186,8 @@ def crawl_source(conn, school, school_id, source, args):
             print(f"  !! [{school['name']}][{source['name']}] 抓取失败: {e}")
             return 0
 
-    items = parse.parse_list(html, url, domain, max_items=args.max_items)
+    items = parse.parse_list(html, url, domain, max_items=args.max_items,
+                             stype=source.get("stype"))
     if not items:
         # 列表页无有效通知：可能是导航页 / 反爬拦截 / URL 错误，醒目标注便于清理配置
         print(f"  ⚠ [{school['name']}][{source['name']}] 列表页未解析到有效通知："

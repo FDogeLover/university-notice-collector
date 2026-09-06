@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS sources (
     name        TEXT NOT NULL,                 -- 栏目名，如 研究生招生网
     url         TEXT NOT NULL UNIQUE,          -- 栏目首页/列表页地址
     category    TEXT,                          -- 招生 / 通知公告 / 信息公开
+    stype       TEXT NOT NULL DEFAULT '研究生教育',  -- 信息领域：本科招生/讲座学术/就业招聘/奖助资助/综合信息
     enabled     INTEGER NOT NULL DEFAULT 1,
     created_at  TEXT NOT NULL DEFAULT (datetime('now','localtime'))
 );

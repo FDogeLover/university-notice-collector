@@ -38,13 +38,18 @@ def init_db(conn=None):
 
 
 def _migrate(conn):
-    """存量库升级：schools 补 enabled 列；清洗标题里的 CMS 序号垃圾。"""
+    """存量库升级：schools 补 enabled/tags 列；sources 补 stype 列；清洗标题垃圾。"""
     cols = {r[1] for r in conn.execute("PRAGMA table_info(schools)")}
     if "enabled" not in cols:
         conn.execute(
             "ALTER TABLE schools ADD COLUMN enabled INTEGER NOT NULL DEFAULT 1")
     if "tags" not in cols:
         conn.execute("ALTER TABLE schools ADD COLUMN tags TEXT")
+    scols = {r[1] for r in conn.execute("PRAGMA table_info(sources)")}
+    if "stype" not in scols:
+        conn.execute(
+            "ALTER TABLE sources ADD COLUMN stype TEXT NOT NULL "
+            "DEFAULT '研究生教育'")
     from crawler.extract import clean_notice_title  # 延迟导入避免循环依赖
 
     for r in conn.execute("SELECT id, title FROM notices").fetchall():
@@ -75,11 +80,14 @@ def import_schools(conn, schools):
         ).fetchone()["id"]
         for src in s.get("sources", []):
             conn.execute(
-                "INSERT INTO sources(school_id, name, url, category) VALUES(?,?,?,?) "
+                "INSERT INTO sources(school_id, name, url, category, stype) "
+                "VALUES(?,?,?,?,?) "
                 "ON CONFLICT(url) DO UPDATE SET "
                 "school_id=excluded.school_id, name=excluded.name, "
-                "category=excluded.category",
-                (school_id, src.get("name"), src["url"], src.get("category")),
+                "category=excluded.category, "
+                "stype=COALESCE(excluded.stype, sources.stype)",
+                (school_id, src.get("name"), src["url"], src.get("category"),
+                 src.get("stype")),
             )
     conn.commit()
 

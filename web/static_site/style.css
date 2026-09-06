@@ -151,6 +151,11 @@ button { font-family: inherit; }
 }
 .school-tag-985 { color: #92400e; background: #fef3c7; border: 1px solid #fde68a; }
 .school-tag-211 { color: #1e40af; background: #dbeafe; border: 1px solid #bfdbfe; }
+.domain-tag {
+  font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 6px;
+  line-height: 16px; flex: none;
+  color: #065f46; background: #d1fae5; border: 1px solid #a7f3d0;
+}
 .card-date { margin-left: auto; }
 .card-title { font-size: 16px; font-weight: 700; margin: 8px 0 4px; line-height: 1.5; }
 .card-hl { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0; }
