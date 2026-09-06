@@ -442,14 +442,11 @@ schools:
   domain: zju.edu.cn
   sources:
   - name: 研究生院
-    url: https://gs.zju.edu.cn/
-    category: 招生
+    url: http://gs.zju.edu.cn/
+    category: 通知公告
   - name: 研究生招生网
-    url: https://yzb.zju.edu.cn/
+    url: http://www.grs.zju.edu.cn/yjszs/
     category: 招生
-  - name: 信息公开网
-    url: https://xxgk.zju.edu.cn/
-    category: 信息公开
   tags:
   - '985'
 - name: 中南大学
@@ -618,8 +615,8 @@ schools:
   domain: bucm.edu.cn
   sources:
   - name: 研究生院
-    url: https://yjsy.bucm.edu.cn
-    category: 招生
+    url: https://yanjiusheng.bucm.edu.cn/
+    category: 通知公告
   tags:
   - '211'
 - name: 北京林业大学
@@ -670,12 +667,15 @@ schools:
   - name: 研究生院
     url: https://yjsy.uibe.edu.cn/
     category: 招生
+    browser: true
   - name: 研究生招生网
     url: https://yz.uibe.edu.cn/
     category: 招生
+    browser: true
   - name: 信息公开网
     url: https://xxgk.uibe.edu.cn/
     category: 信息公开
+    browser: true
   tags:
   - '211'
 - name: 中央财经大学
@@ -698,12 +698,18 @@ schools:
   - name: 研究生院
     url: https://yjsy.cupl.edu.cn/
     category: 招生
+    browser: true
+    real_browser: true
   - name: 本科招生信息网
     url: https://bkzs.cupl.edu.cn/
     category: 招生
+    browser: true
+    real_browser: true
   - name: 信息公开网
     url: https://xxgk.cupl.edu.cn/
     category: 信息公开
+    browser: true
+    real_browser: true
   tags:
   - '211'
 - name: 华北电力大学
@@ -724,14 +730,11 @@ schools:
   domain: cumtb.edu.cn
   sources:
   - name: 研究生院
-    url: https://yjsy.cumtb.edu.cn
-    category: 招生
+    url: https://yjs.cumtb.edu.cn/
+    category: 通知公告
   - name: 研究生招生网
-    url: https://yzb.cumtb.edu.cn
+    url: https://yz.cumtb.edu.cn/
     category: 招生
-  - name: 信息公开网
-    url: https://xxgk.cumtb.edu.cn
-    category: 信息公开
   tags:
   - '211'
 - name: 中国地质大学（北京）
@@ -751,26 +754,17 @@ schools:
 - name: 中国石油大学（北京）
   domain: cup.edu.cn
   sources:
-  - name: 研究生招生信息网
-    url: https://yz.cup.edu.cn/
-    category: 招生
-  - name: 本科招生网
-    url: https://zs.cup.edu.cn/
-    category: 招生
-  - name: 信息公开网
-    url: https://xxgk.cup.edu.cn/
-    category: 信息公开
+  - name: 研究生院
+    url: https://grs.cup.edu.cn/D/index.jhtml
+    category: 通知公告
   tags:
   - '211'
 - name: 天津医科大学
   domain: tmu.edu.cn
   sources:
-  - name: 本科招生网
-    url: https://zs.tmu.edu.cn
-    category: 招生
-  - name: 信息公开网
-    url: https://xxgk.tmu.edu.cn
-    category: 信息公开
+  - name: 研究生院
+    url: https://gs.tmu.edu.cn/
+    category: 通知公告
   tags:
   - '211'
 - name: 内蒙古大学
@@ -1006,14 +1000,8 @@ schools:
   domain: nuaa.edu.cn
   sources:
   - name: 研究生院
-    url: https://gs.nuaa.edu.cn
+    url: https://www.graduate.nuaa.edu.cn/
     category: 通知公告
-  - name: 研究生招生网
-    url: https://yzb.nuaa.edu.cn
-    category: 招生
-  - name: 信息公开网
-    url: https://xxgk.nuaa.edu.cn
-    category: 信息公开
   tags:
   - '211'
 - name: 江南大学
@@ -1100,15 +1088,9 @@ schools:
 - name: 福州大学
   domain: fzu.edu.cn
   sources:
-  - name: 研究生招生网
-    url: https://yz.fzu.edu.cn/
-    category: 招生
-  - name: 本科招生网
-    url: https://zs.fzu.edu.cn/
-    category: 招生
-  - name: 信息公开网
-    url: https://xxgk.fzu.edu.cn/
-    category: 信息公开
+  - name: 研究生院
+    url: https://yjsy.fzu.edu.cn/
+    category: 通知公告
   tags:
   - '211'
 - name: 安徽大学
@@ -1117,12 +1099,18 @@ schools:
   - name: 安徽大学研究生院
     url: https://grs.ahu.edu.cn/
     category: 招生
+    browser: true
+    real_browser: true
   - name: 安徽大学本科招生网
     url: https://zsb.ahu.edu.cn/
     category: 招生
+    browser: true
+    real_browser: true
   - name: 安徽大学信息公开网
     url: https://xxgk.ahu.edu.cn/
     category: 信息公开
+    browser: true
+    real_browser: true
   tags:
   - '211'
 - name: 合肥工业大学
@@ -1377,8 +1365,8 @@ schools:
 - name: 西藏大学
   domain: utibet.edu.cn
   sources:
-  - name: 西藏大学研究生院
-    url: https://yjsy.utibet.edu.cn/
+  - name: 研究生招生网
+    url: https://yjszs.utibet.edu.cn/
     category: 招生
   tags:
   - '211'
@@ -1456,13 +1444,10 @@ schools:
   domain: qhu.edu.cn
   sources:
   - name: 研究生院
-    url: https://grs.qhu.edu.cn/
-    category: 招生
-  - name: 招生信息网
-    url: https://zs.qhu.edu.cn/
-    category: 招生
+    url: https://yjs.qhu.edu.cn/
+    category: 通知公告
   - name: 信息公开网
-    url: https://xxgk.qhu.edu.cn/
+    url: http://xxgk.qhu.edu.cn/
     category: 信息公开
   tags:
   - '211'
@@ -1472,25 +1457,22 @@ schools:
   - name: 本科招生网
     url: https://zsb.shzu.edu.cn/
     category: 招生
+    browser: true
   - name: 研究生院
     url: https://yjsy.shzu.edu.cn/
     category: 招生
+    browser: true
   - name: 信息公开网
     url: https://xxgk.shzu.edu.cn/
     category: 信息公开
+    browser: true
   tags:
   - '211'
 - name: 中央音乐学院
   domain: ccom.edu.cn
   sources:
-  - name: 本科招生
-    url: https://zhaoban.ccom.edu.cn/
-    category: 招生
-  - name: 研究生部
-    url: https://yjsb.ccom.edu.cn/
-    category: 招生
-  - name: 信息公开网
-    url: https://xxgk.ccom.edu.cn/
-    category: 信息公开
+  - name: 学校官网
+    url: https://www.ccom.edu.cn/
+    category: 通知公告
   tags:
   - '211'
