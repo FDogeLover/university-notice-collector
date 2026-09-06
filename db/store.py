@@ -25,14 +25,30 @@ def connect(db_path=None):
 
 
 def init_db(conn=None):
-    """建表（幂等，可反复执行）。"""
+    """建表（幂等，可反复执行），并做轻量迁移与孤儿数据清理。"""
     own = conn is None
     conn = conn or connect()
     schema = (Path(__file__).parent / "schema.sql").read_text(encoding="utf-8")
     conn.executescript(schema)
+    _migrate(conn)
+    _cleanup_orphans(conn)
     conn.commit()
     if own:
         conn.close()
+
+
+def _migrate(conn):
+    """存量库升级：schools 补 enabled 列（停用=数据保留但不显示）。"""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(schools)")}
+    if "enabled" not in cols:
+        conn.execute(
+            "ALTER TABLE schools ADD COLUMN enabled INTEGER NOT NULL DEFAULT 1")
+
+
+def _cleanup_orphans(conn):
+    """清理指向已不存在学校的栏目（如历史测试残留）。"""
+    conn.execute(
+        "DELETE FROM sources WHERE school_id NOT IN (SELECT id FROM schools)")
 
 
 def import_schools(conn, schools):
@@ -122,6 +138,29 @@ def notice_meta_maps(conn, notice_ids):
 def school_id_by_name(conn, name):
     row = conn.execute("SELECT id FROM schools WHERE name=?", (name,)).fetchone()
     return row["id"] if row else None
+
+
+def enabled_school_names(conn):
+    """启用中的学校名集合（停用学校不采集、不显示，但数据保留）。"""
+    return {r["name"] for r in
+            conn.execute("SELECT name FROM schools WHERE enabled=1")}
+
+
+def set_school_enabled(conn, school_id, enabled):
+    conn.execute("UPDATE schools SET enabled=? WHERE id=?",
+                 (1 if enabled else 0, school_id))
+    conn.commit()
+
+
+def delete_school(conn, school_id):
+    """彻底删除学校：连同其栏目、通知、结构化字段一并移除（不可恢复）。"""
+    conn.execute(
+        "DELETE FROM notice_meta WHERE notice_id IN "
+        "(SELECT id FROM notices WHERE school_id=?)", (school_id,))
+    conn.execute("DELETE FROM notices WHERE school_id=?", (school_id,))
+    conn.execute("DELETE FROM sources WHERE school_id=?", (school_id,))
+    conn.execute("DELETE FROM schools WHERE id=?", (school_id,))
+    conn.commit()
 
 
 def list_sources(conn, school_id=None, enabled_only=True):

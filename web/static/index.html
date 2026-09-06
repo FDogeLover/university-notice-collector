@@ -20,6 +20,7 @@
       </div>
       <div class="topbar-actions">
         <span id="crawlState" class="crawl-state"></span>
+        <button id="btnManageSchools" class="btn btn-outline" title="停用 / 启用 / 删除学校">管理学校</button>
         <button id="btnAddSchool" class="btn btn-outline" title="在页面上添加新的学校与栏目">添加学校</button>
         <button id="btnCrawl" class="btn btn-primary">触发采集</button>
       </div>
@@ -216,6 +217,20 @@
         <div class="ai-form-actions">
           <button id="btnAsSave" class="btn btn-primary" type="button">保存</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 学校管理弹窗 -->
+  <div id="manageSchoolsModal" class="modal-mask" hidden>
+    <div class="modal as-modal">
+      <div class="modal-head">
+        <h2 class="modal-title">管理学校</h2>
+        <button id="manageSchoolsClose" class="modal-close" aria-label="关闭">×</button>
+      </div>
+      <div id="msList" class="ms-list"></div>
+      <div class="ms-hint">
+        停用：数据保留，仅不再显示与采集，可随时恢复；删除：连同栏目与通知一并移除，不可恢复。
       </div>
     </div>
   </div>

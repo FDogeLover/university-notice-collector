@@ -49,7 +49,8 @@
       var sel = $("#filterSchool");
       var cur = sel.value;
       sel.innerHTML = '<option value="">全部学校</option>';
-      list.forEach(function (s) {
+      // 停用学校不出现在筛选下拉里
+      list.filter(function (s) { return s.enabled; }).forEach(function (s) {
         var opt = document.createElement("option");
         opt.value = s.name;
         opt.textContent = s.name + "（" + s.notice_count + "）";
@@ -254,6 +255,60 @@
     state.keyword = $("#filterKeyword").value.trim();
     loadNotices(true);
   }
+
+  /* ---------- 学校管理（停用 / 启用 / 删除） ---------- */
+  function refreshAll() {
+    loadStats(); loadSchools(); loadTypes(); loadNotices(true);
+  }
+
+  function renderManageList() {
+    fetch("/api/schools").then(function (r) { return r.json(); }).then(function (list) {
+      var box = $("#msList");
+      box.innerHTML = "";
+      list.forEach(function (s) {
+        var row = document.createElement("div");
+        row.className = "ms-row" + (s.enabled ? "" : " ms-disabled");
+        row.innerHTML =
+          '<div class="ms-info">' +
+          '<span class="ms-name">' + esc(s.name) + "</span>" +
+          '<span class="ms-sub">' + s.notice_count + " 条通知 · " + s.source_count
+            + " 个栏目" + (s.enabled ? "" : " · 已停用") + "</span></div>" +
+          '<div class="ms-actions">' +
+          '<button class="btn btn-ghost ms-toggle">' + (s.enabled ? "停用" : "启用") + "</button>" +
+          '<button class="btn btn-ghost ms-del">删除</button></div>';
+        row.querySelector(".ms-toggle").addEventListener("click", function () {
+          fetch("/api/schools/" + s.id + "/enabled", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ enabled: !s.enabled }),
+          }).then(function () { renderManageList(); refreshAll(); });
+        });
+        row.querySelector(".ms-del").addEventListener("click", function () {
+          var tip = "确定彻底删除「" + s.name + "」？其 " + s.notice_count
+            + " 条通知与栏目配置将一并移除，不可恢复。";
+          if (!window.confirm(tip)) return;
+          fetch("/api/schools/" + s.id, { method: "DELETE" })
+            .then(function () { renderManageList(); refreshAll(); });
+        });
+        box.appendChild(row);
+      });
+    }).catch(function () { /* 忽略 */ });
+  }
+
+  function openManage() {
+    renderManageList();
+    $("#manageSchoolsModal").hidden = false;
+  }
+
+  function closeManage() {
+    $("#manageSchoolsModal").hidden = true;
+  }
+
+  $("#btnManageSchools").addEventListener("click", openManage);
+  $("#manageSchoolsClose").addEventListener("click", closeManage);
+  $("#manageSchoolsModal").addEventListener("click", function (e) {
+    if (e.target === this) closeManage();
+  });
 
   /* ---------- 添加学校 ---------- */
   var CATEGORIES = ["招生", "通知公告", "信息公开"];

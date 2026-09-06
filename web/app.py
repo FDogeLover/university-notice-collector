@@ -106,19 +106,23 @@ def index():
 @app.get("/api/stats")
 def stats():
     totals = _row(
-        "SELECT (SELECT COUNT(*) FROM schools) AS schools,"
-        "       (SELECT COUNT(*) FROM sources) AS sources,"
-        "       (SELECT COUNT(*) FROM notices) AS notices,"
-        "       (SELECT MAX(fetched_at) FROM notices) AS last_fetch"
+        "SELECT (SELECT COUNT(*) FROM schools WHERE enabled=1) AS schools,"
+        "       (SELECT COUNT(*) FROM sources s JOIN schools sc ON sc.id=s.school_id"
+        "        WHERE sc.enabled=1) AS sources,"
+        "       (SELECT COUNT(*) FROM notices n JOIN schools sc ON sc.id=n.school_id"
+        "        WHERE sc.enabled=1) AS notices,"
+        "       (SELECT MAX(n.fetched_at) FROM notices n"
+        "        JOIN schools sc ON sc.id=n.school_id WHERE sc.enabled=1) AS last_fetch"
     )
     by_type = _rows(
-        "SELECT COALESCE(type_tag,'未分类') AS name, COUNT(*) AS count "
-        "FROM notices GROUP BY type_tag ORDER BY count DESC"
+        "SELECT COALESCE(n.type_tag,'未分类') AS name, COUNT(*) AS count "
+        "FROM notices n JOIN schools sc ON sc.id=n.school_id "
+        "WHERE sc.enabled=1 GROUP BY n.type_tag ORDER BY count DESC"
     )
     by_school = _rows(
         "SELECT sc.name AS name, COUNT(n.id) AS count "
         "FROM schools sc LEFT JOIN notices n ON n.school_id=sc.id "
-        "GROUP BY sc.id ORDER BY count DESC"
+        "WHERE sc.enabled=1 GROUP BY sc.id ORDER BY count DESC"
     )
     return {
         "schools": totals["schools"],
@@ -133,11 +137,12 @@ def stats():
 # ---------- 学校 / 类型 ----------
 @app.get("/api/schools")
 def schools():
+    """学校清单（含停用项，前端管理面板用 enabled 区分）。"""
     return _rows(
-        "SELECT sc.id, sc.name, sc.domain,"
+        "SELECT sc.id, sc.name, sc.domain, sc.enabled,"
         "       (SELECT COUNT(*) FROM sources s WHERE s.school_id=sc.id) AS source_count,"
         "       (SELECT COUNT(*) FROM notices n WHERE n.school_id=sc.id) AS notice_count "
-        "FROM schools sc ORDER BY sc.id"
+        "FROM schools sc ORDER BY sc.enabled DESC, sc.id"
     )
 
 
@@ -321,9 +326,66 @@ async def ai_school_hint(payload: dict):
 @app.get("/api/types")
 def types():
     return _rows(
-        "SELECT COALESCE(type_tag,'未分类') AS name, COUNT(*) AS count "
-        "FROM notices GROUP BY type_tag ORDER BY count DESC"
+        "SELECT COALESCE(n.type_tag,'未分类') AS name, COUNT(*) AS count "
+        "FROM notices n JOIN schools sc ON sc.id=n.school_id "
+        "WHERE sc.enabled=1 GROUP BY n.type_tag ORDER BY count DESC"
     )
+
+
+# ---------- 学校管理：停用 / 启用 / 删除 ----------
+@app.post("/api/schools/{school_id}/enabled")
+def set_school_state(school_id: int, payload: dict):
+    """停用（enabled=false，数据保留、各处不显示、不采集）或启用。"""
+    row = _row("SELECT id, name, enabled FROM schools WHERE id=?", (school_id,))
+    if not row:
+        return JSONResponse({"errors": ["学校不存在"]}, status_code=404)
+    enabled = bool(payload.get("enabled"))
+    conn = store.connect()
+    try:
+        store.set_school_enabled(conn, school_id, enabled)
+    finally:
+        conn.close()
+    return {"ok": True, "name": row["name"],
+            "enabled": enabled,
+            "message": f"已{'启用' if enabled else '停用'}「{row['name']}」"
+                       + ("" if enabled else "（数据保留，仅不再显示与采集）")}
+
+
+@app.delete("/api/schools/{school_id}")
+def remove_school(school_id: int):
+    """彻底删除学校：连同栏目、通知、结构化字段一并移除，并同步清理配置文件。"""
+    row = _row("SELECT id, name FROM schools WHERE id=?", (school_id,))
+    if not row:
+        return JSONResponse({"errors": ["学校不存在"]}, status_code=404)
+    conn = store.connect()
+    try:
+        store.delete_school(conn, school_id)
+    finally:
+        conn.close()
+
+    # 从 schools.yaml 移除该校，避免下次运行 run.py 时被重新导入
+    cfg_path = ROOT / "config" / "schools.yaml"
+    try:
+        data = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
+        school_list = data.get("schools") or []
+        data["schools"] = [s for s in school_list if s.get("name") != row["name"]]
+        if len(data["schools"]) != len(school_list):
+            raw = cfg_path.read_text(encoding="utf-8").splitlines()
+            header = []
+            for line in raw:
+                if line.startswith("#"):
+                    header.append(line)
+                else:
+                    break
+            cfg_path.write_text(
+                "\n".join(header) + "\n" + yaml.safe_dump(
+                    data, allow_unicode=True, sort_keys=False,
+                    default_flow_style=False),
+                encoding="utf-8")
+    except Exception as e:  # noqa: BLE001
+        return {"ok": True, "name": row["name"],
+                "warning": f"学校已删除，但更新配置文件失败：{e}"}
+    return {"ok": True, "name": row["name"], "message": f"已删除「{row['name']}」"}
 
 
 # ---------- 通知列表 ----------
@@ -336,6 +398,7 @@ def notices(
     offset: int = Query(0, ge=0),
 ):
     conds, params = [], []
+    conds.append("sc.enabled=1")  # 停用学校的数据保留但不显示
     words = []  # 供排序使用：有关键词时标题命中优先
     if school:
         conds.append("sc.name=?")

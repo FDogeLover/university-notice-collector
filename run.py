@@ -188,8 +188,13 @@ def main():
         return
 
     total_new = 0
+    enabled_names = store.enabled_school_names(conn)
     for school in schools:
         if args.school and args.school not in school["name"]:
+            continue
+        # 停用的学校跳过（显式 --school 指定时仍允许，便于手动补采）
+        if not args.school and school["name"] not in enabled_names:
+            print(f"\n== 跳过（已停用）{school['name']} ==")
             continue
         school_id = store.school_id_by_name(conn, school["name"])
         for source in school.get("sources", []):

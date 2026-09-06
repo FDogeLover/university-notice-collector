@@ -100,7 +100,8 @@ def search_notices(question, limit=8):
         base = (
             "SELECT n.id, n.title, n.url, n.type_tag, n.published_at,"
             " sc.name AS school_name, COALESCE(n.content_md,'') AS content_md "
-            "FROM notices n JOIN schools sc ON sc.id=n.school_id WHERE "
+            "FROM notices n JOIN schools sc ON sc.id=n.school_id "
+            "WHERE sc.enabled=1 AND "
         )
         if not terms:
             # 只有学校命中：返回该校最新通知
