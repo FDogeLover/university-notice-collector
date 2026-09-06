@@ -19,6 +19,22 @@ def find_by_fingerprint(conn, school_id, title, published_at):
     return row["id"] if row else None
 
 
+def find_by_title_published(conn, school_id, title, published_at):
+    """同校 + 同标题 + 同发布时间 → 判为同一通知（跨栏目重复）。
+
+    标题相同但发布时间不同（如每年的值班安排）不判重，避免误删。
+    返回已存在的 notice_id 或 None。
+    """
+    if not title or not published_at:
+        return None
+    row = conn.execute(
+        "SELECT id FROM notices WHERE school_id=? AND title=? AND published_at=? "
+        "ORDER BY id LIMIT 1",
+        (school_id, title, published_at),
+    ).fetchone()
+    return row["id"] if row else None
+
+
 def should_skip(conn, school_id, url, title, published_at):
     """判定某条是否已入库（url 精确匹配或指纹匹配即跳过）。"""
     if store and exists_by_url(conn, url):

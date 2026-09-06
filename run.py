@@ -72,6 +72,34 @@ def backfill_meta(conn):
     print(f"回填完成：处理 {done} 条通知，当前有结构化字段的通知 {total} 条。")
 
 
+def dedupe_notices(conn):
+    """清理存量重复：同校+同标题+同发布时间 的冗余条目（保留最早一条）。
+
+    附带清理这些冗余条目的 notice_meta（外键引用）。返回删除条数。
+    """
+    rows = conn.execute(
+        "SELECT school_id, title, published_at, COUNT(*) AS c "
+        "FROM notices WHERE published_at != '' "
+        "GROUP BY school_id, title, published_at HAVING c > 1"
+    ).fetchall()
+    removed = 0
+    for r in rows:
+        ids = [x["id"] for x in conn.execute(
+            "SELECT id FROM notices WHERE school_id=? AND title=? "
+            "AND published_at=? ORDER BY id",
+            (r["school_id"], r["title"], r["published_at"]),
+        ).fetchall()]
+        keep, drop = ids[0], ids[1:]
+        marks = ",".join("?" * len(drop))
+        conn.execute(
+            f"DELETE FROM notice_meta WHERE notice_id IN ({marks})", drop)
+        conn.execute(f"DELETE FROM notices WHERE id IN ({marks})", drop)
+        removed += len(drop)
+    conn.commit()
+    print(f"去重完成：清理 {removed} 条冗余通知。")
+    return removed
+
+
 def load_config():
     with open(CONFIG, encoding="utf-8") as f:
         return yaml.safe_load(f) or {}
@@ -206,6 +234,9 @@ def crawl_source(conn, school, school_id, source, args):
     for it in new_items:
         title, item_url = it["title"], it["url"]
         content_md, published = details.get(item_url, (None, ""))
+        # 详情级指纹查重：同校+同标题+同发布时间 → 跨栏目重复，跳过
+        if dedup.find_by_title_published(conn, school_id, title, published):
+            continue
         type_tag = parse.infer_type(title)
         notice_id, _ = store.insert_notice(
             conn, school_id, source_id, title, item_url,
@@ -233,6 +264,8 @@ def main():
                     help="详情页并发抓取线程数（浏览器模式不生效）")
     ap.add_argument("--backfill-meta", action="store_true",
                     help="仅为已入库通知补齐结构化字段（截止日期等），不抓取网页")
+    ap.add_argument("--dedupe", action="store_true",
+                    help="清理存量重复（同校+同标题+同发布时间），不抓取网页")
     args = ap.parse_args()
 
     store.init_db()
@@ -242,6 +275,10 @@ def main():
 
     if args.backfill_meta:
         backfill_meta(conn)
+        conn.close()
+        return
+    if args.dedupe:
+        dedupe_notices(conn)
         conn.close()
         return
 

@@ -132,6 +132,49 @@ def test_dedup_url_and_fingerprint(tmp_path):
     conn.close()
 
 
+# ---------- 跨栏目指纹去重 ----------
+def test_find_by_title_published(tmp_path):
+    from crawler import dedup
+    from db import store
+
+    conn = store.connect(tmp_path / "dup.db")
+    store.init_db(conn)
+    conn.execute("INSERT INTO schools(id, name) VALUES(1, 'X大学')")
+    conn.commit()
+    nid, _ = store.insert_notice(
+        conn, 1, 1, "推免通知", "https://gs.x.edu.cn/a.htm",
+        published_at="2026-09-05")
+    # 同校同标题同发布时间（跨栏目）→ 判重
+    assert dedup.find_by_title_published(conn, 1, "推免通知", "2026-09-05") == nid
+    # 同标题不同发布时间（每年的值班安排）→ 不判重
+    assert dedup.find_by_title_published(conn, 1, "推免通知", "2027-09-05") is None
+    # 不同学校 → 不判重
+    assert dedup.find_by_title_published(conn, 2, "推免通知", "2026-09-05") is None
+    conn.close()
+
+
+def test_dedupe_notices(tmp_path):
+    from crawler import dedup
+    from db import store
+
+    conn = store.connect(tmp_path / "dedupe.db")
+    store.init_db(conn)
+    conn.execute("INSERT INTO schools(id, name) VALUES(1, 'X大学')")
+    conn.commit()
+    for url in ("https://gs.x.edu.cn/a.htm", "https://gs.x.edu.cn/b.htm",
+                "https://gs.x.edu.cn/c.htm"):
+        store.insert_notice(conn, 1, 1, "同一条通知", url,
+                            published_at="2026-09-05")
+    # 3 条同指纹 → 逐条 find_by_title_published 查重，删除后保留 1 条
+    assert conn.execute("SELECT COUNT(*) c FROM notices").fetchone()["c"] == 3
+    dup = dedup.find_by_title_published(conn, 1, "同一条通知", "2026-09-05")
+    assert dup is not None
+    conn.execute("DELETE FROM notices WHERE id != ?", (dup,))
+    conn.commit()
+    assert conn.execute("SELECT COUNT(*) c FROM notices").fetchone()["c"] == 1
+    conn.close()
+
+
 # ---------- notice_meta ----------
 def test_notice_meta_upsert_and_read(tmp_path):
     from db import store
