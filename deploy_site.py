@@ -17,6 +17,7 @@ import argparse
 import os
 import subprocess
 import sys
+import time
 from datetime import date
 from pathlib import Path
 
@@ -65,7 +66,18 @@ def publish(site_dir, branch="gh-pages", remote="origin"):
     tree = run(["git", "write-tree"], env=env)
     msg = f"deploy site {date.today().isoformat()} (build from local db)"
     commit = run(["git", "commit-tree", tree, "-m", msg], env=env)
-    run(["git", "push", "--force", remote, f"{commit}:refs/heads/{branch}"])
+    last_err = None
+    for attempt in range(3):
+        try:
+            run(["git", "push", "--force", remote,
+                 f"{commit}:refs/heads/{branch}"])
+            break
+        except RuntimeError as e:  # noqa: PERF203
+            last_err = e
+            print(f"   push 失败（第 {attempt + 1} 次），5s 后重试…")
+            time.sleep(5)
+    else:
+        raise last_err
     index_file.unlink(missing_ok=True)
     return commit
 
