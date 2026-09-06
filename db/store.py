@@ -79,15 +79,16 @@ def import_schools(conn, schools):
             "SELECT id FROM schools WHERE name=?", (s["name"],)
         ).fetchone()["id"]
         for src in s.get("sources", []):
+            # stype 缺省：新栏目落'研究生教育'；已存在栏目保留原值不回退
             conn.execute(
                 "INSERT INTO sources(school_id, name, url, category, stype) "
-                "VALUES(?,?,?,?,?) "
+                "VALUES(?,?,?,?,COALESCE(?, '研究生教育')) "
                 "ON CONFLICT(url) DO UPDATE SET "
                 "school_id=excluded.school_id, name=excluded.name, "
                 "category=excluded.category, "
-                "stype=COALESCE(excluded.stype, sources.stype)",
+                "stype=COALESCE(?, sources.stype)",
                 (school_id, src.get("name"), src["url"], src.get("category"),
-                 src.get("stype")),
+                 src.get("stype"), src.get("stype")),
             )
     conn.commit()
 

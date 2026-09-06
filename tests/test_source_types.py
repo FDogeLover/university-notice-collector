@@ -22,9 +22,10 @@ def test_type_whitelist_filtering():
         == ["2026届毕业生秋季校园招聘公告"]
     assert [i["title"] for i in parse_list(html, url, domain, stype="奖助资助")] \
         == ["国家奖学金评定工作的通知"]
-    # 缺省（研究生教育）：推免命中，非考研词不命中
-    assert [i["title"] for i in parse_list(html, url, domain)] \
-        == ["2026年接收推免生预报名的通知"]
+    # 缺省（研究生教育）：白名单较宽（含 通知/公告 等），四条均命中
+    default = [i["title"] for i in parse_list(html, url, domain)]
+    assert len(default) == 4
+    assert "2026年接收推免生预报名的通知" in default
 
 
 def test_source_types_catalog():
@@ -52,6 +53,10 @@ def test_stype_import_and_api_filter(tmp_path, monkeypatch):
     conn = store.connect()
     stypes = {r["name"]: r["stype"] for r in
               conn.execute("SELECT name, stype FROM sources")}
+    sid = store.school_id_by_name(conn, "X大学")
+    store.insert_notice(conn, sid, None, "2026年推免生通知",
+                        "https://gs.x.edu.cn/a.htm",
+                        content_md="正文" * 60, published_at="2026-09-01")
     conn.close()
     assert stypes == {"研究生院": "研究生教育", "讲座网": "讲座学术"}
 
@@ -62,7 +67,7 @@ def test_stype_import_and_api_filter(tmp_path, monkeypatch):
     r = api.get("/api/notices?stype=讲座学术").json()
     assert r["total"] == 0  # 该领域暂无通知，但筛选条件可正常执行
     items = api.get("/api/notices").json()["items"]
-    assert items  # 默认查询不受影响
+    assert items and items[0]["source_type"] == "研究生教育"
 
 
 def test_reimport_keeps_stype(tmp_path, monkeypatch):
