@@ -108,6 +108,18 @@ def _find_college(head):
     return ""
 
 
+# 列表页标题的 CMS 序号垃圾："082026.05吉林大学…" / "…重要2025.11.24"
+_TITLE_JUNK_LEADING = re.compile(r"^\d{1,6}(?:\.\d{1,2}){1,2}(?=[\u4e00-\u9fa5])")
+_TITLE_JUNK_TRAILING = re.compile(r"[.\d]{6,}$")
+
+
+def clean_notice_title(title):
+    """清理通知标题里的 CMS 序号垃圾（纯文本工具，采集与库内迁移共用）。"""
+    t = (title or "").strip()
+    t = _TITLE_JUNK_LEADING.sub("", t)
+    return _TITLE_JUNK_TRAILING.sub("", t).strip()
+
+
 def normalize_deadline(text, published_at=""):
     """把中文截止日期归一化为 ISO 日期（YYYY-MM-DD），失败返回 ""。
 

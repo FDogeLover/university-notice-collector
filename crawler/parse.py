@@ -9,6 +9,8 @@ from urllib.parse import urljoin, urlparse
 
 from bs4 import BeautifulSoup, NavigableString
 
+from crawler.extract import clean_notice_title
+
 # 内容标题关键词：命中才视为有效通知（过滤导航/杂项链接）
 KEYWORDS = re.compile(
     r"(推免|推荐免试|预推免|夏令营|直博|保研|招生|简章|报考|报名|"
@@ -53,10 +55,6 @@ _PUBLISHED_LABEL_RE = re.compile(
     r"(?:发布时间|发布日期|发表时间|发布于|信息发布)"
     r"[:：]?\s*(20\d{2})[-/年.](\d{1,2})[-/月.](\d{1,2})")
 
-# 列表页标题的 CMS 序号垃圾："082026.05吉林大学…" / "…重要2025.11.24"
-_TITLE_JUNK_LEADING = re.compile(r"^\d{1,6}(?:\.\d{1,2}){1,2}(?=[\u4e00-\u9fa5])")
-_TITLE_JUNK_TRAILING = re.compile(r"[.\d]{6,}$")
-
 # 常见发布时间 meta 标签名（小写比较）
 _PUBLISHED_META_KEYS = {
     "pubdate", "publishdate", "pub_date", "date", "dc.date",
@@ -90,10 +88,7 @@ def parse_list(html, base_url, domain, max_items=50):
     soup = BeautifulSoup(html, "html.parser")
     items, seen = [], set()
     for a in soup.find_all("a", href=True):
-        title = (a.get_text(strip=True) or "").strip()
-        # 清理 CMS 序号垃圾（如 "082026.05吉林大学…" / "…重要2025.11.24"）
-        title = _TITLE_JUNK_LEADING.sub("", title)
-        title = _TITLE_JUNK_TRAILING.sub("", title).strip()
+        title = clean_notice_title(a.get_text(strip=True))
         href = (a.get("href") or "").strip()
         if not title or len(title) < 6:
             continue

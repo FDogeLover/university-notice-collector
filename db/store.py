@@ -38,11 +38,18 @@ def init_db(conn=None):
 
 
 def _migrate(conn):
-    """存量库升级：schools 补 enabled 列（停用=数据保留但不显示）。"""
+    """存量库升级：schools 补 enabled 列；清洗标题里的 CMS 序号垃圾。"""
     cols = {r[1] for r in conn.execute("PRAGMA table_info(schools)")}
     if "enabled" not in cols:
         conn.execute(
             "ALTER TABLE schools ADD COLUMN enabled INTEGER NOT NULL DEFAULT 1")
+    from crawler.extract import clean_notice_title  # 延迟导入避免循环依赖
+
+    for r in conn.execute("SELECT id, title FROM notices").fetchall():
+        clean = clean_notice_title(r["title"])
+        if clean and clean != r["title"]:
+            conn.execute("UPDATE notices SET title=? WHERE id=?",
+                         (clean, r["id"]))
 
 
 def _cleanup_orphans(conn):

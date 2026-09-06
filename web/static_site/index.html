@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高校通知聚合 · 大学信息收集</title>
+  <meta name="description" content="各高校研究生院 / 招生网 / 信息公开栏目通知聚合，每条绑定官方原文链接与正文快照，可溯源、可检索。">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <div>
+          <div class="brand-name">高校通知聚合</div>
+          <div class="brand-sub">官方通知一站浏览 · 全程可溯源</div>
+        </div>
+      </div>
+      <div class="topbar-meta" id="siteMeta"></div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1 class="hero-title">高校官网通知，一站聚合</h1>
+      <p class="hero-sub">汇聚各校研究生院 / 招生网 / 信息公开栏目通知，每条绑定官方原文链接与快照，可溯源、可检索。</p>
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-num" id="statSchools">-</div>
+          <div class="stat-label">覆盖学校</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statNotices">-</div>
+          <div class="stat-label">已收录通知</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statTypes">-</div>
+          <div class="stat-label">通知类型</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num stat-num-sm" id="statLast">-</div>
+          <div class="stat-label">最近更新</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="toolbar">
+    <div class="container toolbar-inner">
+      <select id="filterSchool" class="select">
+        <option value="">全部学校</option>
+      </select>
+      <select id="filterType" class="select">
+        <option value="">全部类型</option>
+      </select>
+      <input id="filterKeyword" class="input" type="text"
+             placeholder="关键词（标题 / 摘要，如 推免、夏令营）">
+      <button id="btnSearch" class="btn btn-outline">搜索</button>
+      <div class="day-chips" title="只看最近发布的通知">
+        <button class="chip-btn" data-days="7">近7天</button>
+        <button class="chip-btn" data-days="30">近30天</button>
+      </div>
+      <div class="toolbar-total" id="resultTotal"></div>
+    </div>
+  </section>
+
+  <section id="deadlineStrip" class="deadline-strip" hidden>
+    <div class="container deadline-inner">
+      <span class="deadline-label">⏰ 即将截止</span>
+      <div id="deadlineList" class="deadline-list"></div>
+    </div>
+  </section>
+
+  <main class="container">
+    <div id="noticeList" class="notice-list"></div>
+    <div id="listState" class="list-state"></div>
+    <div class="loadmore-wrap">
+      <button id="btnMore" class="btn btn-ghost" hidden>加载更多</button>
+    </div>
+  </main>
+
+  <div id="modal" class="modal-mask" hidden>
+    <div class="modal">
+      <div class="modal-head">
+        <h2 id="modalTitle" class="modal-title"></h2>
+        <button id="modalClose" class="modal-close" aria-label="关闭">×</button>
+      </div>
+      <div class="modal-toolbar">
+        <div class="modal-meta" id="modalMeta"></div>
+        <a id="modalSource" class="btn-source" href="#" target="_blank" rel="noopener">
+          官方原文 ↗
+        </a>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      数据来源于各高校官网公开公告，每条信息均附官方原文链接，可点击核对 ·
+      <span id="footerGen"></span>
+    </div>
+  </footer>
+
+  <script src="data/notices.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
