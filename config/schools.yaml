@@ -106,6 +106,7 @@ schools:
       - name: 研究生招生服务平台
         url: http://yz.whu.edu.cn/
         category: 招生
+        browser: true   # JS 渲染页面，requests 拿不到列表
       - name: 研究生院
         url: http://gs.whu.edu.cn/
         category: 通知公告
@@ -185,6 +186,4 @@ schools:
       - name: 研究生院
         url: https://gs.dlut.edu.cn/
         category: 通知公告
-      - name: 研究生报考服务系统
-        url: https://yjszs.dlut.edu.cn/
-        category: 招生
+      # 研究生报考服务系统（yjszs.dlut.edu.cn）已下线（仅返回 nginx 默认页），移除

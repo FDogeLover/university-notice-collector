@@ -79,36 +79,32 @@ def load_config():
 
 
 def _fetch_detail_content(item_url, use_browser, use_real_browser=False):
-    """抓取详情正文：requests → 无头渲染 → 真实 Chrome（瑞数），逐级兜底。
+    """抓取详情正文：按栏目配置 → 无头渲染 → 真实 Chrome（瑞数），逐级兜底。
 
+    与首版不同：某一级**抛异常**（网络失败/反爬拦截）时同样继续降级尝试，
+    而不是直接放弃；全部失败时返回正文最长的那份兜底结果。
     返回 (content_md, published)。
     """
-    try:
-        html = fetch.http_get(item_url, use_browser=use_browser,
-                              use_real_browser=use_real_browser)
-        detail = parse.parse_detail(html, item_url)
-        if detail["content_md"] and len(detail["content_md"]) > 50:
-            return detail["content_md"], detail["published_at"]
-        # requests 拿不到正文 → 依次尝试无头渲染、真实 Chrome（瑞数反爬）
-        if not use_browser:
-            try:
-                html2 = fetch.http_get(item_url, use_browser=True)
-                detail2 = parse.parse_detail(html2, item_url)
-                if detail2["content_md"] and len(detail2["content_md"]) > 50:
-                    return detail2["content_md"], detail2["published_at"]
-            except Exception:  # noqa: BLE001
-                pass
-        if not use_real_browser:
-            try:
-                html3 = fetch.http_get(item_url, use_real_browser=True)
-                detail3 = parse.parse_detail(html3, item_url)
-                if detail3["content_md"] and len(detail3["content_md"]) > 50:
-                    return detail3["content_md"], detail3["published_at"]
-            except Exception:  # noqa: BLE001
-                pass
-        return detail["content_md"], detail["published_at"]
-    except Exception:  # noqa: BLE001
-        return None, ""
+    if use_real_browser:
+        attempts = [(True, True)]
+    elif use_browser:
+        attempts = [(True, False), (True, True)]
+    else:
+        attempts = [(False, False), (True, False), (True, True)]
+    best_content, best_published = None, ""
+    for use_b, use_r in attempts:
+        try:
+            html = fetch.http_get(item_url, use_browser=use_b,
+                                  use_real_browser=use_r)
+            detail = parse.parse_detail(html, item_url)
+        except Exception:  # noqa: BLE001
+            continue
+        content = detail["content_md"] or ""
+        if len(content) > 50:
+            return content, detail["published_at"]
+        if len(content) > len(best_content or ""):
+            best_content, best_published = content, detail["published_at"]
+    return best_content, best_published
 
 
 def crawl_source(conn, school, school_id, source, args):

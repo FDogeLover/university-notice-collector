@@ -48,6 +48,39 @@ _FORM_TITLES = re.compile(
 )
 
 
+# 页面里的"发布时间/发布日期：yyyy年M月d日"式标签（比全文首个日期更可信）
+_PUBLISHED_LABEL_RE = re.compile(
+    r"(?:发布时间|发布日期|发表时间|发布于|信息发布)"
+    r"[:：]?\s*(20\d{2})[-/年.](\d{1,2})[-/月.](\d{1,2})")
+
+# 列表页标题的 CMS 序号垃圾："082026.05吉林大学…" / "…重要2025.11.24"
+_TITLE_JUNK_LEADING = re.compile(r"^\d{1,6}(?:\.\d{1,2}){1,2}(?=[\u4e00-\u9fa5])")
+_TITLE_JUNK_TRAILING = re.compile(r"[.\d]{6,}$")
+
+# 常见发布时间 meta 标签名（小写比较）
+_PUBLISHED_META_KEYS = {
+    "pubdate", "publishdate", "pub_date", "date", "dc.date",
+    "article:published_time", "og:published_time", "publishdateidentifier",
+}
+
+
+def _extract_published(html, soup):
+    """提取发布时间：meta 标签 → "发布时间：" 标签 → 全文首个日期。"""
+    for m in soup.find_all("meta"):
+        key = (m.get("name") or m.get("property") or "").strip().lower()
+        if key not in _PUBLISHED_META_KEYS:
+            continue
+        dm = re.search(r"(20\d{2})[-/年.](\d{1,2})[-/月.](\d{1,2})",
+                       (m.get("content") or ""))
+        if dm:
+            return f"{dm.group(1)}-{int(dm.group(2)):02d}-{int(dm.group(3)):02d}"
+    for regex in (_PUBLISHED_LABEL_RE,):
+        m = regex.search(html)
+        if m:
+            return f"{m.group(1)}-{int(m.group(2)):02d}-{int(m.group(3)):02d}"
+    return ""
+
+
 def parse_list(html, base_url, domain, max_items=50):
     """从栏目列表页抽取相关通知链接。
 
@@ -58,6 +91,9 @@ def parse_list(html, base_url, domain, max_items=50):
     items, seen = [], set()
     for a in soup.find_all("a", href=True):
         title = (a.get_text(strip=True) or "").strip()
+        # 清理 CMS 序号垃圾（如 "082026.05吉林大学…" / "…重要2025.11.24"）
+        title = _TITLE_JUNK_LEADING.sub("", title)
+        title = _TITLE_JUNK_TRAILING.sub("", title).strip()
         href = (a.get("href") or "").strip()
         if not title or len(title) < 6:
             continue
@@ -387,11 +423,12 @@ def parse_detail(html, url):
     if not title and soup.title:
         title = soup.title.get_text(strip=True)
 
-    # 发布时间：常见格式 yyyy-MM-dd / yyyy年M月d日 / yyyy.M.d
-    published = ""
-    m = re.search(r"(20\d{2})[-/年.](\d{1,2})[-/月.](\d{1,2})", html)
-    if m:
-        published = f"{m.group(1)}-{int(m.group(2)):02d}-{int(m.group(3)):02d}"
+    # 发布时间：meta 标签 / "发布时间：" 标签 → 全文首个日期兜底
+    published = _extract_published(html, soup)
+    if not published:
+        m = re.search(r"(20\d{2})[-/年.](\d{1,2})[-/月.](\d{1,2})", html)
+        if m:
+            published = f"{m.group(1)}-{int(m.group(2)):02d}-{int(m.group(3)):02d}"
 
     # 正文快照：定位正文容器 → 按块级聚合 → 质量门禁 → PDF 附件兜底
     for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
