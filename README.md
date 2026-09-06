@@ -101,6 +101,19 @@ API Key 只写入 `data/ai_config.json`（已被 `.gitignore` 忽略），不会
 └── query.py              # 命令行检索工具
 ```
 
+## 开发与测试
+
+```bash
+pip install -r requirements-dev.txt     # pytest
+python -m pytest tests/ -q              # 回归测试（完全离线，0.5s 左右）
+
+# 网站可能改版，可随时刷新 fixture 快照（自动保留抓取失败栏目的旧快照）
+python tests/update_fixtures.py
+```
+
+测试基于 `tests/fixtures/` 中 10 份各校真实页面快照（7 列表页 + 3 详情页），
+解析器行为被意外改坏时会在这里第一时间红灯，而不是等线上采集才发现。
+
 ## 安全声明
 
 - 采集目标为各高校官网**公开公告**，数据仅供个人学习与信息聚合，请合理控制采集频率

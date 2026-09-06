@@ -1,0 +1,49 @@
+{
+  "list_njust_gs": {
+    "url": "https://gs.njust.edu.cn/",
+    "domain": "njust.edu.cn",
+    "min_items": 1
+  },
+  "detail_njust_gs": {
+    "url": "https://gs.njust.edu.cn/7e/b5/c4567a360117/page.htm",
+    "domain": "njust.edu.cn"
+  },
+  "list_njust_zsw": {
+    "url": "https://gs.njust.edu.cn/zsw/",
+    "domain": "njust.edu.cn",
+    "min_items": 1
+  },
+  "list_xidian_gr": {
+    "url": "https://gr.xidian.edu.cn/",
+    "domain": "xidian.edu.cn",
+    "min_items": 1
+  },
+  "detail_xidian_gr": {
+    "url": "https://gr.xidian.edu.cn/yjsy/qtlxzs.htm",
+    "domain": "xidian.edu.cn"
+  },
+  "list_szu_gra": {
+    "url": "https://gra.szu.edu.cn/",
+    "domain": "szu.edu.cn",
+    "min_items": 1
+  },
+  "detail_szu_gra": {
+    "url": "https://gra.szu.edu.cn/info/1049/4726.htm",
+    "domain": "szu.edu.cn"
+  },
+  "list_ecnu_yjszs": {
+    "url": "https://yjszs.ecnu.edu.cn/",
+    "domain": "ecnu.edu.cn",
+    "min_items": 1
+  },
+  "list_hust_gszs": {
+    "url": "https://gszs.hust.edu.cn/",
+    "domain": "hust.edu.cn",
+    "min_items": 1
+  },
+  "list_sdu_grad": {
+    "url": "https://www.grad.sdu.edu.cn/",
+    "domain": "sdu.edu.cn",
+    "min_items": 1
+  }
+}
