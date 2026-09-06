@@ -16,6 +16,7 @@
 import argparse
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import yaml
@@ -78,19 +79,23 @@ def load_config():
 
 
 
-def _fetch_detail_content(item_url, use_browser, use_real_browser=False):
+def _fetch_detail_content(item_url, use_browser, use_real_browser=False,
+                          attempts=None):
     """抓取详情正文：按栏目配置 → 无头渲染 → 真实 Chrome（瑞数），逐级兜底。
 
     与首版不同：某一级**抛异常**（网络失败/反爬拦截）时同样继续降级尝试，
     而不是直接放弃；全部失败时返回正文最长的那份兜底结果。
+    attempts 为 [(use_browser, use_real), ...] 时的自定义尝试序列，
+    供并发快速通道只走 requests（Playwright/Chrome 实例非线程安全）。
     返回 (content_md, published)。
     """
-    if use_real_browser:
-        attempts = [(True, True)]
-    elif use_browser:
-        attempts = [(True, False), (True, True)]
-    else:
-        attempts = [(False, False), (True, False), (True, True)]
+    if attempts is None:
+        if use_real_browser:
+            attempts = [(True, True)]
+        elif use_browser:
+            attempts = [(True, False), (True, True)]
+        else:
+            attempts = [(False, False), (True, False), (True, True)]
     best_content, best_published = None, ""
     for use_b, use_r in attempts:
         try:
@@ -105,6 +110,55 @@ def _fetch_detail_content(item_url, use_browser, use_real_browser=False):
         if len(content) > len(best_content or ""):
             best_content, best_published = content, detail["published_at"]
     return best_content, best_published
+
+
+def _detail_quick_job(item_url):
+    """并发快速通道：单次 requests 抓详情（不碰浏览器实例，线程安全）。
+
+    正文达标返回 (url, content, published)；不达标/失败返回 (url, None, ...)，
+    由调用方串行走完整升级链兜底。
+    """
+    try:
+        html = fetch.http_get(item_url, use_browser=False,
+                              use_real_browser=False)
+        detail = parse.parse_detail(html, item_url)
+    except Exception:  # noqa: BLE001
+        return item_url, None, ""
+    content = detail["content_md"] or ""
+    if len(content) > 50:
+        return item_url, content, detail["published_at"]
+    return item_url, None, detail["published_at"]
+
+
+def _fetch_details(items, use_browser, use_real, args):
+    """为待入库条目抓详情，返回 {url: (content_md, published)}。
+
+    纯 requests 栏目用线程池并发（--workers 控制并发数）；浏览器/真实
+    Chrome 栏目及并发未达标的条目保持串行（浏览器实例非线程安全）。
+    """
+    details = {}
+    if not items:
+        return details
+    if use_browser or use_real or args.workers <= 1:
+        for it in items:
+            details[it["url"]] = _fetch_detail_content(
+                it["url"], use_browser, use_real_browser=use_real)
+            time.sleep(args.sleep)
+        return details
+
+    with ThreadPoolExecutor(max_workers=args.workers) as ex:
+        for item_url, content, published in ex.map(
+                _detail_quick_job, [it["url"] for it in items]):
+            if content is not None:
+                details[item_url] = (content, published)
+    retry = [it for it in items if it["url"] not in details]
+    if retry:
+        print(f"  · {len(retry)} 条并发未达标，串行浏览器兜底…")
+        for it in retry:
+            details[it["url"]] = _fetch_detail_content(it["url"], use_browser,
+                                                       use_real_browser=use_real)
+            time.sleep(args.sleep)
+    return details
 
 
 def crawl_source(conn, school, school_id, source, args):
@@ -137,16 +191,21 @@ def crawl_source(conn, school, school_id, source, args):
         # 列表页无有效通知：可能是导航页 / 反爬拦截 / URL 错误，醒目标注便于清理配置
         print(f"  ⚠ [{school['name']}][{source['name']}] 列表页未解析到有效通知："
               f"可能是导航页 / 反爬拦截 / 栏目 URL 错误")
-    new_count = 0
+    # 第一阶段：去重筛出待入库条目
+    new_items = []
     for it in items:
-        title, item_url = it["title"], it["url"]
-        if dedup.should_skip(conn, school_id, item_url, title, ""):
+        if dedup.should_skip(conn, school_id, it["url"], it["title"], ""):
             continue
-        content_md, published, type_tag = None, "", parse.infer_type(title)
-        if not args.no_detail:
-            content_md, published = _fetch_detail_content(
-                item_url, use_browser, use_real_browser=use_real)
-            time.sleep(args.sleep)
+        new_items.append(it)
+    # 第二阶段：并发抓详情（浏览器模式自动退化为串行），再统一入库
+    details = {}
+    if not args.no_detail:
+        details = _fetch_details(new_items, use_browser, use_real, args)
+    new_count = 0
+    for it in new_items:
+        title, item_url = it["title"], it["url"]
+        content_md, published = details.get(item_url, (None, ""))
+        type_tag = parse.infer_type(title)
         notice_id, _ = store.insert_notice(
             conn, school_id, source_id, title, item_url,
             content_md=content_md, published_at=published, type_tag=type_tag,
@@ -169,6 +228,8 @@ def main():
     ap.add_argument("--no-detail", action="store_true", help="跳过详情页抓取")
     ap.add_argument("--max-items", type=int, default=50, help="每栏目最多抽取条数")
     ap.add_argument("--sleep", type=float, default=0.5, help="抓详情页间隔秒数")
+    ap.add_argument("--workers", type=int, default=6,
+                    help="详情页并发抓取线程数（浏览器模式不生效）")
     ap.add_argument("--backfill-meta", action="store_true",
                     help="仅为已入库通知补齐结构化字段（截止日期等），不抓取网页")
     args = ap.parse_args()
