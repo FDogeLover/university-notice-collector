@@ -160,6 +160,8 @@ def test_dedupe_notices(tmp_path):
     conn = store.connect(tmp_path / "dedupe.db")
     store.init_db(conn)
     conn.execute("INSERT INTO schools(id, name) VALUES(1, 'X大学')")
+    conn.execute("INSERT INTO sources(id, school_id, name, url) "
+                 "VALUES(1, 1, '研究生院', 'https://gs.x.edu.cn/')")
     conn.commit()
     for url in ("https://gs.x.edu.cn/a.htm", "https://gs.x.edu.cn/b.htm",
                 "https://gs.x.edu.cn/c.htm"):
