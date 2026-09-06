@@ -29,7 +29,7 @@ _NOISE = [
 # 学院名排除（泛词）
 _COLLEGE_EXCLUDE = {
     "研究生院", "各学院", "招生学院", "学院党委", "学院办公室", "教务处",
-    "研究生招生信息网", "招生办", "学校招生", "学院研究生",
+    "研究生招生信息网", "招生办", "学校招生", "学院研究生", "学部学院",
 }
 
 # 截止 / 截至 类时间
@@ -41,6 +41,11 @@ _DEADLINE_PATTERNS = [
     re.compile(
         r"(?:报名|申请|系统|材料|提交|考核|资格|截至|截止)"
         r"(?:截止|截至|关闭|报名截止)[：:（(\s]*"
+        r"((?:20\d{2}年)?\d{1,2}月\d{1,2}日)"
+    ),
+    # "截止时间/截止日期（为/是）X" 句式
+    re.compile(
+        r"(?:报名|申请|材料|提交)?(?:截止时间|截止日期)\s*(?:为|是)?\s*[:：]?\s*"
         r"((?:20\d{2}年)?\d{1,2}月\d{1,2}日)"
     ),
     re.compile(
@@ -63,8 +68,42 @@ _TARGET_PATTERN = re.compile(
     r"(?:应届)?(?:本科学历|硕士(?:研究生)|博士(?:研究生))|大[三四五六][的年级学])"
 )
 
-# 学院 / 学部 / 研究院（正文前若干字符内取第一个，排除泛词）
-_COLLEGE_PATTERN = re.compile(r"([\u4e00-\u9fa5]{2,14}(?:学院|学部|研究院))")
+# 学院名提取：在后缀（学院/学部/研究院）出现处向前回溯取名字，
+# 遇到功能词（动词/介词/指示词）即停，避免贪婪匹配吞进"材料请交至…"等前缀
+_COLLEGE_SUFFIX_RE = re.compile(r"(学院|学部|研究院)")
+_COLLEGE_STOP = set("在由是为于从到向把请交送至对按根经需应要使含据各该本次等之其")
+_COLLEGE_MAX_NAME = 12
+
+# 泛指性提法（"报考学院/我校相关学院"等）不是具体学院名
+_COLLEGE_GENERIC = re.compile(r"^(我校|报考|录取|相关|所在|承办|所属|课程|接收|招生)")
+# 名字里含虚词的一定不是学院名（如"…模板的学院"）
+_COLLEGE_INVALID = re.compile(r"[的了们呢吗吧呀让被给]")
+
+
+def _find_college(head):
+    """从文本片段中提取第一个具体学院名，无则返回 ""。"""
+    for run_m in re.finditer(r"[\u4e00-\u9fa5]{3,}", head):
+        run = run_m.group(0)
+        hits = [(m.start(), m.group(0))
+                for m in _COLLEGE_SUFFIX_RE.finditer(run)]
+        if not hits:
+            continue
+        for pos, suffix in sorted(hits):
+            name = ""
+            i = pos - 1
+            while i >= 0 and len(name) < _COLLEGE_MAX_NAME \
+                    and run[i] not in _COLLEGE_STOP:
+                name = run[i] + name
+                i -= 1
+            if len(name) < 2:
+                continue
+            name = name + suffix
+            if name in _COLLEGE_EXCLUDE or name.endswith("研究生院"):
+                continue
+            if _COLLEGE_GENERIC.match(name) or _COLLEGE_INVALID.search(name):
+                continue
+            return name
+    return ""
 
 
 def clean_summary(content, title, max_len=120):
@@ -125,13 +164,9 @@ def extract_highlights(content, title=""):
         hl["target"] = m.group(1)
 
     # 学院（正文前 400 字符内取首个具体学院名）
-    head = t[:400]
-    for m in _COLLEGE_PATTERN.finditer(head):
-        name = m.group(1)
-        if name in _COLLEGE_EXCLUDE or name.endswith("研究生院"):
-            continue
-        hl["college"] = name
-        break
+    hl_college = _find_college(t[:400])
+    if hl_college:
+        hl["college"] = hl_college
 
     return hl
 

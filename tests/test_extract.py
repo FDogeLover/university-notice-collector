@@ -21,10 +21,17 @@ def test_deadline_patterns():
 
 
 @pytest.mark.xfail(strict=True,
-                   reason="已知缺口：'截止时间为X/截止日期为X' 句式未覆盖，任务②补")
+                   reason="已知缺口：'2026-10-20' 等数字日期句式未覆盖")
+def test_deadline_numeric_date_not_covered():
+    assert extract_highlights(
+        "网上报名截止时间2026-10-20。")["deadline"] == "2026-10-20"
+
+
 def test_deadline_shi_phrase():
     assert extract_highlights(
         "报名截止时间为2026年9月30日，逾期不再受理。")["deadline"] == "2026年9月30日"
+    assert extract_highlights(
+        "材料提交截止日期是10月15日。")["deadline"] == "10月15日"
 
 
 def test_period_and_target_and_college():
@@ -33,16 +40,19 @@ def test_period_and_target_and_college():
         "由计算机科学与技术学院承办。")
     assert hl.get("period") == "2026年7月1日至7月15日"
     assert hl.get("target")
-    # 已知质量缺口：学院名可能带贪婪前缀（如"由…"），任务②收紧
-    assert (hl.get("college") or "").endswith("学院")
-    assert "计算机" in hl.get("college", "")
+    assert hl.get("college") == "计算机科学与技术学院"
 
 
 def test_college_finds_specific_name():
     hl = extract_highlights(
         "各学院请注意：研究生院现将事项通知如下。材料请交至电子信息学院。")
-    college = hl.get("college") or ""
-    assert college.endswith("学院") and "电子信息" in college
+    assert hl.get("college") == "电子信息学院"
+
+
+def test_college_not_confused_by_containing_stopword():
+    """名字内部的'与'不应截断学院名。"""
+    hl = extract_highlights("由电子与信息工程学院组织实施。")
+    assert hl.get("college") == "电子与信息工程学院"
 
 
 # ---------- clean_summary ----------
@@ -101,4 +111,23 @@ def test_dedup_url_and_fingerprint(tmp_path):
     # 同校同标题不同时间 → 不跳过
     assert not dedup.should_skip(
         conn, 1, "https://gs.x.edu.cn/c.htm", "推免通知", "2026-09-06")
+    conn.close()
+
+
+# ---------- notice_meta ----------
+def test_notice_meta_upsert_and_read(tmp_path):
+    from db import store
+
+    conn = store.connect(tmp_path / "m.db")
+    store.init_db(conn)
+    conn.execute("INSERT INTO schools(id, name) VALUES(1, 'X大学')")
+    conn.commit()
+    nid, _ = store.insert_notice(conn, 1, None, "通知", "https://gs.x.edu.cn/m.htm")
+    store.upsert_notice_meta(conn, nid, "deadline", "9月30日")
+    store.upsert_notice_meta(conn, nid, "deadline", "2026年9月30日")  # 覆盖
+    store.upsert_notice_meta(conn, nid, "college", "电子信息学院")
+    assert store.notice_meta_map(conn, nid) == {
+        "deadline": "2026年9月30日", "college": "电子信息学院"}
+    assert store.notice_meta_maps(conn, [nid, 999]) == {
+        nid: {"deadline": "2026年9月30日", "college": "电子信息学院"}}
     conn.close()

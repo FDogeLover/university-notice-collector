@@ -80,6 +80,18 @@ def _all_school_names():
     return [r["name"] for r in _rows("SELECT name FROM schools")]
 
 
+def _notice_meta_maps(notice_ids):
+    """批量取 notice_meta：{notice_id: {field: value}}（复用单连接）。"""
+    ids = [i for i in notice_ids if i]
+    if not ids:
+        return {}
+    conn = store.connect()
+    try:
+        return store.notice_meta_maps(conn, ids)
+    finally:
+        conn.close()
+
+
 def _clean(v):
     return "" if v is None else v
 
@@ -388,12 +400,13 @@ def notices(
         )
         order_params = params + [limit, offset]
     items = _rows(order_sql, order_params)
+    stored_meta = _notice_meta_maps([it["id"] for it in items])
     for it in items:
         it["excerpt"] = clean_summary(it["content_md"], it["title"], max_len=120)
-        it["highlights"] = standardize_highlights(
-            extract_highlights(it["content_md"], it["title"]),
-            it["published_at"],
-        )
+        # 结构化字段优先用库内 notice_meta（采集/回填时提取），无则现场提取
+        hl = stored_meta.get(it["id"]) or extract_highlights(
+            it["content_md"], it["title"])
+        it["highlights"] = standardize_highlights(hl, it["published_at"])
         it["content_md"] = ""  # 列表不返回正文，节省流量
     return {"total": total, "items": items}
 
@@ -409,6 +422,10 @@ def notice_detail(notice_id: int):
     )
     if not row:
         return {"error": "not found"}
+    meta = _notice_meta_maps([notice_id]).get(notice_id) or {}
+    if not meta and row.get("content_md"):
+        meta = extract_highlights(row["content_md"], row["title"])
+    row["meta"] = standardize_highlights(meta, row.get("published_at") or "")
     return row
 
 

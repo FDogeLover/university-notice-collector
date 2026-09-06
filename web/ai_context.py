@@ -173,15 +173,24 @@ def build_context(question, max_notices=8, excerpt_len=500):
     rows = [r for r in rows if r["score"] >= 3][:max_notices]
     if not rows:
         return "", 0
+    # 库内结构化字段（采集时提取入 notice_meta）：截止日期等直接进上下文
+    conn = store.connect()
+    try:
+        meta_maps = store.notice_meta_maps(conn, [r["id"] for r in rows])
+    finally:
+        conn.close()
     lines = []
     for i, r in enumerate(rows, 1):
         excerpt = _keyword_excerpt(r["content_md"], terms, max_len=excerpt_len)
         if not excerpt:
             excerpt = "（无正文快照，仅标题）"
         pub = r["published_at"] or "时间未知"
+        meta = meta_maps.get(r["id"]) or {}
+        when = meta.get("deadline") or meta.get("period") or ""
         lines.append(
             f"[{i}] 学校：{r['school_name']} | 标题：{r['title']}"
-            f" | 类型：{r['type_tag'] or '未分类'} | 发布：{pub}\n"
+            f" | 类型：{r['type_tag'] or '未分类'} | 发布：{pub}"
+            + (f" | 截止：{when}" if when else "") + "\n"
             f"    要点：{excerpt}\n"
             f"    原文：{r['url']}"
         )

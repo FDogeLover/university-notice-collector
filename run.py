@@ -8,6 +8,7 @@
     python run.py --school 深圳大学 --source 研究生招生网
     python run.py --no-detail            # 不抓详情页（更快，只存标题+原文链接）
     python run.py --max-items 80         # 每个栏目最多抽取 80 条
+    python run.py --backfill-meta        # 仅为存量通知补齐截止日期等结构化字段
 
 说明：config/schools.yaml 中某栏目设 browser: true 时，会用 Playwright
 真实浏览器抓取（用于过反爬，如北邮的 JS 挑战），其余站点仍用 requests。
@@ -23,9 +24,45 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
 from crawler import dedup, fetch, parse  # noqa: E402
+from crawler.extract import extract_highlights  # noqa: E402
 from db import store  # noqa: E402
 
 CONFIG = ROOT / "config" / "schools.yaml"
+
+
+# 规则提取写入 notice_meta 的字段（刷新时先清掉这几个，避免陈旧数据）
+RULE_META_FIELDS = ("deadline", "period", "target", "college")
+
+
+def _save_notice_meta(conn, notice_id, content_md, title):
+    """从正文提取截止日期/对象/学院等结构化字段，写入 notice_meta。"""
+    try:
+        hl = extract_highlights(content_md, title)
+        marks = ",".join("?" * len(RULE_META_FIELDS))
+        conn.execute(
+            f"DELETE FROM notice_meta WHERE notice_id=? AND field_name IN ({marks})",
+            (notice_id, *RULE_META_FIELDS),
+        )
+        for k, v in hl.items():
+            if v:
+                store.upsert_notice_meta(conn, notice_id, k, v)
+    except Exception as e:  # noqa: BLE001
+        print(f"  ! meta 提取失败 (notice {notice_id}): {e}")
+
+
+def backfill_meta(conn):
+    """为已入库且有正文快照的通知补齐 notice_meta（幂等，可重复执行）。"""
+    rows = conn.execute(
+        "SELECT id, title, content_md FROM notices "
+        "WHERE content_md IS NOT NULL AND content_md != ''"
+    ).fetchall()
+    done = 0
+    for r in rows:
+        _save_notice_meta(conn, r["id"], r["content_md"], r["title"])
+        done += 1
+    total = conn.execute(
+        "SELECT COUNT(DISTINCT notice_id) AS c FROM notice_meta").fetchone()["c"]
+    print(f"回填完成：处理 {done} 条通知，当前有结构化字段的通知 {total} 条。")
 
 
 def load_config():
@@ -108,11 +145,13 @@ def crawl_source(conn, school, school_id, source, args):
             content_md, published = _fetch_detail_content(
                 item_url, use_browser, use_real_browser=use_real)
             time.sleep(args.sleep)
-        store.insert_notice(
+        notice_id, _ = store.insert_notice(
             conn, school_id, source_id, title, item_url,
             content_md=content_md, published_at=published, type_tag=type_tag,
         )
         new_count += 1
+        if notice_id and content_md:
+            _save_notice_meta(conn, notice_id, content_md, title)
         print(f"  + [{school['name']}][{source['name']}] {title}\n      {item_url}")
     store.log_fetch(conn, source_id, school_id, "ok", new_count,
                     f"抽到 {len(items)} 条，新增 {new_count} 条")
@@ -127,12 +166,19 @@ def main():
     ap.add_argument("--no-detail", action="store_true", help="跳过详情页抓取")
     ap.add_argument("--max-items", type=int, default=50, help="每栏目最多抽取条数")
     ap.add_argument("--sleep", type=float, default=0.5, help="抓详情页间隔秒数")
+    ap.add_argument("--backfill-meta", action="store_true",
+                    help="仅为已入库通知补齐结构化字段（截止日期等），不抓取网页")
     args = ap.parse_args()
 
     store.init_db()
     conn = store.connect()
     schools = load_config()["schools"]
     store.import_schools(conn, schools)
+
+    if args.backfill_meta:
+        backfill_meta(conn)
+        conn.close()
+        return
 
     if args.list:
         for src in store.list_sources(conn):

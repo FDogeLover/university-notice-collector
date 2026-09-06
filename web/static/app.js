@@ -156,13 +156,18 @@
     fetch("/api/notices/" + id).then(function (r) { return r.json(); }).then(function (n) {
       if (!n || n.error) return;
       var color = tagColor(n.type_tag || "未分类");
+      var metaChips = (n.meta || []).map(function (h) {
+        return '<span class="chip"><span class="chip-key">' + esc(h.key)
+          + "</span>" + esc(h.value) + "</span>";
+      }).join("");
       $("#modalTitle").textContent = n.title;
       $("#modalMeta").innerHTML =
         '<span class="tag" style="color:' + color + ";background:" + tint(color) + '">' + esc(n.type_tag || "未分类") + "</span>" +
         "<span>" + esc(n.school_name) + "</span>" +
         "<span>" + esc(n.source_name || "") + "</span>" +
         "<span>发布 " + esc(n.published_at || "未知") + "</span>" +
-        "<span>抓取 " + esc((n.fetched_at || "").slice(0, 16)) + "</span>";
+        "<span>抓取 " + esc((n.fetched_at || "").slice(0, 16)) + "</span>" +
+        (metaChips ? '<span class="modal-meta-chips">' + metaChips + "</span>" : "");
       var src = $("#modalSource");
       src.href = n.url;
       src.textContent = "打开官方原文 ↗";

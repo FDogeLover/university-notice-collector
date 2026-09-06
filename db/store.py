@@ -82,6 +82,43 @@ def log_fetch(conn, source_id, school_id, status, new_count, message=""):
     conn.commit()
 
 
+def upsert_notice_meta(conn, notice_id, field_name, field_value):
+    """写入/更新通知的结构化字段（截止日期、学院等）。"""
+    conn.execute(
+        "INSERT INTO notice_meta(notice_id, field_name, field_value) VALUES(?,?,?) "
+        "ON CONFLICT(notice_id, field_name) DO UPDATE SET "
+        "field_value=excluded.field_value",
+        (notice_id, field_name, str(field_value)),
+    )
+    conn.commit()
+
+
+def notice_meta_map(conn, notice_id):
+    """单条通知的结构化字段，如 {"deadline": "9月30日", ...}。"""
+    rows = conn.execute(
+        "SELECT field_name, field_value FROM notice_meta WHERE notice_id=?",
+        (notice_id,),
+    ).fetchall()
+    return {r["field_name"]: r["field_value"] for r in rows}
+
+
+def notice_meta_maps(conn, notice_ids):
+    """批量取多条通知的结构化字段：{notice_id: {field: value}}。"""
+    ids = [i for i in notice_ids if i]
+    if not ids:
+        return {}
+    marks = ",".join("?" * len(ids))
+    rows = conn.execute(
+        f"SELECT notice_id, field_name, field_value FROM notice_meta "
+        f"WHERE notice_id IN ({marks})",
+        ids,
+    ).fetchall()
+    maps = {}
+    for r in rows:
+        maps.setdefault(r["notice_id"], {})[r["field_name"]] = r["field_value"]
+    return maps
+
+
 def school_id_by_name(conn, name):
     row = conn.execute("SELECT id FROM schools WHERE name=?", (name,)).fetchone()
     return row["id"] if row else None
