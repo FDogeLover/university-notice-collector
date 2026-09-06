@@ -101,7 +101,11 @@ def _get_real_context():
         _real_ctx = _real_pw.chromium.launch_persistent_context(
             str(profile), executable_path=exe, headless=False,
             args=["--disable-blink-features=AutomationControlled",
-                  "--no-first-run", "--no-default-browser-check"],
+                  "--no-first-run", "--no-default-browser-check",
+                  # 窗口定位到屏幕外：不遮挡用户桌面、不抢前台焦点。
+                  # 不能用最小化——最小化会让页面进入后台可见性状态，
+                  # 反而触发部分 WAF（如瑞数）的检测。
+                  "--window-position=-32000,-32000"],
             ignore_default_args=["--enable-automation"],
             viewport={"width": 1366, "height": 900},
         )
