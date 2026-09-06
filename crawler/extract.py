@@ -3,6 +3,8 @@
 
 import re
 
+from datetime import date
+
 # 导航 / 杂文噪音行特征：命中即视为噪音行，不进入摘要
 _NOISE = [
     r"首页|导航|登录|注册|设为首页|加入收藏|站内搜索|友情链接|分享|打印本页|返回上[一页级]",
@@ -104,6 +106,29 @@ def _find_college(head):
                 continue
             return name
     return ""
+
+
+def normalize_deadline(text, published_at=""):
+    """把中文截止日期归一化为 ISO 日期（YYYY-MM-DD），失败返回 ""。
+
+    支持 "2026年9月30日" / "9月30日"（年份缺省时依次取发布年份、当前年份）。
+    用于排序与"即将截止"筛选；仅接受未过期的合理日期。
+    """
+    m = re.search(
+        r"(?:(20\d{2})年)?\s*(\d{1,2})月(\d{1,2})日", text or "")
+    if not m:
+        return ""
+    year = int(m.group(1)) if m.group(1) else None
+    month, day = int(m.group(2)), int(m.group(3))
+    if not (1 <= month <= 12 and 1 <= day <= 31):
+        return ""
+    if year is None:
+        ym = re.search(r"(20\d{2})", published_at or "")
+        year = int(ym.group(1)) if ym else date.today().year
+    try:
+        return date(year, month, day).isoformat()
+    except ValueError:
+        return ""
 
 
 def clean_summary(content, title, max_len=120):

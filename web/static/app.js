@@ -10,6 +10,7 @@
     school: "",
     type: "",
     keyword: "",
+    days: 0,
     crawlTimer: null,
   };
 
@@ -20,6 +21,8 @@
     "预推免": "#ea580c",
     "夏令营": "#2563eb",
     "招生": "#16a34a",
+    "复试": "#0891b2",
+    "调剂": "#7c2d12",
     "公示": "#64748b",
     "通知": "#7c3aed",
   };
@@ -32,6 +35,24 @@
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
+  }
+
+  /* 关键词高亮：先整体转义，再把命中的词包上 <mark> */
+  function kwTokens() {
+    return state.keyword.trim().split(/[\s,，、;；]+/).filter(function (w) {
+      return w.length >= 2;
+    });
+  }
+
+  function highlight(text) {
+    var safe = esc(text);
+    kwTokens().forEach(function (w) {
+      var pattern = w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      safe = safe.replace(new RegExp(pattern, "gi"), function (m) {
+        return "<mark>" + m + "</mark>";
+      });
+    });
+    return safe;
   }
 
   /* ---------- 数据加载 ---------- */
@@ -87,6 +108,7 @@
       school: state.school,
       type: state.type,
       keyword: state.keyword,
+      days: state.days,
       limit: LIMIT,
       offset: state.offset,
     });
@@ -131,7 +153,7 @@
           + "</span>";
       }).join("");
       var excerpt = n.excerpt
-        ? '<div class="card-excerpt">' + esc(n.excerpt) + "</div>" : "";
+        ? '<div class="card-excerpt">' + highlight(n.excerpt) + "</div>" : "";
 
       card.innerHTML =
         '<div class="card-meta">' +
@@ -140,7 +162,7 @@
         '<span class="card-source">' + esc(n.source_name || "") + "</span>" +
         '<span class="card-date">' + (n.published_at ? "发布 " + esc(n.published_at) : "时间未知") + "</span>" +
         "</div>" +
-        '<div class="card-title">' + esc(n.title) + "</div>" +
+        '<div class="card-title">' + highlight(n.title) + "</div>" +
         (hl ? '<div class="card-hl">' + hl + "</div>" : "") +
         excerpt +
         '<div class="card-foot">' +
@@ -150,6 +172,28 @@
       card.addEventListener("click", function () { openDetail(n.id); });
       box.appendChild(card);
     });
+  }
+
+  /* ---------- 即将截止 ---------- */
+  function loadDeadlines() {
+    fetch("/api/deadlines?days=30").then(function (r) { return r.json(); })
+      .then(function (list) {
+        var strip = $("#deadlineStrip");
+        var box = $("#deadlineList");
+        box.innerHTML = "";
+        if (!list.length) { strip.hidden = true; return; }
+        list.slice(0, 12).forEach(function (n) {
+          var el = document.createElement("button");
+          el.className = "deadline-item";
+          el.innerHTML =
+            '<span class="deadline-date">' + esc(n.deadline) + "</span>" +
+            '<span class="deadline-title">' + esc(n.title) + "</span>" +
+            '<span class="deadline-school">' + esc(n.school_name) + "</span>";
+          el.addEventListener("click", function () { openDetail(n.id); });
+          box.appendChild(el);
+        });
+        strip.hidden = false;
+      }).catch(function () { /* 忽略 */ });
   }
 
   /* ---------- 详情 ---------- */
@@ -241,6 +285,18 @@
   });
   $("#btnMore").addEventListener("click", function () { loadNotices(false); });
   $("#btnCrawl").addEventListener("click", triggerCrawl);
+  document.querySelectorAll(".chip-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var days = Number(this.dataset.days);
+      var active = state.days === days;
+      state.days = active ? 0 : days;
+      document.querySelectorAll(".chip-btn").forEach(function (b) {
+        b.classList.toggle("active",
+          !active && Number(b.dataset.days) === days);
+      });
+      loadNotices(true);
+    });
+  });
   $("#modalClose").addEventListener("click", closeModal);
   $("#modal").addEventListener("click", function (e) {
     if (e.target === this) closeModal();
@@ -461,4 +517,5 @@
   loadSchools();
   loadTypes();
   loadNotices(true);
+  loadDeadlines();
 })();

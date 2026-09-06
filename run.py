@@ -24,20 +24,25 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
 from crawler import dedup, fetch, parse  # noqa: E402
-from crawler.extract import extract_highlights  # noqa: E402
+from crawler.extract import extract_highlights, normalize_deadline  # noqa: E402
 from db import store  # noqa: E402
 
 CONFIG = ROOT / "config" / "schools.yaml"
 
 
 # 规则提取写入 notice_meta 的字段（刷新时先清掉这几个，避免陈旧数据）
-RULE_META_FIELDS = ("deadline", "period", "target", "college")
+RULE_META_FIELDS = ("deadline", "period", "target", "college", "deadline_iso")
 
 
-def _save_notice_meta(conn, notice_id, content_md, title):
+def _save_notice_meta(conn, notice_id, content_md, title, published_at=""):
     """从正文提取截止日期/对象/学院等结构化字段，写入 notice_meta。"""
     try:
         hl = extract_highlights(content_md, title)
+        if hl.get("deadline"):
+            # ISO 归一化日期：供排序与"即将截止"筛选
+            iso = normalize_deadline(hl["deadline"], published_at)
+            if iso:
+                hl["deadline_iso"] = iso
         marks = ",".join("?" * len(RULE_META_FIELDS))
         conn.execute(
             f"DELETE FROM notice_meta WHERE notice_id=? AND field_name IN ({marks})",
@@ -53,12 +58,13 @@ def _save_notice_meta(conn, notice_id, content_md, title):
 def backfill_meta(conn):
     """为已入库且有正文快照的通知补齐 notice_meta（幂等，可重复执行）。"""
     rows = conn.execute(
-        "SELECT id, title, content_md FROM notices "
+        "SELECT id, title, content_md, published_at FROM notices "
         "WHERE content_md IS NOT NULL AND content_md != ''"
     ).fetchall()
     done = 0
     for r in rows:
-        _save_notice_meta(conn, r["id"], r["content_md"], r["title"])
+        _save_notice_meta(conn, r["id"], r["content_md"], r["title"],
+                          r["published_at"] or "")
         done += 1
     total = conn.execute(
         "SELECT COUNT(DISTINCT notice_id) AS c FROM notice_meta").fetchone()["c"]
@@ -151,7 +157,8 @@ def crawl_source(conn, school, school_id, source, args):
         )
         new_count += 1
         if notice_id and content_md:
-            _save_notice_meta(conn, notice_id, content_md, title)
+            _save_notice_meta(conn, notice_id, content_md, title,
+                              published_at=published or "")
         print(f"  + [{school['name']}][{source['name']}] {title}\n      {item_url}")
     store.log_fetch(conn, source_id, school_id, "ok", new_count,
                     f"抽到 {len(items)} 条，新增 {new_count} 条")

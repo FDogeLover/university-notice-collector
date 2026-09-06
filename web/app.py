@@ -388,18 +388,46 @@ def remove_school(school_id: int):
     return {"ok": True, "name": row["name"], "message": f"已删除「{row['name']}」"}
 
 
+# ---------- 即将截止 ----------
+@app.get("/api/deadlines")
+def deadlines(days: int = Query(30, ge=1, le=365)):
+    """未来 N 天内截止的通知（按 deadline_iso 升序）。"""
+    from datetime import date, timedelta
+
+    today = date.today()
+    until = today + timedelta(days=days)
+    return _rows(
+        "SELECT n.id, n.title, n.url, n.type_tag, n.published_at,"
+        "       m.field_value AS deadline, sc.name AS school_name "
+        "FROM notice_meta m "
+        "JOIN notices n ON n.id = m.notice_id "
+        "JOIN schools sc ON sc.id = n.school_id "
+        "WHERE m.field_name='deadline_iso' AND sc.enabled=1 "
+        "AND m.field_value >= ? AND m.field_value <= ? "
+        "ORDER BY m.field_value ASC, n.published_at DESC LIMIT 50",
+        (today.isoformat(), until.isoformat()),
+    )
+
+
 # ---------- 通知列表 ----------
 @app.get("/api/notices")
 def notices(
     school: str = Query(""),
     type: str = Query(""),
     keyword: str = Query(""),
+    days: int = Query(0, ge=0, le=3650),
     limit: int = Query(30, ge=1, le=100),
     offset: int = Query(0, ge=0),
 ):
     conds, params = [], []
     conds.append("sc.enabled=1")  # 停用学校的数据保留但不显示
     words = []  # 供排序使用：有关键词时标题命中优先
+    if days:
+        from datetime import date, timedelta
+
+        since = (date.today() - timedelta(days=days)).isoformat()
+        conds.append("n.published_at >= ?")
+        params.append(since)
     if school:
         conds.append("sc.name=?")
         params.append(school)

@@ -393,3 +393,43 @@ body {
 .ms-actions { display: flex; gap: 6px; flex-shrink: 0; }
 .ms-hint { font-size: 12px; color: var(--text-muted); margin: 10px 24px 20px; }
 .modal-meta-chips { margin-left: 4px; }
+
+/* 时间快筛与关键词高亮 */
+.day-chips { display: flex; gap: 6px; }
+.chip-btn {
+  border: 1px solid var(--border-strong); background: #fff; color: var(--text-2);
+  border-radius: 999px; padding: 6px 12px; font-size: 13px; cursor: pointer;
+  font-family: inherit; white-space: nowrap;
+}
+.chip-btn:hover { border-color: var(--brand); color: var(--brand); }
+.chip-btn.active {
+  background: var(--brand); border-color: var(--brand); color: #fff;
+}
+.card-title mark, .card-excerpt mark {
+  background: #fef08a; color: inherit; border-radius: 3px; padding: 0 1px;
+}
+
+/* 即将截止提醒条 */
+.deadline-strip {
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(90deg, #fff7ed, #fffbeb 60%, #fefce8);
+}
+.deadline-inner { display: flex; align-items: center; gap: 14px; padding: 10px 0; }
+.deadline-label { font-size: 13px; font-weight: 700; color: #c2410c; flex: none; }
+.deadline-list {
+  display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;
+}
+.deadline-list::-webkit-scrollbar { display: none; }
+.deadline-item {
+  display: flex; align-items: center; gap: 8px; flex: none;
+  background: #fff; border: 1px solid #fed7aa; border-radius: 999px;
+  padding: 6px 12px; font-size: 13px; cursor: pointer; font-family: inherit;
+  max-width: 380px; text-align: left;
+}
+.deadline-item:hover { border-color: #fb923c; box-shadow: 0 2px 8px rgba(234,88,12,.12); }
+.deadline-date { color: #c2410c; font-weight: 700; white-space: nowrap; }
+.deadline-title {
+  color: var(--text-1); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 240px;
+}
+.deadline-school { color: var(--text-muted); font-size: 12px; white-space: nowrap; }

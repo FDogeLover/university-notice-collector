@@ -86,6 +86,21 @@ def test_standardize_order():
     assert out2 == [{"key": "时间", "value": "7月1日至7月15日"}]
 
 
+# ---------- normalize_deadline ----------
+def test_normalize_deadline():
+    from datetime import date
+
+    from crawler.extract import normalize_deadline
+
+    nd = normalize_deadline
+    assert nd("报名截止时间为2026年9月30日") == "2026-09-30"
+    assert nd("9月30日", "2026-08-01") == "2026-09-30"   # 年份缺省取发布年份
+    assert nd("9月30日") == f"{date.today().year}-09-30"  # 都没有则取当前年份
+    assert nd("截止") == ""
+    assert nd("13月40日") == ""
+    assert nd("2027年3月1日截止", "2026-08-01") == "2027-03-01"
+
+
 # ---------- dedup ----------
 def test_dedup_url_and_fingerprint(tmp_path):
     from crawler import dedup

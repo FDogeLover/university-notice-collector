@@ -65,7 +65,19 @@
       <input id="filterKeyword" class="input" type="text"
              placeholder="关键词（标题 / 正文，如 推免、夏令营）">
       <button id="btnSearch" class="btn btn-outline">搜索</button>
+      <div class="day-chips" title="只看最近发布的通知">
+        <button class="chip-btn" data-days="7">近7天</button>
+        <button class="chip-btn" data-days="30">近30天</button>
+      </div>
       <div class="toolbar-total" id="resultTotal"></div>
+    </div>
+  </section>
+
+  <!-- 即将截止提醒 -->
+  <section id="deadlineStrip" class="deadline-strip" hidden>
+    <div class="container deadline-inner">
+      <span class="deadline-label">⏰ 即将截止</span>
+      <div id="deadlineList" class="deadline-list"></div>
     </div>
   </section>
 

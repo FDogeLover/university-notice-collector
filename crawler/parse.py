@@ -438,6 +438,10 @@ def infer_type(title):
         return "推免"
     if "夏令营" in title:
         return "夏令营"
+    if "复试" in title:
+        return "复试"
+    if "调剂" in title:
+        return "调剂"
     if re.search(r"招生|简章|报考|报名", title):
         return "招生"
     if re.search(r"公示|名单", title):
