@@ -129,6 +129,19 @@ def close_real_browser():
         _real_pw = None
 
 
+def _get_real_content(page, attempts=4, wait_ms=3000):
+    """取页面 HTML；瑞数等站点会持续跳转导致 content() 报
+    "page is navigating"，等一拍重试即可。"""
+    last_err = None
+    for _ in range(attempts):
+        try:
+            return page.content()
+        except Exception as e:  # noqa: BLE001
+            last_err = e
+            page.wait_for_timeout(wait_ms)
+    raise last_err
+
+
 def _http_get_real(url, wait_ms=5000):
     """用真实 Chrome（有头 + 持久化 cookie）访问，可过瑞数 JS 挑战。
 
@@ -143,7 +156,7 @@ def _http_get_real(url, wait_ms=5000):
         _real_page.goto(url, timeout=30000, wait_until="domcontentloaded")
         _real_page.wait_for_timeout(wait_ms)
         # 瑞数挑战：首访后刷新一次
-        html = _real_page.content()
+        html = _get_real_content(_real_page)
         if "$_ts" in html or len(html) < 1000:
             _real_page.reload(wait_until="domcontentloaded")
             _real_page.wait_for_timeout(wait_ms)
@@ -151,10 +164,10 @@ def _http_get_real(url, wait_ms=5000):
         _real_page.wait_for_timeout(1200)
         _real_page.evaluate("window.scrollTo(0, 0)")
         _real_page.wait_for_timeout(600)
-        return _real_page.content()
+        return _get_real_content(_real_page)
     except Exception:  # noqa: BLE001
         try:
-            return _real_page.content()
+            return _get_real_content(_real_page, attempts=2, wait_ms=2000)
         except Exception:  # noqa: BLE001
             raise
 
