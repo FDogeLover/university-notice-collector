@@ -7,14 +7,53 @@
   由 cron 在每日采集后调用（如 05:20）
 """
 import argparse
+import os
+import smtplib
 import subprocess
 import sys
 from datetime import date, datetime, timedelta
+from email.header import Header
+from email.mime.text import MIMEText
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 LOG_DIR = ROOT / "logs"
 HERMES = "/usr/local/lib/hermes-agent/.venv/bin/hermes"
+
+
+def _load_env():
+    """加载 hermes 的环境变量（含 SMTP 凭据），供邮件发送使用。"""
+    env_file = Path(os.path.expanduser("~/.hermes/.env"))
+    if env_file.exists():
+        for line in env_file.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                k, _, v = line.partition("=")
+                os.environ.setdefault(k.strip(), v.strip())
+
+
+def send_mail(subject, body):
+    """通过 SMTP（QQ 邮箱）发送提醒邮件。失败只告警不中断。"""
+    host = os.environ.get("SMTP_HOST", "smtp.qq.com")
+    port = int(os.environ.get("SMTP_PORT", "587"))
+    user = os.environ.get("SMTP_USER", "")
+    pwd = os.environ.get("SMTP_PASS", "")
+    to = os.environ.get("MAIL_TO", user)
+    if not (user and pwd):
+        print("未配置 SMTP_USER/SMTP_PASS，跳过邮件")
+        return
+    msg = MIMEText(body, "plain", "utf-8")
+    msg["Subject"] = Header(subject, "utf-8")
+    msg["From"] = user
+    msg["To"] = to
+    try:
+        with smtplib.SMTP(host, port, timeout=20) as s:
+            s.starttls()
+            s.login(user, pwd)
+            s.sendmail(user, [to], msg.as_string())
+        print(f"邮件已发送至 {to}")
+    except Exception as e:  # noqa: BLE001
+        print(f"邮件发送失败（不影响复盘结果）：{e}")
 
 
 def tail_log(path, max_lines=400):
@@ -87,6 +126,13 @@ def run_review(since):
         if stamp not in lessons_file.read_text(encoding="utf-8"):
             lessons_file.write_text(
                 f"\n## {stamp}\n" + body + "\n", encoding="utf-8")
+        # QQ 邮箱提醒（摘要）
+        summary = "\n".join(
+            ln for ln in body.splitlines()[:25] if ln.strip())
+        send_mail(
+            f"[采集复盘] {stamp} 质量评估完成",
+            f"{summary}\n\n完整报告：{ROOT}/logs/review-{stamp}.md\n"
+            f"经验积累：{ROOT}/logs/lessons.md")
     except subprocess.TimeoutExpired:
         out.write_text("复盘超时（1200s）", encoding="utf-8")
         print("复盘超时")
@@ -100,6 +146,7 @@ def main():
     ap.add_argument("--since", default=None,
                     help="采集起始时间，默认昨日 03:30")
     args = ap.parse_args()
+    _load_env()
     since = args.since or (datetime.now() - timedelta(days=1)
                            ).strftime("%Y-%m-%d 03:30")
     run_review(since)
