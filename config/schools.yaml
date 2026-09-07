@@ -204,8 +204,8 @@ schools:
   domain: tsinghua.edu.cn
   sources:
   - name: 研究生院
-    url: https://gs.tsinghua.edu.cn/
-    category: 招生
+    url: https://www.tsinghua.edu.cn/yjsy/
+    category: 通知公告
   - name: 研究生招生网
     url: https://yz.tsinghua.edu.cn/
     category: 招生
@@ -235,7 +235,7 @@ schools:
     url: https://yzb.buaa.edu.cn
     category: 招生
   - name: 研究生院
-    url: https://gs.buaa.edu.cn
+    url: https://graduate.buaa.edu.cn/
     category: 通知公告
   - name: 信息公开网
     url: https://xxgk.buaa.edu.cn
@@ -249,8 +249,8 @@ schools:
     url: https://pgs.ruc.edu.cn
     category: 招生
   - name: 研究生院
-    url: https://gs.ruc.edu.cn
-    category: 招生
+    url: https://grs.ruc.edu.cn/
+    category: 通知公告
   - name: 信息公开网
     url: https://xxgk.ruc.edu.cn
     category: 信息公开
@@ -274,8 +274,8 @@ schools:
   domain: bnu.edu.cn
   sources:
   - name: 研究生院
-    url: https://gs.bnu.edu.cn/
-    category: 招生
+    url: https://jwb.bnu.edu.cn/
+    category: 通知公告
   - name: 研究生招生网
     url: https://yz.bnu.edu.cn/
     category: 招生
@@ -330,8 +330,8 @@ schools:
   domain: neu.edu.cn
   sources:
   - name: 研究生院
-    url: https://graduate.neu.edu.cn/
-    category: 招生
+    url: http://www.graduate.neu.edu.cn/
+    category: 通知公告
   - name: 研究生招生信息网
     url: https://yz.neu.edu.cn/
     category: 招生
@@ -1390,20 +1390,20 @@ schools:
   - name: 长安大学研究生招生网
     url: https://yzb.chd.edu.cn/
     category: 招生
-  - name: 长安大学研究生院
-    url: https://gs.chd.edu.cn/
-    category: 招生
   - name: 长安大学信息公开网
     url: https://xxgk.chd.edu.cn/
     category: 信息公开
+  - name: 研究生院
+    url: https://graduate.chd.edu.cn/
+    category: 通知公告
   tags:
   - '211'
 - name: 陕西师范大学
   domain: snnu.edu.cn
   sources:
   - name: 研究生院
-    url: https://gs.snnu.edu.cn/
-    category: 招生
+    url: https://newyjs.snnu.edu.cn/
+    category: 通知公告
   - name: 研究生招生网
     url: https://yz.snnu.edu.cn/
     category: 招生
@@ -1416,8 +1416,8 @@ schools:
   domain: nxu.edu.cn
   sources:
   - name: 研究生院
-    url: https://gs.nxu.edu.cn/
-    category: 招生
+    url: https://graduate.nxu.edu.cn/
+    category: 通知公告
   - name: 本科招生网
     url: https://zs.nxu.edu.cn/
     category: 招生
