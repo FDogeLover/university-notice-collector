@@ -111,3 +111,24 @@ def test_detail_published_from_meta_and_label():
     """
     d2 = parse.parse_detail(html_label, "https://gs.x.edu.cn/p/2.htm")
     assert d2["published_at"] == "2026-07-02"
+
+
+# ---------- 附件 URL 识别 ----------
+def test_is_file_url():
+    from crawler.parse import is_file_url
+
+    assert is_file_url("https://admission.pku.edu.cn/docs/20260831.pdf")
+    assert is_file_url("https://gs.x.edu.cn/upload/a.doc")
+    assert is_file_url("https://gs.x.edu.cn/upload/a.docx?ver=1")
+    assert is_file_url("https://gs.x.edu.cn/files/表格.xlsx")
+    assert not is_file_url("https://gs.x.edu.cn/info/1002/3520.htm")
+    assert not is_file_url("https://gs.x.edu.cn/notice/list.jsp?id=3")
+
+
+def test_detail_skips_file_url(fake_fetch, fake_parse):
+    """附件 URL 不触发下载，直接返回空正文（防二进制乱码）。"""
+    fake_fetch.script = [("html", "不该被请求" * 10)]
+    content, published = run_mod._fetch_detail_content(
+        "https://admission.pku.edu.cn/docs/a.pdf", use_browser=False)
+    assert content is None and published == ""
+    assert fake_fetch.script  # 未被消费，说明没发请求

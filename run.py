@@ -115,8 +115,11 @@ def _fetch_detail_content(item_url, use_browser, use_real_browser=False,
     而不是直接放弃；全部失败时返回正文最长的那份兜底结果。
     attempts 为 [(use_browser, use_real), ...] 时的自定义尝试序列，
     供并发快速通道只走 requests（Playwright/Chrome 实例非线程安全）。
+    详情页直接是附件（PDF/Word 等）时返回空正文，避免二进制乱码入库。
     返回 (content_md, published)。
     """
+    if parse.is_file_url(item_url):
+        return None, ""
     if attempts is None:
         if use_real_browser:
             attempts = [(True, True)]
@@ -144,8 +147,10 @@ def _detail_quick_job(item_url):
     """并发快速通道：单次 requests 抓详情（不碰浏览器实例，线程安全）。
 
     正文达标返回 (url, content, published)；不达标/失败返回 (url, None, ...)，
-    由调用方串行走完整升级链兜底。
+    由调用方串行走完整升级链兜底。附件 URL 直接返回空（避免二进制乱码）。
     """
+    if parse.is_file_url(item_url):
+        return item_url, None, ""
     try:
         html = fetch.http_get(item_url, use_browser=False,
                               use_real_browser=False)

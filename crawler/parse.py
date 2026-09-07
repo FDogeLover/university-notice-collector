@@ -101,6 +101,18 @@ def _extract_published(html, soup):
     return ""
 
 
+# 附件类文件后缀：详情页若直接是附件（PDF/Word/Excel 等），无法当正文解析。
+# 采集器应跳过正文抓取（存标题+链接），避免把二进制当文本存入导致乱码。
+FILE_EXT_RE = re.compile(
+    r"\.(pdf|docx?|xlsx?|pptx?|rar|zip|7z|jpe?g|png|gif|bmp|wps|et|dps)"
+    r"(\?|#|$)", re.I)
+
+
+def is_file_url(url):
+    """判断 URL 是否直接指向附件文件（而非 HTML 详情页）。"""
+    return bool(url and FILE_EXT_RE.search(url))
+
+
 def parse_list(html, base_url, domain, max_items=50, stype=None):
     """从栏目列表页抽取相关通知链接。
 
