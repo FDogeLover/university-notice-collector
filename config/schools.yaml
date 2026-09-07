@@ -291,7 +291,7 @@ schools:
     url: https://yz.cau.edu.cn/
     category: 招生
   - name: 研究生院
-    url: https://grad.cau.edu.cn/
+    url: https://gradsch1.cau.edu.cn/
     category: 招生
   - name: 信息公开网
     url: https://xxgk.cau.edu.cn/
@@ -682,7 +682,7 @@ schools:
   domain: cufe.edu.cn
   sources:
   - name: 研究生招生网
-    url: https://yz.cufe.edu.cn/
+    url: https://gs.cufe.edu.cn/
     category: 招生
   - name: 研究生院
     url: https://gs.cufe.edu.cn/
