@@ -2725,6 +2725,18 @@ schools:
   - name: 信息公开网
     url: https://xxgk.ynu.edu.cn
     category: 信息公开
+  - name: 本科生院
+    url: https://www.jwc.ynu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生工作部
+    url: http://www.ydxsc.ynu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业平台
+    url: https://jobs.ynu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
   tags:
   - '211'
 - name: 贵州大学
@@ -2739,6 +2751,22 @@ schools:
   - name: 贵州大学信息公开网
     url: https://xxgk.gzu.edu.cn
     category: 信息公开
+  - name: 教务处
+    url: https://aa.gzu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生工作部
+    url: https://sa.gzu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 招生就业处
+    url: https://aoff.gzu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://rso.gzu.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 西藏大学
@@ -2747,6 +2775,22 @@ schools:
   - name: 研究生招生网
     url: https://yjszs.utibet.edu.cn/
     category: 招生
+  - name: 教务处
+    url: https://jwc.xzu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 党委学工部
+    url: https://xgc.xzu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 招生就业处
+    url: https://zjc.xzu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zjc.xzu.edu.cn/bkzsxxw.htm
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 西北大学
@@ -2761,6 +2805,18 @@ schools:
   - name: 信息公开网
     url: https://xxgk.nwu.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://jwc.nwu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xgb.nwu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业创业中心
+    url: https://jczx.nwu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
   tags:
   - '211'
 - name: 长安大学
@@ -2775,6 +2831,22 @@ schools:
   - name: 研究生院
     url: https://graduate.chd.edu.cn/
     category: 通知公告
+  - name: 教务处
+    url: https://jwc.chd.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xgb.chd.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业信息网
+    url: https://jyzx.chd.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zsb.chd.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 陕西师范大学
@@ -2789,6 +2861,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.snnu.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://jwc.snnu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生处
+    url: https://xsc.snnu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业信息网
+    url: https://job.snnu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zsb.snnu.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 宁夏大学
@@ -2803,6 +2891,14 @@ schools:
   - name: 信息公开网
     url: https://xxgk.nxu.edu.cn/
     category: 信息公开
+  - name: 本科生院
+    url: https://bksy.nxu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生处
+    url: https://xsc.nxu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
   tags:
   - '211'
 - name: 新疆大学
@@ -2817,6 +2913,22 @@ schools:
   - name: 新疆大学信息公开网
     url: https://xxgk.xju.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://jwc.xju.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xdxg.xju.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业网
+    url: https://job.xju.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生
+    url: https://welcome.xju.edu.cn/web/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 青海大学
@@ -2828,6 +2940,22 @@ schools:
   - name: 信息公开网
     url: http://xxgk.qhu.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://jwc.qhu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生处
+    url: https://xsc1.qhu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业网
+    url: https://jyw.qhu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zsw.qhu.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 石河子大学
@@ -2845,6 +2973,14 @@ schools:
     url: https://xxgk.shzu.edu.cn/
     category: 信息公开
     browser: true
+  - name: 教务处
+    url: https://jwc.shzu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xgb.shzu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
   tags:
   - '211'
 - name: 中央音乐学院
