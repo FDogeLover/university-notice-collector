@@ -4,6 +4,7 @@
 默认用 requests 直接抓取；对启用反爬（如 HTTP 412 JS 挑战）的站点，
 可用 use_browser=True 走 Playwright 真实浏览器渲染，跨请求复用同一浏览器实例。
 """
+import threading
 import time
 from pathlib import Path
 from urllib.parse import urlparse
@@ -60,6 +61,60 @@ HEADERS = {
 _browser = None
 _playwright = None
 
+# 单个页面浏览器操作的整体超时（秒）。站点 JS 死循环（无限循环/持续导航）
+# 会让 evaluate/content 永久挂起——playwright 任何超时参数都无法中断
+# 渲染进程内的死循环，唯一可靠手段是杀掉 chromium 进程（连接断开后
+# 阻塞调用立即抛 TargetClosedError 返回）。
+_BROWSER_PAGE_TIMEOUT = 60
+# chromium 进程匹配特征（拼装避免 pkill 匹配到调用方自身 cmdline）
+_CHROMIUM_MATCH = "chrome-headless" + "-shell-linux64" + "/chrome-headless-shell"
+
+
+class _BrowserTimeout(Exception):
+    """浏览器单页操作超时（站点 JS 卡死，浏览器已强杀重建）。"""
+
+
+def _kill_browser_processes():
+    """强杀当前 playwright chromium 进程树（含卡死的渲染进程）。"""
+    import subprocess
+
+    subprocess.run(["pkill", "-9", "-f", _CHROMIUM_MATCH],
+                   check=False, stdout=subprocess.DEVNULL,
+                   stderr=subprocess.DEVNULL)
+
+
+def _browser_call_with_timeout(fn, *args, **kwargs):
+    """以超时护栏执行浏览器操作 fn。
+
+    主线程同步执行 fn（playwright 必须与启动它的线程一致），daemon 线程
+    计时；超时后由 watchdog 强杀 chromium 进程 → fn 内阻塞调用因连接
+    断开抛异常 → 恢复控制并抛 _BrowserTimeout（浏览器已损坏，调用方需
+    重建实例）。
+    """
+    import threading
+
+    timed_out = threading.Event()
+    finished = threading.Event()
+
+    def watchdog():
+        if not finished.wait(_BROWSER_PAGE_TIMEOUT):
+            timed_out.set()
+            _kill_browser_processes()
+
+    threading.Thread(target=watchdog, daemon=True).start()
+    try:
+        return fn(*args, **kwargs)
+    except _BrowserTimeout:
+        raise
+    except Exception as e:  # noqa: BLE001
+        if timed_out.is_set():
+            raise _BrowserTimeout(
+                f"browser page exceeded {_BROWSER_PAGE_TIMEOUT}s (chromium killed): {e}"
+            ) from e
+        raise
+    finally:
+        finished.set()
+
 
 def _get_browser():
     global _browser, _playwright
@@ -114,7 +169,7 @@ def _get_real_context():
 
 def close_real_browser():
     """关闭真实 Chrome 模式。"""
-    global _real_ctx, _real_pw
+    global _real_ctx, _real_pw, _real_page
     if _real_ctx is not None:
         try:
             _real_ctx.close()
@@ -127,6 +182,7 @@ def close_real_browser():
         except Exception:  # noqa: BLE001
             pass
         _real_pw = None
+    _real_page = None
 
 
 def _get_real_content(page, attempts=4, wait_ms=3000):
@@ -147,7 +203,16 @@ def _http_get_real(url, wait_ms=5000):
 
     复用同一个长生命周期页面：不 close 页面，否则持久化上下文会随
     最后一个页面关闭而整体关闭（后续 new_page 报 context closed）。
+    同样受超时护栏保护，卡死时强杀 chromium 并重建上下文。
     """
+    try:
+        return _browser_call_with_timeout(_http_get_real_inner, url, wait_ms)
+    except _BrowserTimeout:
+        close_real_browser()
+        raise RuntimeError(f"真实浏览器渲染超时（>{_BROWSER_PAGE_TIMEOUT}s，已重建）: {url}")
+
+
+def _http_get_real_inner(url, wait_ms=5000):
     global _real_page
     ctx = _get_real_context()
     if _real_page is None or _real_page.is_closed():
@@ -173,7 +238,7 @@ def _http_get_real(url, wait_ms=5000):
 
 
 def close_browser():
-    """采集结束调用，释放浏览器实例。"""
+    """关闭无头浏览器实例，释放资源。"""
     global _browser, _playwright
     if _browser is not None:
         try:
@@ -193,7 +258,21 @@ def _http_get_browser(url, wait_ms=4500):
     """用真实浏览器渲染页面（可过 JS 反爬挑战 / 等待 JS 异步加载 / 懒加载图）。
 
     滚动到底部再回顶，触发懒加载图片加载；随后返回渲染后的 HTML 文本。
+    受 watchdog 超时保护：站点 JS 卡死时强杀 chromium 并抛异常，由上层
+    降级逻辑继续下一站点，避免单个站点拖垮整个采集。
     """
+    try:
+        return _browser_call_with_timeout(_http_get_browser_inner, url, wait_ms)
+    except _BrowserTimeout:
+        # 浏览器已损坏（chromium 被强杀），置空以便下次自动重建
+        global _browser, _playwright
+        _browser = None
+        _playwright = None
+        raise RuntimeError(
+            f"浏览器渲染超时（>{_BROWSER_PAGE_TIMEOUT}s，chromium 已重建）: {url}")
+
+
+def _http_get_browser_inner(url, wait_ms=4500):
     browser = _get_browser()
     page = browser.new_page()
     try:
