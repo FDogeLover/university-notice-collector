@@ -509,6 +509,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.buaa.edu.cn
     category: 信息公开
+  - name: 教务部
+    url: https://jiaowu.buaa.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生处
+    url: https://xsc.buaa.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业指导中心
+    url: https://career.buaa.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zs.buaa.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 中国人民大学
@@ -523,6 +539,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.ruc.edu.cn
     category: 信息公开
+  - name: 本科生院
+    url: https://jiaowu.ruc.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生工作部
+    url: https://xsc.ruc.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业指导中心
+    url: https://rdjy.ruc.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://rdzs.ruc.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 北京理工大学
@@ -537,6 +569,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.bit.edu.cn/
     category: 信息公开
+  - name: 教务部
+    url: https://jwb.bit.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xgb.bit.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业指导中心
+    url: https://career.bit.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://admission.bit.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 北京师范大学
@@ -551,6 +599,18 @@ schools:
   - name: 信息公开网
     url: https://xxgk.bnu.edu.cn/
     category: 信息公开
+  - name: 党委学工部
+    url: https://dwxgb.bnu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业指导中心
+    url: https://career.bnu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://admission.bnu.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 中国农业大学
@@ -565,6 +625,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.cau.edu.cn/
     category: 信息公开
+  - name: 本科生院
+    url: https://jwc.cau.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xgb.cau.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业指导中心
+    url: https://scc.cau.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://jwzs.cau.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 中央民族大学
@@ -576,6 +652,14 @@ schools:
   - name: 本科招生网
     url: https://zb.muc.edu.cn/
     category: 招生
+  - name: 教务处
+    url: https://jw.muc.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业指导中心
+    url: https://career.muc.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
   tags:
   - '985'
 - name: 天津大学
@@ -587,6 +671,14 @@ schools:
   - name: 天津大学研究生招生网
     url: https://yzb.tju.edu.cn/
     category: 招生
+  - name: 教务处
+    url: https://oaa.tju.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业指导中心
+    url: https://job.tju.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
   tags:
   - '985'
 - name: 东北大学
@@ -601,6 +693,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.neu.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://aao.neu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生处
+    url: https://xsc.neu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业信息网
+    url: http://job.neu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zs.neu.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 南开大学
@@ -615,6 +723,22 @@ schools:
   - name: 南开大学信息公开网
     url: https://xxgk.nankai.edu.cn/
     category: 信息公开
+  - name: 教务部
+    url: https://jwc.nankai.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生工作网
+    url: https://xgb.nankai.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业指导中心
+    url: https://career.nankai.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zsb.nankai.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 复旦大学
@@ -689,6 +813,18 @@ schools:
   - name: 信息公开网
     url: https://xxgk.tongji.edu.cn/
     category: 信息公开
+  - name: 本科生院
+    url: https://jwc.tongji.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生处
+    url: https://student.tongji.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业信息网
+    url: https://tj91.tongji.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
   tags:
   - '985'
 - name: 哈尔滨工业大学
@@ -703,6 +839,22 @@ schools:
   - name: 哈尔滨工业大学信息公开网
     url: https://xxgk.hit.edu.cn/
     category: 信息公开
+  - name: 本科生院
+    url: https://hituc.hit.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xgb.hit.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业中心
+    url: https://career.hit.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zsb.hit.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 南京大学
@@ -717,6 +869,22 @@ schools:
   - name: 南京大学信息公开网
     url: https://xxgk.nju.edu.cn/
     category: 信息公开
+  - name: 本科生院
+    url: https://jw.nju.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xgb.nju.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业中心
+    url: https://job.nju.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://bkzs.nju.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 东南大学
@@ -731,6 +899,18 @@ schools:
   - name: 东南大学信息公开网
     url: https://xxgk.seu.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://jwc.seu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生处
+    url: https://xsc.seu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 本科招生网
+    url: https://zsb.seu.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 浙江大学
@@ -742,6 +922,22 @@ schools:
   - name: 研究生招生网
     url: http://www.grs.zju.edu.cn/yjszs/
     category: 招生
+  - name: 本科生院
+    url: https://ugrs.zju.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工门户
+    url: http://www.xgb.zju.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业中心
+    url: https://www.career.zju.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zdzsc.zju.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 中南大学
@@ -756,6 +952,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.csu.edu.cn/
     category: 信息公开
+  - name: 本科生院
+    url: https://bksy.csu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工网
+    url: https://xgw.csu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业中心
+    url: https://career.csu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zhaosheng.csu.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 中国海洋大学
@@ -770,6 +982,18 @@ schools:
   - name: 信息公开网
     url: https://xxgk.ouc.edu.cn
     category: 信息公开
+  - name: 教务处
+    url: https://jwc.ouc.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业中心
+    url: http://career.ouc.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://bkzs.ouc.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 华南理工大学
@@ -784,6 +1008,18 @@ schools:
   - name: 信息公开网
     url: https://xxgk.scut.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://jw.scut.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生工作处
+    url: https://www2.scut.edu.cn/student/
+    category: 通知公告
+    stype: 综合信息
+  - name: 本科招生网
+    url: https://admission.scut.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 中国科学技术大学
@@ -798,6 +1034,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.ustc.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://www.teach.ustc.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工在线
+    url: https://stuhome.ustc.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业中心
+    url: https://www.job.ustc.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zsb.ustc.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 电子科技大学
@@ -812,6 +1064,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.uestc.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://www.jwc.uestc.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xgb.uestc.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业网
+    url: https://jiuye.uestc.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zs.uestc.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 西北农林科技大学
@@ -826,6 +1094,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.nwsuaf.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://jiaowu.nwsuaf.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xuegong.nwsuaf.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业网
+    url: https://job.nwsuaf.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zhshw.nwsuaf.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 西安交通大学
@@ -840,6 +1124,22 @@ schools:
   - name: 西安交通大学信息公开网
     url: https://xxgk.xjtu.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://jwc.xjtu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xsc.xjtu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业网
+    url: https://job.xjtu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zs.xjtu.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 西北工业大学
@@ -854,6 +1154,18 @@ schools:
   - name: 信息公开网
     url: https://xxgk.nwpu.edu.cn
     category: 信息公开
+  - name: 教务处
+    url: https://jiaowu.nwpu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xgb.nwpu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 本科招生网
+    url: https://zsb.nwpu.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 北京交通大学
@@ -865,6 +1177,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.bjtu.edu.cn/
     category: 信息公开
+  - name: 本科生院
+    url: https://bksy.bjtu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生处
+    url: https://xsc.bjtu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业网
+    url: https://job.bjtu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zsw.bjtu.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 北京化工大学
@@ -876,6 +1204,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.buct.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://jiaowuchu.buct.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xgb.buct.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业中心
+    url: https://career.buct.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://goto.buct.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 北京科技大学
@@ -890,6 +1234,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.ustb.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://jwc.ustb.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生处
+    url: https://student.ustb.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业网
+    url: https://job.ustb.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zhaosheng.ustb.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 北京工业大学
@@ -904,6 +1264,18 @@ schools:
   - name: 信息公开网
     url: https://xxgk.bjut.edu.cn/
     category: 信息公开
+  - name: 本科生院
+    url: https://undergrad.bjut.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业网
+    url: https://job.bjut.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://admissions.bjut.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 北京中医药大学
@@ -912,6 +1284,22 @@ schools:
   - name: 研究生院
     url: https://yanjiusheng.bucm.edu.cn/
     category: 通知公告
+  - name: 教务处
+    url: https://jxw.bucm.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xuegongbu.bucm.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业网
+    url: https://jy.bucm.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://bkzs.bucm.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 北京林业大学
@@ -926,6 +1314,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.bjfu.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://jwc.bjfu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生处
+    url: https://xsc.bjfu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业网
+    url: https://job.bjfu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zsb.bjfu.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 中国传媒大学
@@ -940,6 +1344,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.cuc.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://jwc.cuc.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生处
+    url: https://xsc.cuc.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业网
+    url: https://jy.cuc.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zhaosheng.cuc.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 北京外国语大学
@@ -954,6 +1374,18 @@ schools:
   - name: 信息公开网
     url: https://xxgk.bfsu.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://jwc.bfsu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业指导中心
+    url: https://jyzd.bfsu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://joinus.bfsu.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 对外经济贸易大学
