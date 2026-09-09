@@ -17,6 +17,18 @@ schools:
   - name: 信息公开（招生）
     url: https://xxgk.njust.edu.cn/14426/list.htm
     category: 信息公开
+  - name: 教务处
+    url: https://jwc.njust.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生工作处
+    url: https://xgc.njust.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 本科招生网
+    url: https://zsb.njust.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 西安电子科技大学
@@ -31,6 +43,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.xidian.edu.cn/
     category: 信息公开
+  - name: 教务处
+    url: https://jwc.xidian.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生工作处
+    url: https://xgc.xidian.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业信息网
+    url: https://job.xidian.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zsb.xidian.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '211'
 - name: 北京邮电大学
@@ -65,6 +93,18 @@ schools:
   - name: 信息公开网
     url: https://xxgk.szu.edu.cn/
     category: 信息公开
+  - name: 教务部
+    url: https://jwb.szu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生部
+    url: https://xsb.szu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 本科招生网
+    url: https://zs.szu.edu.cn/
+    category: 通知公告
+    stype: 本科招生
 - name: 华东师范大学
   domain: ecnu.edu.cn
   sources:
@@ -77,6 +117,22 @@ schools:
   - name: 信息公开网
     url: https://xxgk.ecnu.edu.cn/
     category: 信息公开
+  - name: 本科生院
+    url: https://bksy.ecnu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学工部
+    url: https://xsgzb.ecnu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生职业发展中心
+    url: https://career.ecnu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
+  - name: 本科招生网
+    url: https://zsb.ecnu.edu.cn/
+    category: 通知公告
+    stype: 本科招生
   tags:
   - '985'
 - name: 华中科技大学
@@ -148,6 +204,18 @@ schools:
   - name: 研究生招生网
     url: https://zs.xmu.edu.cn/
     category: 招生
+  - name: 教务处
+    url: https://jwc.xmu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 学生处
+    url: https://xsc.xmu.edu.cn/
+    category: 通知公告
+    stype: 综合信息
+  - name: 就业创业中心
+    url: https://jy.xmu.edu.cn/
+    category: 通知公告
+    stype: 就业招聘
   tags:
   - '985'
 - name: 吉林大学
