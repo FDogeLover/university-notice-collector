@@ -114,6 +114,7 @@ schools:
   - name: 研究生院
     url: http://gs.whu.edu.cn/
     category: 通知公告
+    browser: true
   tags:
   - '985'
 - name: 中山大学
@@ -156,7 +157,7 @@ schools:
     url: https://yzb.jlu.edu.cn/
     category: 招生
   - name: 研究生院
-    url: https://gs.jlu.edu.cn/
+    url: https://yjsy.jlu.edu.cn/
     category: 通知公告
   tags:
   - '985'
@@ -305,11 +306,8 @@ schools:
     url: https://grs.muc.edu.cn/
     category: 招生
   - name: 本科招生网
-    url: https://zs.muc.edu.cn/
+    url: https://zb.muc.edu.cn/
     category: 招生
-  - name: 信息公开网
-    url: https://xxgk.muc.edu.cn/
-    category: 信息公开
   tags:
   - '985'
 - name: 天津大学
@@ -321,9 +319,6 @@ schools:
   - name: 天津大学研究生招生网
     url: https://yzb.tju.edu.cn/
     category: 招生
-  - name: 天津大学信息公开网
-    url: https://xxgk.tju.edu.cn/
-    category: 信息公开
   tags:
   - '985'
 - name: 东北大学
@@ -601,7 +596,7 @@ schools:
   domain: bjut.edu.cn
   sources:
   - name: 研究生院
-    url: https://yjsy.bjut.edu.cn/
+    url: https://graduate.bjut.edu.cn/
     category: 招生
   - name: 研究生招生网
     url: https://yanzhao.bjut.edu.cn/
@@ -866,7 +861,7 @@ schools:
     url: https://yzb.hrbeu.edu.cn/
     category: 招生
   - name: 研究生院
-    url: https://gs.hrbeu.edu.cn/
+    url: https://yjsy.hrbeu.edu.cn/
     category: 通知公告
   - name: 信息公开网
     url: https://xxgk.hrbeu.edu.cn/
@@ -891,7 +886,7 @@ schools:
   domain: ecust.edu.cn
   sources:
   - name: 研究生院
-    url: https://gs.ecust.edu.cn/
+    url: https://graduate.ecust.edu.cn/
     category: 招生
   - name: 研究生招生网
     url: https://yz.ecust.edu.cn/
@@ -975,7 +970,7 @@ schools:
   domain: hhu.edu.cn
   sources:
   - name: 研究生院
-    url: https://yjsy.hhu.edu.cn
+    url: https://gs.hhu.edu.cn/
     category: 招生
   - name: 信息公开网
     url: https://xxgk.hhu.edu.cn
