@@ -15,7 +15,7 @@
   var TAG_COLORS = {
     "推免": "#e11d48", "预推免": "#ea580c", "夏令营": "#2563eb",
     "招生": "#16a34a", "复试": "#0891b2", "调剂": "#7c2d12",
-    "公示": "#64748b", "通知": "#7c3aed",
+    "奖助": "#b45309", "公示": "#64748b", "通知": "#7c3aed",
   };
   function tagColor(name) { return TAG_COLORS[name] || "#94a3b8"; }
   function tint(color) { return "color-mix(in srgb, " + color + " 12%, #ffffff)"; }

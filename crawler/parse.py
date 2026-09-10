@@ -507,7 +507,11 @@ def parse_detail(html, url):
 
 
 def infer_type(title):
-    """根据标题打类型标签，用于后续筛选。"""
+    """根据标题打类型标签，用于后续筛选。
+
+    奖助类（奖学金/助学金/资助/补助…）单独成类：这类通知散布在学生处、
+    学工部、教务处等多个栏目，按标题识别比按栏目归类更准确。
+    """
     if re.search(r"预报名|预推免", title):
         return "预推免"
     if re.search(r"推免|推荐免试|免试|保研|接收", title):
@@ -518,6 +522,10 @@ def infer_type(title):
         return "复试"
     if "调剂" in title:
         return "调剂"
+    if re.search(r"奖学金|助学金|助学贷款|资助|补助|补贴|减免|津贴|"
+                 r"勤工助学|困难生|家庭经济困难|经济困难|绿色通道|奖助|"
+                 r"评奖评优|三助|生源地信用助学|国家助学|学费代偿", title):
+        return "奖助"
     if re.search(r"招生|简章|报考|报名", title):
         return "招生"
     if re.search(r"公示|名单", title):

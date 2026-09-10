@@ -34,38 +34,59 @@ _COLLEGE_EXCLUDE = {
     "研究生招生信息网", "招生办", "学校招生", "学院研究生", "学部学院",
 }
 
+# 日期片段（容忍数字内部与数字/单位之间的空格，配合 _normalize_digit_spacing）
+_YEAR = r"2\s*0\s*\d\s*\d"
+_DATE_CN = rf"((?:{_YEAR}\s*年\s*)?\d{{1,2}}\s*月\s*\d{{1,2}}\s*日)"
+_DATE_NUM = rf"({_YEAR}\s*[-/.]\s*\d{{1,2}}\s*[-/.]\s*\d{{1,2}})"
+
 # 截止 / 截至 类时间
 _DEADLINE_PATTERNS = [
     re.compile(
-        r"((?:20\d{2}年)?\d{1,2}月\d{1,2}日)"
+        rf"{_DATE_CN}"
         r"\s*(?:24\s*时\s*)?(?:(?:之)?前|止|截止|结束)"
     ),
     re.compile(
         r"(?:报名|申请|系统|材料|提交|考核|资格|截至|截止)"
         r"(?:截止|截至|关闭|报名截止)[：:（(\s]*"
-        r"((?:20\d{2}年)?\d{1,2}月\d{1,2}日)"
+        rf"{_DATE_CN}"
     ),
     # "截止时间/截止日期（为/是）X" 句式（中文日期，年份可缺省）
     re.compile(
         r"(?:报名|申请|材料|提交)?(?:截止时间|截止日期)\s*(?:为|是)?\s*[:：]?\s*"
-        r"((?:20\d{2}年)?\d{1,2}月\d{1,2}日)"
+        rf"{_DATE_CN}"
     ),
     # 数字日期句式："报名截止时间 2026-10-20" / "截止日期：2026/10/20"
     re.compile(
         r"(?:报名|申请|材料|提交|网上)?(?:截止时间|截止日期|报名截止|申请截止)"
-        r"\s*(?:为|是)?\s*[:：]?\s*((?:20\d{2})[-/.]\d{1,2}[-/.]\d{1,2})"
+        r"\s*(?:为|是)?\s*[:：]?\s*"
+        rf"{_DATE_NUM}"
     ),
     re.compile(
-        r"((?:20\d{2}年)?\d{1,2}月\d{1,2}日)\s*(?:为)?\s*"
+        rf"{_DATE_CN}\s*(?:为)?\s*"
         r"(?:截止时间|逾期|最后期限|报名截止)"
     ),
 ]
 
+# 兜底一：日期后紧跟截止语义（含"日下班前/日前提交"等插入词）
+_LOOSE_DEADLINE = re.compile(
+    rf"{_DATE_CN}\s*(?:下班|当日|当天|中午|12\s*[:：]?\s*00)?\s*"
+    r"(?:前|之前|以前|截止|逾期|止)")
+
+# 兜底二：截止语义在日期前（"最晚截止至 4 月 30 日"、"报名于 5 月 6 日结束"）
+_LOOSE_DEADLINE_PRE = re.compile(
+    r"(?:最晚|截止至|截至|截止到|报名于|申请于|并?于)\s*"
+    rf"{_DATE_CN}\s*(?:结束|截止|止)?")
+
+
+def _flex(digits):
+    """把 '4位数字' 展开成容忍内部空格的模式，如 2026 → 2\\s*0\\s*2\\s*6。"""
+    return r"\s*".join([r"\d"] * digits)
+
 # 起止时间范围
 _PERIOD_PATTERN = re.compile(
-    r"((?:20\d{2}年)?\d{1,2}月\d{1,2}日)"
+    rf"{_DATE_CN}"
     r"\s*(?:至|到|—|–|~|～|-)\s*"
-    r"((?:20\d{2}年)?\d{1,2}月\d{1,2}日)"
+    rf"{_DATE_CN}"
 )
 
 # 招生对象
@@ -133,10 +154,14 @@ def normalize_deadline(text, published_at=""):
     与数字日期 "2026-10-20" / "2026/10/20" / "2026.10.20"。
     用于排序与"即将截止"筛选。
     """
+    text = _normalize_digit_spacing(text or "")
     m = re.search(
-        r"(?:(20\d{2})年)?\s*(\d{1,2})月(\d{1,2})日", text or "")
+        rf"(?:({_YEAR})\s*年\s*)?\s*(\d{{1,2}})\s*月\s*(\d{{1,2}})\s*日",
+        text or "")
     if not m:
-        m = re.search(r"(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})", text or "")
+        m = re.search(
+            rf"({_YEAR})\s*[-/.]\s*(\d{{1,2}})\s*[-/.]\s*(\d{{1,2}})",
+            text or "")
         if not m:
             return ""
         year = int(m.group(1))
@@ -189,9 +214,28 @@ def clean_summary(content, title, max_len=120):
     return ""
 
 
+def _normalize_digit_spacing(text):
+    """压缩日期表达中的多余空格（Word/PDF 复制正文常见：'9月 25 日'、'2 02 6 年'）。
+
+    处理两类：数字内部空格（2 02 6 → 2026）、数字与时间单位之间空格
+    （9月 25 日 → 9月25日）。只针对日期单位，不动其他数字（避免改写正文语义）。
+    """
+    t = text or ""
+    # 数字内部：2026 被拆成 2 02 6
+    t = re.sub(r"(?<=\d)[ \t\u3000]+(?=\d)", "", t)
+    # 数字与日期单位之间：9 月 25 日 / 9月 25 日
+    t = re.sub(r"(\d)[ \t\u3000]+(?=[年月日])", r"\1", t)
+    t = re.sub(r"(?<=[年月])[ \t\u3000]+(?=\d)", "", t)
+    return t
+
+
 def extract_highlights(content, title=""):
-    """抽取关键信息，返回 dict（可能包含 deadline / period / target / college）。"""
-    t = (content or "")[:2000]
+    """抽取关键信息，返回 dict（可能包含 deadline / period / target / college）。
+
+    正文先做数字空格归一化：高校通知大量转发自 Word/PDF，数字常被拆开
+    （"9月 25 日"、"2 02 6 年"），不归一化会导致日期规则整体失配。
+    """
+    t = _normalize_digit_spacing((content or "")[:2000])
     if not t:
         return {}
 
@@ -203,6 +247,16 @@ def extract_highlights(content, title=""):
         if m:
             hl["deadline"] = m.group(1)
             break
+
+    # 兜底：规则未覆盖的表述（"…日前提交"、"最晚截止至…"）
+    if "deadline" not in hl:
+        m = _LOOSE_DEADLINE.search(t)
+        if m:
+            hl["deadline"] = m.group(1)
+    if "deadline" not in hl:
+        m = _LOOSE_DEADLINE_PRE.search(t)
+        if m:
+            hl["deadline"] = m.group(1)
 
     # 起止范围（无截止时作为补充信息）
     if "deadline" not in hl:

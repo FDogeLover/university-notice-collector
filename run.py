@@ -100,6 +100,26 @@ def dedupe_notices(conn):
     return removed
 
 
+def retag_notices(conn):
+    """按当前规则重打类型标签（规则升级后回填存量，幂等）。"""
+    rows = conn.execute("SELECT id, title, type_tag FROM notices").fetchall()
+    changed = 0
+    for r in rows:
+        new = parse.infer_type(r["title"])
+        if new != r["type_tag"]:
+            conn.execute("UPDATE notices SET type_tag=? WHERE id=?",
+                         (new, r["id"]))
+            changed += 1
+    conn.commit()
+    dist = conn.execute(
+        "SELECT COALESCE(type_tag,'未分类') t, COUNT(*) c FROM notices "
+        "GROUP BY t ORDER BY c DESC").fetchall()
+    print(f"重打标签完成：更新 {changed} 条")
+    for d in dist[:10]:
+        print(f"  {d['t']}: {d['c']}")
+    return changed
+
+
 def load_config():
     with open(CONFIG, encoding="utf-8") as f:
         return yaml.safe_load(f) or {}
@@ -271,6 +291,8 @@ def main():
                     help="仅为已入库通知补齐结构化字段（截止日期等），不抓取网页")
     ap.add_argument("--dedupe", action="store_true",
                     help="清理存量重复（同校+同标题+同发布时间），不抓取网页")
+    ap.add_argument("--retag", action="store_true",
+                    help="按当前规则重打类型标签（规则升级后回填），不抓取网页")
     args = ap.parse_args()
 
     store.init_db()
@@ -284,6 +306,10 @@ def main():
         return
     if args.dedupe:
         dedupe_notices(conn)
+        conn.close()
+        return
+    if args.retag:
+        retag_notices(conn)
         conn.close()
         return
 

@@ -32,6 +32,27 @@ def test_deadline_numeric_date():
     assert normalize_deadline("2026/10/25") == "2026-10-25"
 
 
+def test_deadline_with_word_spacing():
+    """Word/PDF 复制正文里数字被空格拆开时仍能提取（真实语料常见）。"""
+    assert extract_highlights(
+        "请于 9 月 30 日 前 将材料报送至学院办公室。")["deadline"] == "9月30日"
+    assert extract_highlights(
+        "各培养单位于 9月 25 日下班前提交项目申报材料。")["deadline"] == "9月25日"
+    assert extract_highlights(
+        "最晚截止至 4 月 30 日，提交存档学位论文后方可领取证书。"
+    )["deadline"] == "4月30日"
+    # 数字内部空格（2 02 6 年）
+    assert extract_highlights(
+        "截止时间为 2 02 6 年 9 月 30 日。")["deadline"]
+
+
+def test_deadline_no_false_positive_on_period():
+    """起止时间范围不应被误判为截止日期。"""
+    hl = extract_highlights(
+        "报名时间：2026 年 03 月 18 日 至 2026 年 04 月 07 日。")
+    assert "deadline" not in hl
+
+
 def test_deadline_shi_phrase():
     assert extract_highlights(
         "报名截止时间为2026年9月30日，逾期不再受理。")["deadline"] == "2026年9月30日"
