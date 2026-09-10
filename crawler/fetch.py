@@ -133,9 +133,11 @@ _real_page = None
 
 
 def _get_real_context():
-    """获取真实 Chrome 持久化上下文（有头 + 反自动化 + 独立用户数据目录）。
+    """获取真实 Chrome 持久化上下文。
 
-    首次调用会弹出真实 Chrome 窗口；之后复用同一上下文与 cookie。
+    本机有 Chrome/Edge 时用有头持久化上下文（可过瑞数等强反爬，窗口置于
+    屏幕外）；服务器/无桌面环境没有本机 Chrome 时，回退 Playwright 自带
+    chromium 无头渲染，保证 real_browser 栏目在服务器也能运行。
     """
     global _real_ctx, _real_pw
     if _real_ctx is None:
@@ -145,25 +147,36 @@ def _get_real_context():
             r"C:\Program Files\Google\Chrome\Application\chrome.exe",
             r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
             r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+            # Linux 常见位置（服务器无头环境）
+            "/usr/bin/google-chrome", "/usr/bin/google-chrome-stable",
+            "/usr/bin/chromium", "/usr/bin/chromium-browser",
         ]
         exe = next((c for c in chrome_candidates
                     if Path(c).exists()), None)
-        if exe is None:
-            raise RuntimeError("未找到本机 Chrome/Edge")
         profile = Path.home() / ".university_info_profile"
         profile.mkdir(parents=True, exist_ok=True)
         _real_pw = sync_playwright().start()
-        _real_ctx = _real_pw.chromium.launch_persistent_context(
-            str(profile), executable_path=exe, headless=False,
-            args=["--disable-blink-features=AutomationControlled",
-                  "--no-first-run", "--no-default-browser-check",
-                  # 窗口定位到屏幕外：不遮挡用户桌面、不抢前台焦点。
-                  # 不能用最小化——最小化会让页面进入后台可见性状态，
-                  # 反而触发部分 WAF（如瑞数）的检测。
-                  "--window-position=-32000,-32000"],
-            ignore_default_args=["--enable-automation"],
-            viewport={"width": 1366, "height": 900},
-        )
+        if exe is None:
+            # 服务器兜底：Playwright 自带 chromium 无头
+            _real_ctx = _real_pw.chromium.launch_persistent_context(
+                str(profile), headless=True,
+                args=["--disable-blink-features=AutomationControlled",
+                      "--no-first-run", "--no-default-browser-check"],
+                ignore_default_args=["--enable-automation"],
+                viewport={"width": 1366, "height": 900},
+            )
+        else:
+            _real_ctx = _real_pw.chromium.launch_persistent_context(
+                str(profile), executable_path=exe, headless=False,
+                args=["--disable-blink-features=AutomationControlled",
+                      "--no-first-run", "--no-default-browser-check",
+                      # 窗口定位到屏幕外：不遮挡用户桌面、不抢前台焦点。
+                      # 不能用最小化——最小化会让页面进入后台可见性状态，
+                      # 反而触发部分 WAF（如瑞数）的检测。
+                      "--window-position=-32000,-32000"],
+                ignore_default_args=["--enable-automation"],
+                viewport={"width": 1366, "height": 900},
+            )
     return _real_ctx
 
 
