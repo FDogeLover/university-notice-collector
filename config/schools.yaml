@@ -1309,17 +1309,17 @@ schools:
     url: https://graduate.bjfu.edu.cn/
     category: 招生
   - name: 研究生招生网
-    url: https://yz.bjfu.edu.cn/
+    url: https://graduate.bjfu.edu.cn/zsgl/zsdt/index.html
     category: 招生
   - name: 信息公开网
     url: https://xxgk.bjfu.edu.cn/
     category: 信息公开
   - name: 教务处
-    url: https://jwc.bjfu.edu.cn/
+    url: https://jwc.bjfu.edu.cn/jwkx/index.html
     category: 通知公告
     stype: 综合信息
   - name: 学生处
-    url: https://xsc.bjfu.edu.cn/
+    url: https://xsc.bjfu.edu.cn/tzgg/index.html
     category: 通知公告
     stype: 综合信息
   - name: 就业网
@@ -2283,15 +2283,15 @@ schools:
     browser: true
     real_browser: true
   - name: 教务处
-    url: https://jwc.ahu.edu.cn/
+    url: https://jwc.ahu.edu.cn/10314/list.htm
     category: 通知公告
     stype: 综合信息
   - name: 学生处
-    url: https://xsc.ahu.edu.cn/
+    url: https://xsc.ahu.edu.cn/10708/list.htm
     category: 通知公告
     stype: 综合信息
   - name: 就业网
-    url: https://job.ahu.edu.cn/
+    url: https://job.ahu.edu.cn/tzgg/list.htm
     category: 通知公告
     stype: 就业招聘
   tags:
@@ -2357,13 +2357,13 @@ schools:
   domain: whut.edu.cn
   sources:
   - name: 研究生院
-    url: https://gs.whut.edu.cn/
+    url: http://gd.whut.edu.cn/tzgg/
     category: 招生
   - name: 本科招生网
     url: https://zs.whut.edu.cn/
     category: 招生
   - name: 信息公开网
-    url: https://xxgk.whut.edu.cn/
+    url: http://xxgk.whut.edu.cn/xxgg/
     category: 信息公开
   - name: 教务处
     url: http://jwc.whut.edu.cn/
@@ -2383,7 +2383,7 @@ schools:
   domain: hzau.edu.cn
   sources:
   - name: 研究生院
-    url: https://yjsy.hzau.edu.cn/
+    url: https://yjs.hzau.edu.cn/tzgg.htm
     category: 招生
   - name: 本科招生网
     url: https://zs.hzau.edu.cn/
@@ -2401,7 +2401,7 @@ schools:
   domain: zuel.edu.cn
   sources:
   - name: 研究生院
-    url: https://yjsy.zuel.edu.cn/
+    url: https://yjsy.zuel.edu.cn/18006/list.htm
     category: 招生
   - name: 本科招生网
     url: https://bkzs.zuel.edu.cn/
@@ -2410,15 +2410,15 @@ schools:
     url: https://xxgk.zuel.edu.cn/
     category: 信息公开
   - name: 教务处
-    url: https://jwc.zuel.edu.cn/
+    url: https://jwc.zuel.edu.cn/tzgg/list.htm
     category: 通知公告
     stype: 综合信息
   - name: 学工部
-    url: https://xgb.zuel.edu.cn/
+    url: https://xgb.zuel.edu.cn/3007/list.htm
     category: 通知公告
     stype: 综合信息
   - name: 就业中心
-    url: https://jyzx.zuel.edu.cn/
+    url: https://jyzx.zuel.edu.cn/home/article?categoryId=3
     category: 通知公告
     stype: 就业招聘
   tags:
@@ -2592,7 +2592,7 @@ schools:
     category: 通知公告
     stype: 综合信息
   - name: 学工部
-    url: https://xg.gxu.edu.cn/
+    url: https://xg.gxu.edu.cn/tzgg.htm
     category: 通知公告
     stype: 综合信息
   - name: 就业创业网
@@ -2608,17 +2608,17 @@ schools:
     url: https://yz.swjtu.edu.cn/
     category: 招生
   - name: 本科招生网
-    url: https://zsb.swjtu.edu.cn/
+    url: https://zhaosheng.swjtu.edu.cn/zsxin_xi/tzgg.htm
     category: 招生
   - name: 信息公开网
-    url: https://xxgk.swjtu.edu.cn/
+    url: https://infpub.swjtu.edu.cn/gksx/zsksxx.htm
     category: 信息公开
   - name: 本科生院
-    url: https://bksy.swjtu.edu.cn/
+    url: https://bksy.swjtu.edu.cn/tzgg/qb.htm
     category: 通知公告
     stype: 综合信息
   - name: 学工部
-    url: https://xg.swjtu.edu.cn/
+    url: https://xg.swjtu.edu.cn/web/Home/NewsList
     category: 通知公告
     stype: 综合信息
   - name: 就业中心
@@ -2626,7 +2626,7 @@ schools:
     category: 通知公告
     stype: 就业招聘
   - name: 本科招生网
-    url: https://zhaosheng.swjtu.edu.cn/
+    url: https://zhaosheng.swjtu.edu.cn/zsxin_xi/tzgg.htm
     category: 通知公告
     stype: 本科招生
   tags:
@@ -2883,7 +2883,7 @@ schools:
   domain: nxu.edu.cn
   sources:
   - name: 研究生院
-    url: https://graduate.nxu.edu.cn/
+    url: https://graduate.nxu.edu.cn/tzgg.htm
     category: 通知公告
   - name: 本科招生网
     url: https://zs.nxu.edu.cn/
@@ -2892,11 +2892,11 @@ schools:
     url: https://xxgk.nxu.edu.cn/
     category: 信息公开
   - name: 本科生院
-    url: https://bksy.nxu.edu.cn/
+    url: https://bksy.nxu.edu.cn/index/tzgg.htm
     category: 通知公告
     stype: 综合信息
   - name: 学生处
-    url: https://xsc.nxu.edu.cn/
+    url: https://xsc.nxu.edu.cn/tzgg.htm
     category: 通知公告
     stype: 综合信息
   tags:
@@ -2966,7 +2966,7 @@ schools:
     category: 招生
     browser: true
   - name: 研究生院
-    url: https://yjsy.shzu.edu.cn/
+    url: https://yjsh.shzu.edu.cn/tzgg2/list.psp
     category: 招生
     browser: true
   - name: 信息公开网
@@ -2978,7 +2978,7 @@ schools:
     category: 通知公告
     stype: 综合信息
   - name: 学工部
-    url: https://xgb.shzu.edu.cn/
+    url: https://xgb.shzu.edu.cn/1025/list.htm
     category: 通知公告
     stype: 综合信息
   tags:
@@ -2990,15 +2990,15 @@ schools:
     url: https://www.ccom.edu.cn/
     category: 通知公告
   - name: 教务处
-    url: https://www.ccom.edu.cn/jgk/jxkygldw/jwc/bmjj.htm
+    url: https://www.ccom.edu.cn/jgk/jxkygldw/jwc/ggl.htm
     category: 通知公告
     stype: 综合信息
   - name: 学生工作部
-    url: https://www.ccom.edu.cn/jgk/dzgljg/xsgzb_tw_wzb/bmjj.htm
+    url: https://www.ccom.edu.cn/jgk/dzgljg/xsgzb_tw_wzb/ggl.htm
     category: 通知公告
     stype: 综合信息
   - name: 就业指导中心
-    url: https://www.ccom.edu.cn/jgk/dzgljg/xsjyzdzx/bmjj.htm
+    url: https://www.ccom.edu.cn/zsyjy/jyxx.htm
     category: 通知公告
     stype: 就业招聘
   - name: 本科招生

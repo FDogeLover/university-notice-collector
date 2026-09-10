@@ -92,3 +92,38 @@ def test_reimport_keeps_stype(tmp_path, monkeypatch):
     ).fetchone()
     conn.close()
     assert row["stype"] == "讲座学术"
+
+
+def test_url_change_migrates_not_duplicates(tmp_path, monkeypatch):
+    """同校同栏目名改 URL：就地更新旧行，不残留幽灵栏目。"""
+    monkeypatch.setenv("UNIV_DB", str(tmp_path / "migrate.db"))
+    from db import store
+
+    store.init_db()
+    conn = store.connect()
+    store.import_schools(conn, [{
+        "name": "X大学", "domain": "x.edu.cn",
+        "sources": [{"name": "研究生院", "url": "https://old.x.edu.cn/",
+                     "category": "通知公告"}],
+    }])
+    # 该栏目已抓到一条通知，改 URL 后应保留关联
+    conn.execute("INSERT INTO notices(school_id, source_id, title, url) "
+                 "SELECT school_id, id, '通知', 'https://old.x.edu.cn/1.htm' "
+                 "FROM sources WHERE url='https://old.x.edu.cn/'")
+    conn.commit()
+
+    store.import_schools(conn, [{
+        "name": "X大学", "domain": "x.edu.cn",
+        "sources": [{"name": "研究生院", "url": "https://new.x.edu.cn/tzgg.htm",
+                     "category": "通知公告"}],
+    }])
+    rows = conn.execute(
+        "SELECT url FROM sources WHERE school_id=1").fetchall()
+    assert len(rows) == 1, "不应残留旧 URL 幽灵栏目"
+    assert rows[0]["url"] == "https://new.x.edu.cn/tzgg.htm"
+    # 历史通知仍指向该栏目
+    n = conn.execute(
+        "SELECT COUNT(*) c FROM notices WHERE source_id="
+        "(SELECT id FROM sources WHERE school_id=1)").fetchone()["c"]
+    conn.close()
+    assert n == 1

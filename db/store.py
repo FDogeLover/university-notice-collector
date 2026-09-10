@@ -79,6 +79,22 @@ def import_schools(conn, schools):
             "SELECT id FROM schools WHERE name=?", (s["name"],)
         ).fetchone()["id"]
         for src in s.get("sources", []):
+            # URL 迁移：同校同栏目名但 URL 变化时，就地更新旧行（保留其历史
+            # 通知的 source_id 关联），避免旧 URL 残留成幽灵栏目被反复采集
+            old = conn.execute(
+                "SELECT id, url FROM sources WHERE school_id=? AND name=? "
+                "AND url != ? ORDER BY id LIMIT 1",
+                (school_id, src.get("name"), src["url"]),
+            ).fetchone()
+            if old and not conn.execute(
+                    "SELECT 1 FROM sources WHERE url=?", (src["url"],)).fetchone():
+                conn.execute(
+                    "UPDATE sources SET url=?, category=?, "
+                    "stype=COALESCE(?, stype) WHERE id=?",
+                    (src["url"], src.get("category"),
+                     src.get("stype"), old["id"]),
+                )
+                continue
             # stype 缺省：新栏目落'研究生教育'；已存在栏目保留原值不回退
             conn.execute(
                 "INSERT INTO sources(school_id, name, url, category, stype) "
