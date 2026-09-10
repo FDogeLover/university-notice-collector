@@ -132,3 +132,22 @@ def test_detail_skips_file_url(fake_fetch, fake_parse):
         "https://admission.pku.edu.cn/docs/a.pdf", use_browser=False)
     assert content is None and published == ""
     assert fake_fetch.script  # 未被消费，说明没发请求
+
+
+def test_published_ignores_insane_year():
+    """解析错误的未来年份（如 2052）不应作为发布时间入库。"""
+    html = """
+    <html><body><div id="content">
+    <p>发布时间：2052年9月1日</p>
+    <p>正文第一段：根据上级要求，现将有关安排通知如下。</p>
+    <p>正文第二段：请各单位按时完成材料报送工作，逾期不再受理。</p>
+    </div></body></html>
+    """
+    d = parse.parse_detail(html, "https://gs.x.edu.cn/p/3.htm")
+    assert d["published_at"] != "2052-09-01"
+    assert d["published_at"] == ""
+
+    # 合理年份仍正常提取
+    html2 = html.replace("2052年", "2026年")
+    d2 = parse.parse_detail(html2, "https://gs.x.edu.cn/p/4.htm")
+    assert d2["published_at"] == "2026-09-01"

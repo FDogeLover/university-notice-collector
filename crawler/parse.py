@@ -84,6 +84,13 @@ _PUBLISHED_META_KEYS = {
 }
 
 
+def _sane_year(year):
+    """发布时间年份合理性：2000 ~ 当前年+2（防 OCR/正则误读如 2052）。"""
+    from datetime import date
+
+    return 2000 <= year <= date.today().year + 2
+
+
 def _extract_published(html, soup):
     """提取发布时间：meta 标签 → "发布时间：" 标签 → 全文首个日期。"""
     for m in soup.find_all("meta"):
@@ -92,11 +99,11 @@ def _extract_published(html, soup):
             continue
         dm = re.search(r"(20\d{2})[-/年.](\d{1,2})[-/月.](\d{1,2})",
                        (m.get("content") or ""))
-        if dm:
+        if dm and _sane_year(int(dm.group(1))):
             return f"{dm.group(1)}-{int(dm.group(2)):02d}-{int(dm.group(3)):02d}"
     for regex in (_PUBLISHED_LABEL_RE,):
         m = regex.search(html)
-        if m:
+        if m and _sane_year(int(m.group(1))):
             return f"{m.group(1)}-{int(m.group(2)):02d}-{int(m.group(3)):02d}"
     return ""
 
@@ -453,12 +460,14 @@ def parse_detail(html, url):
     if not title and soup.title:
         title = soup.title.get_text(strip=True)
 
-    # 发布时间：meta 标签 / "发布时间：" 标签 → 全文首个日期兜底
+    # 发布时间：meta 标签 / "发布时间：" 标签 → 全文首个合理日期兜底
     published = _extract_published(html, soup)
     if not published:
-        m = re.search(r"(20\d{2})[-/年.](\d{1,2})[-/月.](\d{1,2})", html)
-        if m:
-            published = f"{m.group(1)}-{int(m.group(2)):02d}-{int(m.group(3)):02d}"
+        for m in re.finditer(r"(20\d{2})[-/年.](\d{1,2})[-/月.](\d{1,2})", html):
+            if _sane_year(int(m.group(1))):
+                published = (f"{m.group(1)}-{int(m.group(2)):02d}"
+                             f"-{int(m.group(3)):02d}")
+                break
 
     # 正文快照：定位正文容器 → 按块级聚合 → 质量门禁 → PDF 附件兜底
     for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):

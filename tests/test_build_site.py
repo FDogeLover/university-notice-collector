@@ -45,6 +45,11 @@ def test_build_site_generates_valid_files(tmp_path, monkeypatch):
     assert data["stats"]["schools"] == 1
     assert data["notices"][0]["title"] == "2026年推免生接收通知"
     assert data["notices"][0]["has_content"] is True
+    # "最近更新"必须是抓取时间，不能是原文发布日期
+    from datetime import date
+
+    assert data["stats"]["last_fetch"].startswith(date.today().isoformat())
+    assert not data["stats"]["last_fetch"].startswith("2026-09-01")
 
     # 正文快照文件：window.SITE_CONTENT 注入格式，含正文与 JSON 合法
     ctext = (out / "data" / "content" / f"{nid}.js").read_text(encoding="utf-8")

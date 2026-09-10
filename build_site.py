@@ -91,7 +91,9 @@ def collect(conn, max_content):
     for n in notices:
         by_type[n["type"]] = by_type.get(n["type"], 0) + 1
         by_school[n["school"]] = by_school.get(n["school"], 0) + 1
-    last_fetch = max((n["published"] for n in notices), default="")
+    # "最近更新"取实际抓取时间（与主站语义一致）；不能用 published_at：
+    # 那是原文发布日期，可能含历史/异常日期（如解析错误的 2052 年）
+    last_fetch = max((r["fetched_at"] or "" for r in rows), default="")
     stats = {
         "schools": len(by_school),
         "notices": len(notices),
