@@ -1745,8 +1745,8 @@ schools:
 - name: 辽宁大学
   domain: lnu.edu.cn
   sources:
-  - name: 辽宁大学研究生院
-    url: https://gs.lnu.edu.cn/
+  - name: 研究生院通知公告
+    url: https://grs.lnu.edu.cn/zhxx/tztg.htm
     category: 招生
   - name: 辽宁大学招生网
     url: https://zs.lnu.edu.cn/
@@ -2267,8 +2267,8 @@ schools:
 - name: 安徽大学
   domain: ahu.edu.cn
   sources:
-  - name: 安徽大学研究生院
-    url: https://grs.ahu.edu.cn/
+  - name: 研究生院
+    url: https://grasschool.ahu.edu.cn/9577/list.htm
     category: 招生
     browser: true
     real_browser: true
@@ -2359,12 +2359,14 @@ schools:
   - name: 研究生院
     url: http://gd.whut.edu.cn/tzgg/
     category: 招生
+    browser: true
   - name: 本科招生网
     url: https://zs.whut.edu.cn/
     category: 招生
   - name: 信息公开网
     url: http://xxgk.whut.edu.cn/xxgg/
     category: 信息公开
+    browser: true
   - name: 教务处
     url: http://jwc.whut.edu.cn/
     category: 通知公告
@@ -2373,10 +2375,7 @@ schools:
     url: http://stuplaza.whut.edu.cn/
     category: 通知公告
     stype: 综合信息
-  - name: 就业中心
-    url: https://scc.whut.edu.cn/
-    category: 通知公告
-    stype: 就业招聘
+    browser: true
   tags:
   - '211'
 - name: 华中农业大学
@@ -2388,9 +2387,6 @@ schools:
   - name: 本科招生网
     url: https://zs.hzau.edu.cn/
     category: 招生
-  - name: 信息公开网
-    url: https://xxgk.hzau.edu.cn/
-    category: 信息公开
   - name: 本科生院
     url: https://bksy.hzau.edu.cn/
     category: 通知公告
@@ -2403,6 +2399,7 @@ schools:
   - name: 研究生院
     url: https://yjsy.zuel.edu.cn/18006/list.htm
     category: 招生
+    browser: true
   - name: 本科招生网
     url: https://bkzs.zuel.edu.cn/
     category: 招生
@@ -2413,14 +2410,17 @@ schools:
     url: https://jwc.zuel.edu.cn/tzgg/list.htm
     category: 通知公告
     stype: 综合信息
+    browser: true
   - name: 学工部
     url: https://xgb.zuel.edu.cn/3007/list.htm
     category: 通知公告
     stype: 综合信息
+    browser: true
   - name: 就业中心
     url: https://jyzx.zuel.edu.cn/home/article?categoryId=3
     category: 通知公告
     stype: 就业招聘
+    browser: true
   tags:
   - '211'
 - name: 华中师范大学
@@ -2581,20 +2581,24 @@ schools:
   - name: 广西大学招生信息网
     url: https://zs.gxu.edu.cn/
     category: 招生
-  - name: 广西大学研究生院
-    url: https://yjsy.gxu.edu.cn/
+  - name: 研究生院
+    url: https://yjsc.gxu.edu.cn/tzgg.htm
     category: 招生
-  - name: 广西大学信息公开网
-    url: https://xxgk.gxu.edu.cn/
+    browser: true
+  - name: 信息公开
+    url: https://dwxwgk.gxu.edu.cn/dwgk/zdjc.htm
     category: 信息公开
+    browser: true
   - name: 教务处
     url: https://jwc.gxu.edu.cn/
     category: 通知公告
     stype: 综合信息
+    browser: true
   - name: 学工部
     url: https://xg.gxu.edu.cn/tzgg.htm
     category: 通知公告
     stype: 综合信息
+    browser: true
   - name: 就业创业网
     url: https://jyy.gxu.edu.cn/
     category: 通知公告
@@ -2885,20 +2889,20 @@ schools:
   - name: 研究生院
     url: https://graduate.nxu.edu.cn/tzgg.htm
     category: 通知公告
+    browser: true
   - name: 本科招生网
     url: https://zs.nxu.edu.cn/
     category: 招生
-  - name: 信息公开网
-    url: https://xxgk.nxu.edu.cn/
-    category: 信息公开
   - name: 本科生院
     url: https://bksy.nxu.edu.cn/index/tzgg.htm
     category: 通知公告
     stype: 综合信息
+    browser: true
   - name: 学生处
     url: https://xsc.nxu.edu.cn/tzgg.htm
     category: 通知公告
     stype: 综合信息
+    browser: true
   tags:
   - '211'
 - name: 新疆大学
@@ -2969,10 +2973,6 @@ schools:
     url: https://yjsh.shzu.edu.cn/tzgg2/list.psp
     category: 招生
     browser: true
-  - name: 信息公开网
-    url: https://xxgk.shzu.edu.cn/
-    category: 信息公开
-    browser: true
   - name: 教务处
     url: https://jwc.shzu.edu.cn/
     category: 通知公告
@@ -2993,10 +2993,12 @@ schools:
     url: https://www.ccom.edu.cn/jgk/jxkygldw/jwc/ggl.htm
     category: 通知公告
     stype: 综合信息
+    browser: true
   - name: 学生工作部
     url: https://www.ccom.edu.cn/jgk/dzgljg/xsgzb_tw_wzb/ggl.htm
     category: 通知公告
     stype: 综合信息
+    browser: true
   - name: 就业指导中心
     url: https://www.ccom.edu.cn/zsyjy/jyxx.htm
     category: 通知公告
