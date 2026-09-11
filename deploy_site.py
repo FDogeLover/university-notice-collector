@@ -67,15 +67,23 @@ def publish(site_dir, branch="gh-pages", remote="origin"):
     msg = f"deploy site {date.today().isoformat()} (build from local db)"
     commit = run(["git", "commit-tree", tree, "-m", msg], env=env)
     last_err = None
-    for attempt in range(3):
+    # 推送远端：优先 SSH（github.com 到本机的 HTTPS 间歇性超时 ~130s，
+    # 同机 Obsidian 仓库走 SSH 长期稳定；社区亦推荐 SSH 替代 HTTPS）。
+    # 远端名从环境变量 UNIV_PUSH_REMOTE 读取，默认 github-univ（见 ~/.ssh/config）。
+    push_remote = os.environ.get("UNIV_PUSH_REMOTE", "github-univ")
+    # 指数退避：5s → 30s → 120s（HTTPS 超时窗口约 130s，短重试会落在同一窗口内）
+    backoff = [5, 30, 120]
+    for attempt in range(len(backoff) + 1):
         try:
-            run(["git", "push", "--force", remote,
+            run(["git", "push", "--force", push_remote,
                  f"{commit}:refs/heads/{branch}"])
             break
         except RuntimeError as e:  # noqa: PERF203
             last_err = e
-            print(f"   push 失败（第 {attempt + 1} 次），5s 后重试…")
-            time.sleep(5)
+            if attempt < len(backoff):
+                wait = backoff[attempt]
+                print(f"   push 失败（第 {attempt + 1} 次），{wait}s 后重试…")
+                time.sleep(wait)
     else:
         raise last_err
     index_file.unlink(missing_ok=True)
