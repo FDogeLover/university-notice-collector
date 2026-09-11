@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5343"]={"content": "文件下载： 【定稿】华南师范大学2026年采用澳门“四校联考”成绩录取澳门学生简章.pdf\n“澳門四高校聯合入學考試（語言科及數學科）” 聲明書_202603-新.pdf"};

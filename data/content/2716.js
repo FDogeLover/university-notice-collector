@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2716"]={"content": "中国传媒大学研究生学位论文编写规则（人文社科版）.pdf\n中国传媒大学研究生学位论文编写规则（自然科学版）.pdf\n中国传媒大学研究生学位论文编写规则（人文社科版）.doc\n中国传媒大学研究生学位论文编写规则（自然科学版）.doc"};

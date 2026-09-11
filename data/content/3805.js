@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3805"]={"content": "现将党委学生工作部2026年暑假值班安排通知如下：\n值班带班时间为：8:30-11:30，13:30-16:30。\n\n【正文图片1】下载失败: https://xsc.dlut.edu.cn/virtual_attach_file.vsb?afc=HLz6g7L8"};

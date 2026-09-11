@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4495"]={"content": "复旦大学 2026 年上海市综合评价录取改革试点面试准考证发布，相关考生可登录 教育部阳光高考特殊类型招生信息服务平台 查看。\n附：面试考场入口示意图\n\n【正文图片1】下载失败: https://ao.fudan.edu.cn/_upload/article/images/ab/b1/6d1be57"};

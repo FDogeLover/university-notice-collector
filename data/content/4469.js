@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4469"]={"content": "用人单位招聘服务\n联系电话： 024-83687393 024-83689881\nEmail：neujiuye@163.com\n地 址： 南湖校区学生活动中心313室\n学生业务办理及政策咨询\n联系电话： 024-83681260 024-83676599\nEmail：NEU83681260@163.com\n地 址： 南湖校区学生活动中心313、314室 浑南校区学生中心408室\n生涯教育及就业指导活动\nEmail：NEUcareer@163.com\n东大职业发展\nNEU职业指导\n东北大学学生指导服务中心 版权所有@2025 技术支持： 才立方就业"};

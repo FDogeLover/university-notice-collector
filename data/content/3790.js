@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3790"]={"content": "编号 | 院系名称 | 专业名称 | 学制 | 科类 | 招生人数 | 计划类别名称"};

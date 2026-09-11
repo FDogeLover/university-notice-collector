@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5228"]={"content": "中国石油大学-智慧就业网\n导航分类 生源介绍 招聘指南 下载专区 来校招聘指南 首页 > 来校招聘指南 搜索\n中国石油大学（华东）学生就业指导中心版权所有 鲁ICP备05021531号-6\n技术支持： 易就业"};

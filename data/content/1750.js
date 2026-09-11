@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1750"]={"content": "博士招生服务\n手机登录\n获取验证码\n注册账号 忘记密码?\n[请设置标题]\n请选择证件类型 身份证 港澳台身份证 华侨身份证(无身份证者可填写护照号)\n返回登录\n设置成功！\nCopyright © 2026 Copyright © 暨南大学研究生院 All rights reserved."};

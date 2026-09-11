@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["317"]={"content": "为方便考生备考，现将我校2027年硕士研究生招生考试初试自命题科目考试大纲予以公布，请及时下载查看。\n\n【附件】2027年硕士研究生招生考试自命题科目考试大纲.zip\n（zip 打包的考试大纲文档，请在官方原文页面下载查看）\n下载地址：https://yzb.bupt.edu.cn/system/_content/download.jsp?urltype=news.DownloadAttachUrl&owner=2080207026&wbfileid=181"};

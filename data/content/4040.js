@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4040"]={"content": "以下为2026年第二学士学位拟录取名单，现公示如下：\n如有异议，可通过以下渠道反馈：\n招生办公室：010-62325294\n监督电话：010-62332229\n申诉或举报邮箱：jiwei@ustb.edu.cn\n北京科技大学本科招生办公室\n2026年7月2日"};

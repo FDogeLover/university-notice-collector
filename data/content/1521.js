@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1521"]={"content": "根据国家留学基金委创新型人才国际合作培养项目管理要求，现对我校创新型人才国际合作培养项目 2026 年拟推荐人员（第二批）进行公示，如有异议，请在 2026 年 6 月 12 日前与研究生院培养办联系。\n联系邮箱： xiaofeilu@jiangnan.edu.cn 联系电话： 0510-82100295\n公示内容：\n江南大学研究生院\n2026 年 6 月 5 日"};

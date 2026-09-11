@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["700"]={"content": "中央民族大学研究生课程教学大纲（模板）"};

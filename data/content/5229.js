@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5229"]={"content": "CAS Login 学生就业信息管理系统 Password Password Validation Code Please use the latest version of Chrome for best experience.\nen\nmc-qr mc-wx"};

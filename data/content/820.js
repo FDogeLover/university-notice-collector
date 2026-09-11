@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["820"]={"content": "硕士研究生招生考试\n系统提示：\n1、请使用考生报名号或考生编号和密码进行登录，初始密码为身份证后6位(若最后一位X请大写)。\n2、请使用火狐、谷歌浏览器登录本系统。否则不排除因浏览器不兼容而产生异常状况\n3、由于查询人员较多，如遇异常情况，请稍后再进行查询。\nCopyright(C)2017 yzb.hit.edu.cn 版权所有 哈尔滨工业大学研招办"};

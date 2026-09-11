@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["573"]={"content": "清华大学研究生招生办公室（境内）：010-62782192 yjszb@tsinghua.edu.cn 清华大学研究生招生办公室（港澳台及国际）：010-62781380 grad@tsinghua.edu.cn\nCopyright © 2021 All rights reserved. 清华大学 版权所有"};

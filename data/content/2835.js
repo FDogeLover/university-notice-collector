@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2835"]={"content": "数字工大\n博士点（个）\n11个一级学科博士学位授权点+1个博土专业学位类别"};

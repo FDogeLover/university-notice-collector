@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2658"]={"content": "1.登录网址： https://gradscpt.buct.edu.cn\n2.输入学校统一身份认证账号及密码，登录平台\n3.绑定电子邮箱\n4.点击相关模块，带电子签章的成绩单、在读证明会发送到已绑定的邮箱中。\n5.登录学校电子签章在线验证平台 https://esign.buct.edu.cn/#/verifyServiceNoLogin 即可验证真伪。"};

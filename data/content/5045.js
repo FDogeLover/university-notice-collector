@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5045"]={"content": "考试课程：大学物理I实验、大学物理II实验\n考试时间：8月23日13:00-15:00\n考试方式：闭卷考试\n考试地点：成栋楼818\n联系电话：55190310张老师\n农业装备与智能工程学院\n2026年8月20日"};

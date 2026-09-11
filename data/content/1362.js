@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1362"]={"content": "根据上级管理部门要求，现将辽宁大学2026年艺术类拟招生专业对应的省统考科类公布如下， 是否招生以及招生规模以后续公布的招生简章和招生计划为准。"};

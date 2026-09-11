@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2374"]={"content": "关于开展研究生国际学术会议资助项目申报工作的通知（复研通﹝2026﹞9 号）.pdf\n附件1 - 研究生国际学术会议资助项目申请书（模板）.doc\n附件2 - 资助研究生参加国际会议通知单（模板，2024）.doc\n附件3 - 研究生参加国际学术会议总结报告（模板）.doc"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1399"]={"content": "华东理工大学本科招生小程序开通\n为了更好的服务广大考生，我校近期开通“本科招生小程序”，各位考生及家长可以通过微信或 QQ 主页面下拉菜单搜索“华东理工大学本科招生”进入小程序，查询 学院专业介绍 、 历年分数 、 招生计划 等信息，详细使用方法可以通过 https://mp.weixin.qq.com/s/gSaE9PjjYeOP9sWz6pJ-dg 查看。\n扫描下方二维码，关注“华东理工大学本科招生”小程序"};

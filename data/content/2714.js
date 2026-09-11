@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2714"]={"content": "详见附件！\n附件：\n中国传媒大学研究生在读证明.docx"};

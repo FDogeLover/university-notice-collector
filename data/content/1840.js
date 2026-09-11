@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1840"]={"content": "根据 《 省教育厅办公室关于开展贵州省首批产业兼职教师选聘工作的通知 》 ，现对 我校 拟聘人员进行 公示 （详见附件）。\n附件：贵州大学拟聘贵州省首批产业兼职教师汇总表.pdf\n贵州大学研究生院\n2026 年 3 月 31 日"};

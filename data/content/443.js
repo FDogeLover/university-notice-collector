@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["443"]={"content": "魅力厦大 思明校区 翔安校区 漳州校区 马来西亚分校\n思明校区\n翔安校区\n漳州校区\n马来西亚分校\n线上直播安排\n线下宣讲行程\n联系方式\n厦门大学2026年本科线下招生宣讲、咨询活动一览表 2025-06-20 首页 上页 1 下页 尾页"};

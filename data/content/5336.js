@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5336"]={"content": "就业动态\n汽车行业面向2026届高校毕业生专场招聘会\n2026年1月9日 点击人次：\n 5803\n一、企业：\n万乐得汽车电子（嘉兴）有限公司、广州小鹏汽车科技有限公司、北京汽车集团有限公司等\n二、时间：\n2025年12月31日至2026年1月31日\n三、参会链接：\nhttps://www.ncss.cn/student/jobfair/fairdetails.html?fairId=7q4g92Cz7rpPwxo5u1KpQZ"};

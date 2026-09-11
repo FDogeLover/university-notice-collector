@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6626"]={"content": "西藏大学2027年推免硕士（含直博生）研究生复试考生须知.pdf\n附件1 面试考生使用手册（电脑一机位，手机二机位）.docx\n附件2 诚信考试承诺书.pdf"};

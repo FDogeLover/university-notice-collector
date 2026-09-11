@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4940"]={"content": "为进一步做好 延边大学 2026年第二学士学位招生 工作，保障考生利益，第二学士学位报名时间延长至 2026年6月10日。\n联系电话： 0433-2732477"};

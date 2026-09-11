@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["892"]={"content": "土木工程学院 (报名时间： 8月28日中午12:00-9月1日中午12:00 )\n材料科学与工程学院 (报名时间： 8月28日中午12:00-9月3日中午12:00）"};

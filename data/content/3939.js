@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3939"]={"content": "经个人申报、单位推荐、专家评审和学校评议，拟支持 2026 年度同济大学学生思政工作研究项目 13 项，现将名单公示如下。\n公示期为 2026 年 6 月 22 日 -6 月 24 日，如有异议，请于公示期内反映。\n联系人：蔡老师\n联系电话： 65987719\n联系邮箱： tjszk@tongji.edu.cn"};

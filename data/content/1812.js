@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1812"]={"content": "附件包含四川农业大学2026年招生省市的相关资料，欢迎考生下载查看。"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3255"]={"content": "联系人：杨老师\n联系电话：0971-5313165\n地址：行政C区211室"};

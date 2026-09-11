@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3795"]={"content": "我校2026年强基计划入围高校考核结果已公布，考生可登录湖南大学强基计划报名平台（https://bm.chsi.com.cn/jcxkzs/sch/10532）查看入围情况。\n具体测试安排请于6月28日之后登陆报名平台查看准考证，请仔细阅读考生须知并按照相关要求完成学校考核环节。\n咨询热线：0731-88823560\n湖南大学本科生招生办公室\n2026年6月26日"};

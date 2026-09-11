@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4220"]={"content": "在线帮助\n云上西财APP\n扫码下载\nENG 中文\n西南财经大学 版权所有 webmaster@swufe.edu.cn | 蜀ICP备 05006386-1号 ｜ 川公网安备51010502010087号\n\n【内嵌正文（iframe）】\n使用微信扫一扫登录\n“西南财经大学统一身份认证”\n扫描成功\n在微信中轻触允许即可登录\n你已取消此次登录\n你可再次扫描登录，或关闭窗口\n你可 再次登录 ，或关闭窗口\n微信用户 微信快捷登录 登录中... 使用其他头像、昵称或账号"};

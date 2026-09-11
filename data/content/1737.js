@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1737"]={"content": "报名服务\n登录\n注册 | 忘记密码\n注册\n请选择证件类型 居民身份证 中国护照 军官证 士兵证 回乡证 旅行证 港澳台身份证 其它证件 其他 户口薄 其他 外籍护照\n去登录\n设置密码\n设置成功！\n版权所有 暨南大学 copyright 2015-2026 ecupl all rights reserved. \r\n 中国 广州市 黄埔大道西601号 邮编：510632"};

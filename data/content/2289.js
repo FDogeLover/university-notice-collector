@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2289"]={"content": "附件：\n1. 北京师范大学北京校区2026年研究生新生入学须知\n2. 北京师范大学珠海校区2026年研究生新生入学须知\n3. 北京师范大学行李标签-博士\n4. 北京师范大学行李标签-硕士、本直博"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2839"]={"content": "数字工大\n博士生导师（人）\n具有博士研究生指导资格的教师总数"};

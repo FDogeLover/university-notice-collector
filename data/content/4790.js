@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4790"]={"content": "首页\n通知公告\n文章\n上一篇： 关于公布2026“我的未来不是梦”求职经历征文大赛评选结果的通知\n下一篇： 中国石油大学（北京） 2027届秋季校园招聘活动邀请函"};

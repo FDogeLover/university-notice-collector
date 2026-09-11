@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4791"]={"content": "首页\n通知公告\n文章\n上一篇： 关于2026届毕业生申报赴基层、海上平台就业奖的通知\n下一篇： 2026年暑期毕业生就业手续及户档、组织关系办理指南"};

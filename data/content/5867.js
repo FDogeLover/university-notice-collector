@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5867"]={"content": "【正文图片1】下载失败: https://job.tju.edu.cn/Uploads/image/20260903/17884321303085\n\n【正文图片2】下载失败: https://job.tju.edu.cn/Uploads/image/20260903/17884321195658\n\n【正文图片3】下载失败: https://job.tju.edu.cn/Uploads/image/20260903/17884317924485"};

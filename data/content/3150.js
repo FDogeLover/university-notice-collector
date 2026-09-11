@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3150"]={"content": "https://sms.hainanu.edu.cn/info/1431/4511.htm"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["415"]={"content": "各相关考生：\n我校2026年博士研究生招生工作已结束，现将拟录取名单公示如下：\n公示时间：2026年6月29日-7月6日；\n公示电话：0531-88364334；\n公示邮箱：shandayanzhaoban@sdu.edu.cn。\n山东大学研究生招生办公室\n2026年6月29日\n公示已结束"};

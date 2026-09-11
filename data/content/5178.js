@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5178"]={"content": "本资源仅限校内访问\n请登录客户端VPN后浏览"};

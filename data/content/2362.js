@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2362"]={"content": "关于2017年夏秋两季毕业研究生证件照拍摄工作的通知.pdf\n附件：学信网登陆操作流程.doc.pdf"};

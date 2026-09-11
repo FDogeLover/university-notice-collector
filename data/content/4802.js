@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4802"]={"content": "学生 企业 教师 学院/部门 记住账号 忘记密码？ 学生可以使用学号登录，初始密码为：@TMU+身份证号后六位\n学生忘记密码，请联系学院管理员重置密码！\n企业忘记密码，请联系客服邮箱：mima@jingzhuncloud.com"};

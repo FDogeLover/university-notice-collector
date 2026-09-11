@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["962"]={"content": "2026年博士研究生招生系统\n考生编号\n*\n考生编号查询\n登录密码\n*\n验证码\n登录\n忘密\n说明：\n1. 初始密码为身份证号\n2. 浏览器推荐使用谷歌、火狐及Safari，360、UC等双核浏览器要选用极速模式（不建议使用IE，IE须10以上版本）"};

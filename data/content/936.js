@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["936"]={"content": "《国务院办公厅关于做好政府信息依申请公开工作的意见》，请点击查看：\nhttp://www.gov.cn/xxgk/pub/govpublic/mrlm/201309/t20130913_66392.html"};

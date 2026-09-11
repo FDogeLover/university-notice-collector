@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2421"]={"content": "жңӘжқҘе·ҘеӯҰйҷў2026е№ҙеҚҡеЈ«з ”з©¶з”ҹжҳҘеӯЈжӢӣз”ҹз®Җд»Ӣ"};

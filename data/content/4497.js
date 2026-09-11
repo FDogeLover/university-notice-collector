@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4497"]={"content": "我校 2026 年浙江省综合评价暨“三位一体”综合成绩及排名已公布，考生可登录 教育部阳光高考特殊类型招生信息服务平台 查询。"};

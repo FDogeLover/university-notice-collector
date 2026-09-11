@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3143"]={"content": "https://citpa.hainanu.edu.cn/info/1043/52751.htm"};

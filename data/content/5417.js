@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5417"]={"content": "点击附件下载陕西师范大学2026年舞蹈类专业招生简章"};

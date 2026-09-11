@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3583"]={"content": "华东师范大学2026年强基计划招生校测成绩及录取结果已发布，请入围校测考生登录我校强基计划报名平台（https://bm.chsi.com.cn/jcxkzs/sch/10269），然后点击左侧菜单“成绩查询”查看校测成绩，点击“考生志愿填报”查看录取情况。\n华东师范大学招生办公室\n2026 年7月4日"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2679"]={"content": "校研发〔2026〕9号-北京科技大学研究生学生证、校徽管理办法.pdf\n\n【正文图片1】下载失败: https://gs.ustb.edu.cn/ewebeditor/uploadfile/2026/05/28/2026\n\n【正文图片2】下载失败: https://gs.ustb.edu.cn/ewebeditor/uploadfile/2026/05/28/2026\n\n【正文图片3】下载失败: https://gs.ustb.edu.cn/ewebeditor/sysimage/icon16/pdf.gif"};
