@@ -293,6 +293,8 @@ def main():
                     help="清理存量重复（同校+同标题+同发布时间），不抓取网页")
     ap.add_argument("--retag", action="store_true",
                     help="按当前规则重打类型标签（规则升级后回填），不抓取网页")
+    ap.add_argument("--shard", type=lambda s: tuple(map(int, s.split("/"))),
+                    help="分片采集：--shard 1/3 表示只跑 1/3 的栏目（可按时段分次跑完）")
     args = ap.parse_args()
 
     store.init_db()
@@ -322,6 +324,10 @@ def main():
 
     total_new = 0
     enabled_names = store.enabled_school_names(conn)
+    shard_idx = shard_total = 0
+    if args.shard:
+        shard_idx, shard_total = args.shard  # (i, n)：只跑第 i 片（从 1 计）
+    seen_sources = 0  # 分片计数：按栏目出现顺序稳定取模
     for school in schools:
         if args.school and args.school not in school["name"]:
             continue
@@ -333,11 +339,20 @@ def main():
         for source in school.get("sources", []):
             if args.source and args.source not in source["name"]:
                 continue
+            # 分片：按栏目顺序取模，把全量拆成 N 段分时执行（规避 1 小时限制）
+            if shard_total:
+                if seen_sources % shard_total != shard_idx - 1:
+                    seen_sources += 1
+                    continue
+                seen_sources += 1
             print(f"\n== 采集 {school['name']} / {source['name']} ==")
             try:
                 total_new += crawl_source(conn, school, school_id, source, args)
             except Exception as e:  # noqa: BLE001
                 print(f"  !! {e}")
+
+    if shard_total:
+        print(f"\n[分片 {shard_idx}/{shard_total}] 本片完成，新增 {total_new} 条")
 
     fetch.close_browser()
     try:

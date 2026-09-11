@@ -177,6 +177,12 @@ def _get_real_context():
                 ignore_default_args=["--enable-automation"],
                 viewport={"width": 1366, "height": 900},
             )
+        # 持久化上下文已存在的页面也启用资源拦截
+        try:
+            for _p in _real_ctx.pages:
+                _block_heavy_resources(_p)
+        except Exception:  # noqa: BLE001
+            pass
     return _real_ctx
 
 
@@ -232,16 +238,15 @@ def _http_get_real_inner(url, wait_ms=5000):
         _real_page = ctx.pages[0] if ctx.pages else ctx.new_page()
     try:
         _real_page.goto(url, timeout=30000, wait_until="domcontentloaded")
-        _real_page.wait_for_timeout(wait_ms)
+        _smart_wait(_real_page, fallback_ms=wait_ms)
         # 瑞数挑战：首访后刷新一次
         html = _get_real_content(_real_page)
         if "$_ts" in html or len(html) < 1000:
             _real_page.reload(wait_until="domcontentloaded")
-            _real_page.wait_for_timeout(wait_ms)
+            _smart_wait(_real_page, fallback_ms=wait_ms)
         _real_page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-        _real_page.wait_for_timeout(1200)
-        _real_page.evaluate("window.scrollTo(0, 0)")
         _real_page.wait_for_timeout(600)
+        _real_page.evaluate("window.scrollTo(0, 0)")
         return _get_real_content(_real_page)
     except Exception:  # noqa: BLE001
         try:
@@ -267,6 +272,44 @@ def close_browser():
         _playwright = None
 
 
+# 页面加载时跳过的资源类型：图片/字体/媒体对正文抽取无用，拦截可显著提速
+_BLOCKED_RESOURCE_TYPES = {"image", "media", "font"}
+
+
+def _block_heavy_resources(page):
+    """拦截图片/字体/媒体资源（显著减少页面加载时间）。"""
+    def _route(route):
+        try:
+            if route.request.resource_type in _BLOCKED_RESOURCE_TYPES:
+                route.abort()
+            else:
+                route.continue_()
+        except Exception:  # noqa: BLE001
+            try:
+                route.continue_()
+            except Exception:  # noqa: BLE001
+                pass
+
+    try:
+        page.route("**/*", _route)
+    except Exception:  # noqa: BLE001
+        pass
+
+
+def _smart_wait(page, fallback_ms=5000, idle_ms=3500):
+    """智能等待：先等网络空闲（动态列表渲染完成的可靠信号）；
+
+    空闲超时则退化为较短固定等待。替代"无论页面快慢都等固定 5 秒"的做法。
+    """
+    try:
+        page.wait_for_load_state("networkidle", timeout=idle_ms)
+    except Exception:  # noqa: BLE001
+        try:
+            page.wait_for_timeout(min(fallback_ms, 2000))
+        except Exception:  # noqa: BLE001
+            pass
+
+
 def _http_get_browser(url, wait_ms=4500):
     """用真实浏览器渲染页面（可过 JS 反爬挑战 / 等待 JS 异步加载 / 懒加载图）。
 
@@ -288,14 +331,15 @@ def _http_get_browser(url, wait_ms=4500):
 def _http_get_browser_inner(url, wait_ms=4500):
     browser = _get_browser()
     page = browser.new_page()
+    _block_heavy_resources(page)
     try:
         page.goto(url, timeout=30000, wait_until="domcontentloaded")
-        page.wait_for_timeout(wait_ms)
-        # 滚动触发懒加载
+        # 智能等待：多数页面 networkidle 后即可取内容，避免固定 4.5s 空等
+        _smart_wait(page, fallback_ms=wait_ms)
+        # 滚动触发懒加载（图片已拦截，仅用于触发列表 DOM 渲染）
         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-        page.wait_for_timeout(1500)
+        page.wait_for_timeout(600)
         page.evaluate("window.scrollTo(0, 0)")
-        page.wait_for_timeout(800)
         return page.content()
     except Exception:  # noqa: BLE001
         try:
