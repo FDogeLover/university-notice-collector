@@ -57,9 +57,13 @@ HEADERS = {
     "Sec-Fetch-Site": "same-origin",
 }
 
-# Playwright 浏览器复用实例
-_browser = None
+# Playwright 驱动与浏览器实例。
+# 无头浏览器（browser: true）与真实 Chrome 上下文（real_browser: true）共用
+# 同一个驱动：同步 API 会在启动线程里留下一个运行中的事件循环，同进程内再建
+# 第二个 sync_playwright() 实例必然报 "Playwright Sync API inside the asyncio
+# loop"，即后启动的那一类栏目全部失败。共用一个驱动可规避。
 _playwright = None
+_browser = None
 
 # 单个页面浏览器操作的整体超时（秒）。站点 JS 死循环（无限循环/持续导航）
 # 会让 evaluate/content 永久挂起——playwright 任何超时参数都无法中断
@@ -116,67 +120,92 @@ def _browser_call_with_timeout(fn, *args, **kwargs):
         finished.set()
 
 
-def _get_browser():
-    global _browser, _playwright
-    if _browser is None:
+def _get_playwright():
+    """全局唯一的 playwright 驱动（无头与真实浏览器共用）。"""
+    global _playwright
+    if _playwright is None:
         from playwright.sync_api import sync_playwright
 
         _playwright = sync_playwright().start()
-        _browser = _playwright.chromium.launch(headless=True)
+    return _playwright
+
+
+def _restart_playwright():
+    """重建驱动：浏览器被强杀后旧连接可能已损坏，先停旧驱动再起新的。"""
+    global _playwright
+    if _playwright is not None:
+        try:
+            _playwright.stop()
+        except Exception:  # noqa: BLE001
+            pass
+        _playwright = None
+    return _get_playwright()
+
+
+def _get_browser():
+    global _browser
+    if _browser is None:
+        try:
+            _browser = _get_playwright().chromium.launch(headless=True)
+        except Exception:  # noqa: BLE001
+            _browser = _restart_playwright().chromium.launch(headless=True)
     return _browser
 
 
 # 真实 Chrome 模式（瑞数反爬用）：持久化上下文，跨请求复用
 _real_ctx = None
-_real_pw = None
 _real_page = None
 
 
-def _get_real_context():
-    """获取真实 Chrome 持久化上下文。
+def _launch_real_context(pw):
+    """创建真实浏览器持久化上下文（本机 Chrome 优先，服务器回退自带 chromium）。
 
     本机有 Chrome/Edge 时用有头持久化上下文（可过瑞数等强反爬，窗口置于
     屏幕外）；服务器/无桌面环境没有本机 Chrome 时，回退 Playwright 自带
     chromium 无头渲染，保证 real_browser 栏目在服务器也能运行。
     """
-    global _real_ctx, _real_pw
-    if _real_ctx is None:
-        from playwright.sync_api import sync_playwright
+    chrome_candidates = [
+        r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+        r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+        r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+        # Linux 常见位置（服务器无头环境）
+        "/usr/bin/google-chrome", "/usr/bin/google-chrome-stable",
+        "/usr/bin/chromium", "/usr/bin/chromium-browser",
+    ]
+    exe = next((c for c in chrome_candidates
+                if Path(c).exists()), None)
+    profile = Path.home() / ".university_info_profile"
+    profile.mkdir(parents=True, exist_ok=True)
+    if exe is None:
+        # 服务器兜底：Playwright 自带 chromium 无头
+        return pw.chromium.launch_persistent_context(
+            str(profile), headless=True,
+            args=["--disable-blink-features=AutomationControlled",
+                  "--no-first-run", "--no-default-browser-check"],
+            ignore_default_args=["--enable-automation"],
+            viewport={"width": 1366, "height": 900},
+        )
+    return pw.chromium.launch_persistent_context(
+        str(profile), executable_path=exe, headless=False,
+        args=["--disable-blink-features=AutomationControlled",
+              "--no-first-run", "--no-default-browser-check",
+              # 窗口定位到屏幕外：不遮挡用户桌面、不抢前台焦点。
+              # 不能用最小化——最小化会让页面进入后台可见性状态，
+              # 反而触发部分 WAF（如瑞数）的检测。
+              "--window-position=-32000,-32000"],
+        ignore_default_args=["--enable-automation"],
+        viewport={"width": 1366, "height": 900},
+    )
 
-        chrome_candidates = [
-            r"C:\Program Files\Google\Chrome\Application\chrome.exe",
-            r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
-            r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
-            # Linux 常见位置（服务器无头环境）
-            "/usr/bin/google-chrome", "/usr/bin/google-chrome-stable",
-            "/usr/bin/chromium", "/usr/bin/chromium-browser",
-        ]
-        exe = next((c for c in chrome_candidates
-                    if Path(c).exists()), None)
-        profile = Path.home() / ".university_info_profile"
-        profile.mkdir(parents=True, exist_ok=True)
-        _real_pw = sync_playwright().start()
-        if exe is None:
-            # 服务器兜底：Playwright 自带 chromium 无头
-            _real_ctx = _real_pw.chromium.launch_persistent_context(
-                str(profile), headless=True,
-                args=["--disable-blink-features=AutomationControlled",
-                      "--no-first-run", "--no-default-browser-check"],
-                ignore_default_args=["--enable-automation"],
-                viewport={"width": 1366, "height": 900},
-            )
-        else:
-            _real_ctx = _real_pw.chromium.launch_persistent_context(
-                str(profile), executable_path=exe, headless=False,
-                args=["--disable-blink-features=AutomationControlled",
-                      "--no-first-run", "--no-default-browser-check",
-                      # 窗口定位到屏幕外：不遮挡用户桌面、不抢前台焦点。
-                      # 不能用最小化——最小化会让页面进入后台可见性状态，
-                      # 反而触发部分 WAF（如瑞数）的检测。
-                      "--window-position=-32000,-32000"],
-                ignore_default_args=["--enable-automation"],
-                viewport={"width": 1366, "height": 900},
-            )
+
+def _get_real_context():
+    """获取真实 Chrome 持久化上下文（与无头浏览器共用同一驱动）。"""
+    global _real_ctx
+    if _real_ctx is None:
+        try:
+            _real_ctx = _launch_real_context(_get_playwright())
+        except Exception:  # noqa: BLE001
+            _real_ctx = _launch_real_context(_restart_playwright())
         # 持久化上下文已存在的页面也启用资源拦截
         try:
             for _p in _real_ctx.pages:
@@ -187,20 +216,14 @@ def _get_real_context():
 
 
 def close_real_browser():
-    """关闭真实 Chrome 模式。"""
-    global _real_ctx, _real_pw, _real_page
+    """关闭真实 Chrome 持久化上下文（驱动保留，供后续复用）。"""
+    global _real_ctx, _real_page
     if _real_ctx is not None:
         try:
             _real_ctx.close()
         except Exception:  # noqa: BLE001
             pass
         _real_ctx = None
-    if _real_pw is not None:
-        try:
-            _real_pw.stop()
-        except Exception:  # noqa: BLE001
-            pass
-        _real_pw = None
     _real_page = None
 
 
@@ -256,14 +279,19 @@ def _http_get_real_inner(url, wait_ms=5000):
 
 
 def close_browser():
-    """关闭无头浏览器实例，释放资源。"""
-    global _browser, _playwright
+    """关闭无头浏览器实例（驱动保留，供真实浏览器/后续重建复用）。"""
+    global _browser
     if _browser is not None:
         try:
             _browser.close()
         except Exception:  # noqa: BLE001
             pass
         _browser = None
+
+
+def close_playwright():
+    """彻底关闭 playwright 驱动（进程收尾时调用）。"""
+    global _playwright
     if _playwright is not None:
         try:
             _playwright.stop()
@@ -320,10 +348,10 @@ def _http_get_browser(url, wait_ms=4500):
     try:
         return _browser_call_with_timeout(_http_get_browser_inner, url, wait_ms)
     except _BrowserTimeout:
-        # 浏览器已损坏（chromium 被强杀），置空以便下次自动重建
-        global _browser, _playwright
+        # 浏览器已损坏（chromium 被强杀）：只丢句柄、保留驱动，
+        # 下次 _get_browser() 自动重建浏览器（驱动若也坏了会自动重启）
+        global _browser
         _browser = None
-        _playwright = None
         raise RuntimeError(
             f"浏览器渲染超时（>{_BROWSER_PAGE_TIMEOUT}s，chromium 已重建）: {url}")
 

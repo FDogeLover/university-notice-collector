@@ -359,6 +359,7 @@ def main():
         fetch.close_real_browser()
     except Exception:  # noqa: BLE001
         pass
+    fetch.close_playwright()
     conn.close()
     print(f"\n完成，共新增 {total_new} 条。"
           f"数据库：{store.get_db_path()}")
