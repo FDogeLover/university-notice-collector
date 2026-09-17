@@ -10,6 +10,9 @@ data/
 # 静态站生成产物（build_site.py 输出）
 site/
 
+# 部署机运行日志（logs/ 只在服务器上产生，不入库）
+logs/
+
 # 环境变量
 .env
 
