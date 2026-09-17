@@ -1088,9 +1088,6 @@ schools:
   - name: 研究生招生信息网
     url: https://yz.nwsuaf.edu.cn/
     category: 招生
-  - name: 本科招生网
-    url: https://zsb.nwsuaf.edu.cn/
-    category: 招生
   - name: 信息公开网
     url: https://xxgk.nwsuaf.edu.cn/
     category: 信息公开
@@ -1424,9 +1421,6 @@ schools:
 - name: 中央财经大学
   domain: cufe.edu.cn
   sources:
-  - name: 研究生招生网
-    url: https://gs.cufe.edu.cn/
-    category: 招生
   - name: 研究生院
     url: https://gs.cufe.edu.cn/
     category: 招生
@@ -1482,9 +1476,6 @@ schools:
 - name: 华北电力大学
   domain: ncepu.edu.cn
   sources:
-  - name: 本科招生网
-    url: https://bkzs.ncepu.edu.cn/
-    category: 招生
   - name: 研究生院
     url: https://yjsy.ncepu.edu.cn/
     category: 招生
@@ -1615,9 +1606,6 @@ schools:
   sources:
   - name: 研究生院
     url: https://gs.imu.edu.cn/
-    category: 招生
-  - name: 本科招生网
-    url: https://zs.imu.edu.cn/
     category: 招生
   - name: 信息公开网
     url: https://xxgk.imu.edu.cn/
@@ -1768,7 +1756,7 @@ schools:
   domain: nenu.edu.cn
   sources:
   - name: 研究生院
-    url: https://grs.nenu.edu.cn/
+    url: https://yjsy.nenu.edu.cn/tzgg.htm
     category: 招生
   - name: 本科招生网
     url: https://zsb.nenu.edu.cn/
@@ -1823,9 +1811,6 @@ schools:
 - name: 东北林业大学
   domain: nefu.edu.cn
   sources:
-  - name: 本科招生网
-    url: https://zsb.nefu.edu.cn
-    category: 招生
   - name: 研究生院
     url: https://yjsy.nefu.edu.cn
     category: 招生
@@ -1936,7 +1921,7 @@ schools:
   domain: neau.edu.cn
   sources:
   - name: 东北农业大学研究生院
-    url: https://yjsy.neau.edu.cn/
+    url: https://graduate.neau.edu.cn/
     category: 招生
   - name: 东北农业大学本科招生信息网
     url: https://zsb.neau.edu.cn/
@@ -2115,9 +2100,6 @@ schools:
   - name: 研究生院
     url: https://grs.njau.edu.cn/
     category: 招生
-  - name: 本科招生网
-    url: https://zsb.njau.edu.cn/
-    category: 招生
   - name: 信息公开网
     url: https://xxgk.njau.edu.cn/
     category: 信息公开
@@ -2217,9 +2199,6 @@ schools:
 - name: 中国石油大学（华东）
   domain: upc.edu.cn
   sources:
-  - name: 本科招生网
-    url: https://zs.upc.edu.cn/
-    category: 招生
   - name: 研究生招生网
     url: https://yz.upc.edu.cn/
     category: 招生
@@ -2268,7 +2247,7 @@ schools:
   domain: ahu.edu.cn
   sources:
   - name: 研究生院
-    url: https://grasschool.ahu.edu.cn/9577/list.htm
+    url: https://graschool.ahu.edu.cn/
     category: 招生
     browser: true
     real_browser: true
@@ -2555,7 +2534,7 @@ schools:
     url: https://yjsy.ncu.edu.cn/
     category: 招生
   - name: 南昌大学信息公开网
-    url: https://xxgk.ncu.edu.cn/
+    url: https://www.ncu.edu.cn/xxgk/xxgk.htm
     category: 信息公开
   - name: 教务处
     url: https://jwc.ncu.edu.cn/
@@ -2610,9 +2589,6 @@ schools:
   sources:
   - name: 研究生招生网
     url: https://yz.swjtu.edu.cn/
-    category: 招生
-  - name: 本科招生网
-    url: https://zhaosheng.swjtu.edu.cn/zsxin_xi/tzgg.htm
     category: 招生
   - name: 信息公开网
     url: https://infpub.swjtu.edu.cn/gksx/zsksxx.htm
@@ -2727,7 +2703,7 @@ schools:
     url: https://zsb.ynu.edu.cn
     category: 招生
   - name: 信息公开网
-    url: https://xxgk.ynu.edu.cn
+    url: https://www.ynu.edu.cn/gsgg.htm
     category: 信息公开
   - name: 本科生院
     url: https://www.jwc.ynu.edu.cn/
@@ -2753,7 +2729,7 @@ schools:
     url: https://zs.gzu.edu.cn
     category: 招生
   - name: 贵州大学信息公开网
-    url: https://xxgk.gzu.edu.cn
+    url: https://www.gzu.edu.cn/18096/list.htm
     category: 信息公开
   - name: 教务处
     url: https://aa.gzu.edu.cn/
