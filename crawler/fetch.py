@@ -130,8 +130,26 @@ def _get_playwright():
     return _playwright
 
 
+def _clear_zombie_loop():
+    """清理「僵尸事件循环」：驱动的 node 进程崩溃后（站点 JS 卡死被强杀时
+    实测会出现 EPIPE 崩溃），启动线程里仍残留一个标记为 running 的循环，
+    它会让后续 sync_playwright() 永远报 asyncio loop 错。playwright 判断
+    "是否在事件循环里"只看循环的归属线程标记，这里做最后兜底清掉。"""
+    import asyncio
+
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        return
+    try:
+        loop._thread_id = None  # noqa: SLF001  仅清归属标记，循环对象已不可用
+    except Exception:  # noqa: BLE001
+        pass
+
+
 def _restart_playwright():
-    """重建驱动：浏览器被强杀后旧连接可能已损坏，先停旧驱动再起新的。"""
+    """重建驱动：浏览器被强杀后旧连接可能已损坏，先停旧驱动再起新的；
+    旧驱动进程已崩溃时（正常停止无效）再兜底清理僵尸循环。"""
     global _playwright
     if _playwright is not None:
         try:
@@ -139,7 +157,11 @@ def _restart_playwright():
         except Exception:  # noqa: BLE001
             pass
         _playwright = None
-    return _get_playwright()
+    try:
+        return _get_playwright()
+    except Exception:  # noqa: BLE001
+        _clear_zombie_loop()
+        return _get_playwright()
 
 
 def _get_browser():
