@@ -2218,9 +2218,10 @@ schools:
     category: 通知公告
     stype: 就业招聘
   - name: 本科招生网
-    url: https://zhaosheng.upc.edu.cn/
+    url: https://zhaosheng.upc.edu.cn/cms/frontList.html?id=3148a5449c78447ca7dd10a728994df9
     category: 通知公告
     stype: 本科招生
+    browser: true
   tags:
   - '211'
 - name: 福州大学
