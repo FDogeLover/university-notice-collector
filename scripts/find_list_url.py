@@ -254,10 +254,56 @@ def apply_url(school_name, source_name, new_url):
     return False
 
 
+def problem_rows(limit=0):
+    """读最新巡检报告里的问题栏目：(学校, 栏目, URL)。"""
+    reports = sorted((ROOT / "logs").glob("inspection-*.txt"))
+    if not reports:
+        return None, []
+    rows = []
+    for line in reports[-1].read_text(encoding="utf-8").splitlines():
+        m = re.search(r"\]\s*(\S+?)（.*?）\s*\|\s*(.+?)\s*\|\s*(https?://\S+)\s*\|", line)
+        if m:
+            rows.append((m.group(1), m.group(2), m.group(3)))
+    return reports[-1].name, (rows[:limit] if limit else rows)
+
+
+def census():
+    """只看响应头与可读性，不做解析/渲染：快速统计各类「拿不到正文」的栏目。"""
+    name, rows = problem_rows()
+    if not rows:
+        print("没有巡检报告，先跑 scripts/inspect_sources.py")
+        return
+    print(f"{name}：{len(rows)} 个问题栏目，按当前请求头口径普查\n")
+    stat = {}
+    cases = {}
+    for school, src, url in rows:
+        pr = _raw_probe(url)
+        if pr["err"]:
+            key = "死域名/不可达"
+        elif pr["status"] >= 400:
+            key = f"HTTP {pr['status']}"
+        elif pr["ce"] == "br" and not pr["readable"]:
+            key = "br 未解压（本次修复的对象）"
+        elif pr["len"] < 3000 and not pr["readable"]:
+            key = "空页(WAF?)"
+        elif pr["readable"]:
+            key = "正文可读（问题在解析或列表结构）"
+        else:
+            key = "其它"
+        stat[key] = stat.get(key, 0) + 1
+        cases.setdefault(key, []).append(f"{school} / {src}  {url}")
+    for k, v in sorted(stat.items(), key=lambda x: -x[1]):
+        print(f"  {v:4d}  {k}")
+        for line in cases[k][:6]:
+            print(f"          - {line}")
+
+
 def main():
     ap = argparse.ArgumentParser(description="诊断问题栏目并找通知列表 URL")
     ap.add_argument("--diagnose", action="store_true", help="诊断巡检报告里的所有问题栏目")
-    ap.add_argument("--limit", type=int, default=0, help="诊断时最多处理多少条")
+    ap.add_argument("--census", action="store_true",
+                    help="只按响应头快速普查（不解析不渲染），配合 --br 可复核旧口径")
+    ap.add_argument("--limit", type=int, default=0, help="最多处理多少条")
     ap.add_argument("--school", help="学校名（与 --source 配合）")
     ap.add_argument("--source", help="栏目名")
     ap.add_argument("--browser", action="store_true", help="候选验证时额外用浏览器渲染试一次")
@@ -269,19 +315,16 @@ def main():
     global _ADVERTISE_BR
     _ADVERTISE_BR = args.br
 
+    if args.census:
+        census()
+        return
+
     if args.diagnose:
-        reports = sorted((ROOT / "logs").glob("inspection-*.txt"))
-        if not reports:
+        name, rows = problem_rows(args.limit)
+        if not rows:
             print("没有巡检报告，先跑 scripts/inspect_sources.py")
             return
-        rows = []
-        for line in reports[-1].read_text(encoding="utf-8").splitlines():
-            m = re.search(r"\]\s*(\S+?)（.*?）\s*\|\s*(.+?)\s*\|\s*(https?://\S+)\s*\|", line)
-            if m:
-                rows.append((m.group(1), m.group(2), m.group(3)))
-        if args.limit:
-            rows = rows[:args.limit]
-        print(f"{reports[-1].name}：{len(rows)} 个问题栏目\n")
+        print(f"{name}：{len(rows)} 个问题栏目\n")
         stat = {}
         for school, src, url in rows:
             dom = urlparse(url).netloc.split(":")[0]
