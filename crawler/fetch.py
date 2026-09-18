@@ -49,7 +49,10 @@ HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,"
               "image/avif,image/webp,*/*;q=0.8",
     "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
-    "Accept-Encoding": "gzip, deflate, br",
+    # 不宣告 br（brotli）：环境未装 brotli/brotlicffi 时 requests 解不开，
+    # 站点返回 br 会让整页变成二进制乱码 → 解析 0 条且不报错（西南交大
+    # 招生网就因此长期零通知）。装上 brotli 后可再把 br 加回来。
+    "Accept-Encoding": "gzip, deflate",
     "Connection": "keep-alive",
     "Upgrade-Insecure-Requests": "1",
     "Sec-Fetch-Dest": "document",
