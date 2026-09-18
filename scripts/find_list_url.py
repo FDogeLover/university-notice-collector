@@ -95,10 +95,21 @@ def guarded_get(url, headers, timeout=12):
     raise ValueError(f"跳转次数过多: {url}")
 
 
+# --br 时按老口径宣告 brotli：用于复查"有多少栏目是被 br 解压问题坑掉的"
+_ADVERTISE_BR = False
+
+
+def _probe_headers(url):
+    headers = fetch._browser_headers(url)
+    if _ADVERTISE_BR:
+        headers["Accept-Encoding"] = "gzip, deflate, br"
+    return headers
+
+
 def _raw_probe(url):
     """原始探测：状态码、Content-Encoding、正文是否可读（不经解析层）。"""
     try:
-        r = guarded_get(url, fetch._browser_headers(url))
+        r = guarded_get(url, _probe_headers(url))
     except Exception as e:  # noqa: BLE001
         return {"err": type(e).__name__, "status": 0, "ce": "", "readable": False,
                 "len": 0, "html": ""}
@@ -250,8 +261,13 @@ def main():
     ap.add_argument("--school", help="学校名（与 --source 配合）")
     ap.add_argument("--source", help="栏目名")
     ap.add_argument("--browser", action="store_true", help="候选验证时额外用浏览器渲染试一次")
+    ap.add_argument("--br", action="store_true",
+                    help="按老口径宣告 br 压缩（复查有多少栏目被 br 解压问题坑掉）")
     ap.add_argument("--apply", action="store_true", help="把最佳候选写入 config/schools.yaml")
     args = ap.parse_args()
+
+    global _ADVERTISE_BR
+    _ADVERTISE_BR = args.br
 
     if args.diagnose:
         reports = sorted((ROOT / "logs").glob("inspection-*.txt"))
