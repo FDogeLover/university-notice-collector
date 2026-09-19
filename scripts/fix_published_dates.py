@@ -196,13 +196,20 @@ def main():
     if len(changes) > 40:
         print(f"  … 其余 {len(changes) - 40} 条见 CSV")
 
+    def write_report(path):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("w", newline="", encoding="utf-8-sig") as fh:
+            w = csv.DictWriter(fh, fieldnames=["id", "school", "old", "new",
+                                               "reason", "title", "url"])
+            w.writeheader()
+            w.writerows(changes)
+
     path = ROOT / args.report
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", newline="", encoding="utf-8-sig") as f:
-        w = csv.DictWriter(f, fieldnames=["id", "school", "old", "new", "reason",
-                                          "title", "url"])
-        w.writeheader()
-        w.writerows(changes)
+    write_report(path)
+    if args.apply and changes:
+        # 另存带时间戳的一份：写库后重跑会显示"待改 0 条"，默认文件就被覆盖了
+        stamp = time.strftime("%Y%m%d-%H%M")
+        write_report(path.with_name(f"{path.stem}-applied-{stamp}{path.suffix}"))
     print(f"\n明细已写入 {path}")
 
     if not args.apply:
