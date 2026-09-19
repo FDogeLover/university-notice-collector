@@ -89,6 +89,15 @@ _PERIOD_PATTERN = re.compile(
     rf"{_DATE_CN}"
 )
 
+# 活动/会议时间（招聘会、宣讲会、竞赛、答辩等）：这些日程本身是有用信息，
+# 要作为"时间"标签展示——它们常常是页面里唯一（或最靠前）的日期，很容易
+# 被误当成发布时间，填成"未来发布"。
+_EVENT_TIME_PATTERN = re.compile(
+    r"(?:举办|举行|活动|宣讲会|宣讲|双选会|招聘会|报告会|讲座|答辩|考试|"
+    r"竞赛|会议|开课|上课)\s*(?:时间|日期)\s*[:：]?\s*"
+    rf"(?:{_DATE_CN}|{_DATE_NUM})"
+)
+
 # 招生对象
 _TARGET_PATTERN = re.compile(
     r"(优秀?应届?(?:本科|硕士|博士)?毕业生|推免生|推荐免试研究生|直博生|"
@@ -135,16 +144,38 @@ def _find_college(head):
     return ""
 
 
-# 列表页标题的 CMS 序号垃圾："082026.05吉林大学…" / "…重要2025.11.24"
-_TITLE_JUNK_LEADING = re.compile(r"^\d{1,6}(?:\.\d{1,2}){1,2}(?=[\u4e00-\u9fa5])")
+# 列表页标题里的 CMS 行列：日期挂在标题前后。
+# 前："09-18 教通知【2026】150号…" / "182026-03综合办公室…" / "082026.05吉林大学…"
+# 后："…专项计划招生简章2025-05-06" / "…通知[2026-07-09]" / "…招...03/18"
+# 点号分隔（3.15 之类）只在带四位年份时才当日期，避免吃掉"3.15晚会"这类标题。
+_TITLE_JUNK_LEADING = re.compile(
+    r"^\s*\d{0,4}\s*"
+    r"(?:"
+    r"20\d{2}\s*[-/.]\s*\d{1,2}(?:\s*[-/.]\s*\d{1,2})?"        # 2026-09-18
+    r"|20\d{2}\s*年\s*\d{1,2}\s*月\s*\d{1,2}\s*日"             # 2026年9月18日
+    r"|\d{2}\s*[-/.]\s*\d{2}"                                  # 09-18 / 09.18
+    r")"
+    r"\s*(?=[\u4e00-\u9fa5]|20\d{2}\s*年)")
 _TITLE_JUNK_TRAILING = re.compile(r"[.\d]{6,}$")
+_TITLE_JUNK_TRAILING_DATE = re.compile(
+    r"\s*[\[（(【]?\s*(?:"
+    r"20\d{2}\s*[-/.年]\s*\d{1,2}\s*[-/.月]\s*\d{1,2}"         # 2026-07-09
+    r"|20\d{2}\s*年\s*\d{1,2}\s*月\s*\d{1,2}\s*日"            # 2026年7月9日
+    r"|(?<!\d)\d{2}\s*[-/.]\s*\d{2}"                           # 03/18
+    r")\s*[\]）)】]?\s*$")
 
 
 def clean_notice_title(title):
-    """清理通知标题里的 CMS 序号垃圾（纯文本工具，采集与库内迁移共用）。"""
+    """清理通知标题里的 CMS 序号与日期垃圾（纯文本工具，采集与库内迁移共用）。
+
+    列表页把发布日期和标题渲染在同一行（"09-18 教通知【2026】150号-…"），
+    日期已由 parse_list 单独抽出存为发布时间，标题里就不该再留着。
+    """
     t = (title or "").strip()
     t = _TITLE_JUNK_LEADING.sub("", t)
-    return _TITLE_JUNK_TRAILING.sub("", t).strip()
+    t = _TITLE_JUNK_TRAILING.sub("", t)
+    t = _TITLE_JUNK_TRAILING_DATE.sub("", t)
+    return t.strip()
 
 
 def normalize_deadline(text, published_at=""):
@@ -263,6 +294,13 @@ def extract_highlights(content, title=""):
         m = _PERIOD_PATTERN.search(t)
         if m:
             hl["period"] = "至".join(m.groups())
+
+    # 活动/会议时间（招聘会举办时间等）：无截止与起止范围时作为"时间"展示
+    if "deadline" not in hl and "period" not in hl:
+        m = _EVENT_TIME_PATTERN.search(t)
+        if m:
+            # 中文日期与数字日期两条分支各占一个组，取命中那个
+            hl["period"] = m.group(1) or m.group(2)
 
     # 招生对象
     m = _TARGET_PATTERN.search(t)

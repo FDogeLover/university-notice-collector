@@ -2,6 +2,8 @@
 """解析层：列表页抽链接、详情页抽标题/时间/正文、类型打标。"""
 import re
 
+from datetime import date
+
 # 抑制 pypdf 对无效 PDF（下载到 HTML）的无害警告
 import logging
 logging.getLogger("pypdf").setLevel(logging.CRITICAL)
@@ -72,10 +74,12 @@ _FORM_TITLES = re.compile(
 )
 
 
-# 页面里的"发布时间/发布日期：yyyy年M月d日"式标签（比全文首个日期更可信）
+# 页面里的"发布时间/发布日期：yyyy年M月d日"式标签（比全文首个日期更可信）。
+# 标签与日期之间常有括号与空白："[发表时间]：2026-09-06"（北外研究生院）。
 _PUBLISHED_LABEL_RE = re.compile(
-    r"(?:发布时间|发布日期|发表时间|发布于|信息发布)"
-    r"[:：]?\s*(20\d{2})[-/年.](\d{1,2})[-/月.](\d{1,2})")
+    r"(?:发布时间|发布日期|发表时间|更新时间|更新日期|发布于|信息发布|发布者)"
+    r"\s*[\]】)）]?\s*[:：]?\s*"
+    r"(20\d{2})\s*[-/年.]\s*(\d{1,2})\s*[-/月.]\s*(\d{1,2})")
 
 # 常见发布时间 meta 标签名（小写比较）
 _PUBLISHED_META_KEYS = {
@@ -84,27 +88,128 @@ _PUBLISHED_META_KEYS = {
 }
 
 
-def _sane_year(year):
-    """发布时间年份合理性：2000 ~ 当前年+2（防 OCR/正则误读如 2052）。"""
-    from datetime import date
+def _published_iso(year, month, day):
+    """把日期三元组规范成发布时间 ISO 串；不能当发布时间用时返回 ""。
 
-    return 2000 <= year <= date.today().year + 2
+    两条硬约束，缺一条卡片上就会出现"未来发布"或"2026-09-87"这类假日期：
+
+    - 必须是真实存在的日历日期。图片/附件路径（``../images/2026-09/7abc.png``）
+      会被日期正则匹配成 2026-09-70，只有构造 date 才能挡掉；
+    - 不得晚于今天。正文开头的日程（"报名自2027年9月6日起"、"竞赛时间：
+      2026年11月14日"、"双选会举办时间 2026-10-23"）比发布时间更靠前，
+      误取就会把卡片日期填到未来。
+    """
+    try:
+        d = date(int(year), int(month), int(day))
+    except (TypeError, ValueError):
+        return ""
+    if not 2000 <= d.year <= date.today().year:
+        return ""
+    if d > date.today():
+        return ""
+    return d.isoformat()
 
 
 def _extract_published(html, soup):
-    """提取发布时间：meta 标签 → "发布时间：" 标签 → 全文首个日期。"""
+    """提取发布时间：meta 标签 → "发布时间：" 标签；都没有返回 ""。"""
     for m in soup.find_all("meta"):
         key = (m.get("name") or m.get("property") or "").strip().lower()
         if key not in _PUBLISHED_META_KEYS:
             continue
         dm = re.search(r"(20\d{2})[-/年.](\d{1,2})[-/月.](\d{1,2})",
                        (m.get("content") or ""))
-        if dm and _sane_year(int(dm.group(1))):
-            return f"{dm.group(1)}-{int(dm.group(2)):02d}-{int(dm.group(3)):02d}"
-    for regex in (_PUBLISHED_LABEL_RE,):
-        m = regex.search(html)
-        if m and _sane_year(int(m.group(1))):
-            return f"{m.group(1)}-{int(m.group(2)):02d}-{int(m.group(3)):02d}"
+        if dm:
+            iso = _published_iso(*dm.groups())
+            if iso:
+                return iso
+    m = _PUBLISHED_LABEL_RE.search(html)
+    if m:
+        return _published_iso(*m.groups())
+    return ""
+
+
+# 兜底扫描用：任意位置的完整日期；日程/期限语义的引导词
+_ANY_DATE_RE = re.compile(r"(20\d{2})\s*[-/年.]\s*(\d{1,2})\s*[-/月.]\s*(\d{1,2})")
+_SCHEDULE_LEAD_RE = re.compile(
+    r"(?:截止|截至|不晚于|最晚|不超过|有效期|施行)\s*[:：]?\s*$"
+    r"|(?:报名|申请|考试|竞赛|比赛|举办|举行|开课|上课|授课|报到|答辩|复试|"
+    r"面试|活动|会议|评审|公示|征集|提交|返校|开学|放假)\s*"
+    r"(?:时间|日期|截止)?\s*[:：]?\s*$"
+    r"|(?:自|至|到)\s*$"
+)
+# 只扫可见文本时要排除的标签：脚本/样式里全是数字串与路径
+_NON_TEXT_TAGS = {"script", "style", "noscript", "head", "title"}
+
+
+def _first_plausible_date(soup):
+    """页面可见文本里第一个"像发布时间"的日期；没有返回 ""。
+
+    兜底用（页面没有任何发布标记时）。只扫可见文本：属性和脚本里的
+    日期串（图片路径 ``2026-09/7abc.png``）不属于页面内容，正是库里
+    "2026-09-70" 这类假日期的来源。引导词是日程/期限语义的日期同样跳过——
+    那些是"什么时候截止/举办"，不是"什么时候发布的"。
+    """
+    chunks = []
+    for s in soup.find_all(string=True):
+        parent = s.parent
+        if parent is None or parent.name in _NON_TEXT_TAGS:
+            continue
+        t = s.strip()
+        if t:
+            chunks.append(t)
+    text = re.sub(r"\s+", " ", " ".join(chunks))
+    for m in _ANY_DATE_RE.finditer(text):
+        iso = _published_iso(*m.groups())
+        if not iso:
+            continue
+        if _SCHEDULE_LEAD_RE.search(text[max(0, m.start() - 12):m.start()]):
+            continue
+        return iso
+    return ""
+
+
+# 列表行日期（列表页是站点自己给出的发布时间，比详情页正文里的日期可靠）
+# 每条：(正则, 分组顺序 y/m/d, 是否只认行首行尾)
+_ROW_DATE_PATTERNS = [
+    # 完整日期：2026-09-11 / 2026/9/11 / 2026.09.11 / 2026年9月11日
+    (re.compile(r"(20\d{2})\s*[-/年.]\s*(\d{1,2})\s*[-/月.]\s*(\d{1,2})"),
+     "ymd", False),
+    # 日在前："17 2026-09 综合办公室 关于做好…"（中国矿业大学（北京）研究生院）
+    (re.compile(r"(?<!\d)(\d{1,2})\s+([12]\d{3})\s*[-/年.]\s*(\d{1,2})"),
+     "dym", False),
+    # 无年份的月日：09-18 / 9/18（列表页惯例：日期贴在行首或行尾）
+    (re.compile(r"(?<!\d)(\d{1,2})\s*[-/.]\s*(\d{1,2})(?!\d)"),
+     "md", True),
+    (re.compile(r"(?<!\d)(\d{1,2})\s*月\s*(\d{1,2})\s*日"), "md", True),
+]
+
+
+def _year_guess_iso(month, day):
+    """只有月日的列表日期：按"不晚于今天"回推年份（列表上的日期都已发布过）。"""
+    today = date.today()
+    for year in (today.year, today.year - 1):
+        iso = _published_iso(year, month, day)
+        if iso:
+            return iso
+    return ""
+
+
+def _row_date(text):
+    """从列表行文本里取发布时间（YYYY-MM-DD），取不到返回 ""。"""
+    text = re.sub(r"\s+", " ", (text or "").strip())
+    if not text:
+        return ""
+    for pat, order, edge_only in _ROW_DATE_PATTERNS:
+        for m in pat.finditer(text):
+            if edge_only and not (m.start() == 0 or m.end() == len(text)):
+                continue  # 无年份的月日只认贴在行首/行尾的，否则"第3-4周"也会命中
+            vals = dict(zip(order, m.groups()))
+            if "y" in vals:
+                iso = _published_iso(vals["y"], vals["m"], vals["d"])
+            else:
+                iso = _year_guess_iso(vals["m"], vals["d"])
+            if iso:
+                return iso
     return ""
 
 
@@ -120,17 +225,51 @@ def is_file_url(url):
     return bool(url and FILE_EXT_RE.search(url))
 
 
+# 行容器文本上限：超过就当成整页容器（会混进别条通知的日期），不再上溯
+_ROW_TEXT_MAX = 400
+
+
+def _list_item_date(anchor, raw_text):
+    """列表行里的发布时间：链接文本（"09-18 教通知…"、"17 2026-09 综合…"）
+    → 相邻节点（"…的通知 2026-09-11"、"<div>14</div><div>2026-08</div>"）。
+
+    标题正文里的日期不参与（"关于2026年9月20日至10月23日…的通知"里的
+    日程不是发布时间），故把标题整段剔除后再匹配行内其余部分。
+    """
+    from_link = _row_date(raw_text)
+    if from_link:
+        return from_link
+    node = anchor.parent
+    for _ in range(2):  # 父节点 → 祖父节点（表格一行的日期常在相邻单元格）
+        if node is None:
+            break
+        # 只认"一条通知一行"的容器：含多个链接（整列/整页）时日期不再是这条的
+        if len(node.find_all("a", href=True)) == 1:
+            row = re.sub(r"\s+", " ", node.get_text(" ", strip=True))
+            if raw_text and raw_text in row:
+                row = row.replace(raw_text, " ")
+            if len(row) <= _ROW_TEXT_MAX:
+                date_hint = _row_date(row)
+                if date_hint:
+                    return date_hint
+        node = node.parent
+    return ""
+
+
 def parse_list(html, base_url, domain, max_items=50, stype=None):
     """从栏目列表页抽取相关通知链接。
 
-    返回 [{title, url}]，只保留同域名、标题命中该栏目领域白名单
+    返回 [{title, url, date}]，只保留同域名、标题命中该栏目领域白名单
     （stype 缺省为研究生教育）、且不是导航/栏目页的链接，按出现顺序去重。
+    date 为列表行标出的发布时间（YYYY-MM-DD，取不到为 ""）：详情页常常
+    没有任何发布时间标记，列表行的日期才是站点给出的权威发布时间。
     """
     keyword = TYPE_KEYWORDS.get(stype or "研究生教育", KEYWORDS)
     soup = BeautifulSoup(html, "html.parser")
     items, seen = [], set()
     for a in soup.find_all("a", href=True):
-        title = clean_notice_title(a.get_text(strip=True))
+        raw_text = re.sub(r"\s+", " ", a.get_text(" ", strip=True)).strip()
+        title = clean_notice_title(raw_text)
         href = (a.get("href") or "").strip()
         if not title or len(title) < 6:
             continue
@@ -150,7 +289,8 @@ def parse_list(html, base_url, domain, max_items=50, stype=None):
         if url in seen:
             continue
         seen.add(url)
-        items.append({"title": title, "url": url})
+        items.append({"title": title, "url": url,
+                      "date": _list_item_date(a, raw_text)})
         if len(items) >= max_items:
             break
     return items
@@ -460,18 +600,14 @@ def parse_detail(html, url):
     if not title and soup.title:
         title = soup.title.get_text(strip=True)
 
-    # 发布时间：meta 标签 / "发布时间：" 标签 → 全文首个合理日期兜底
-    published = _extract_published(html, soup)
-    if not published:
-        for m in re.finditer(r"(20\d{2})[-/年.](\d{1,2})[-/月.](\d{1,2})", html):
-            if _sane_year(int(m.group(1))):
-                published = (f"{m.group(1)}-{int(m.group(2)):02d}"
-                             f"-{int(m.group(3)):02d}")
-                break
-
     # 正文快照：定位正文容器 → 按块级聚合 → 质量门禁 → PDF 附件兜底
     for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
         tag.decompose()
+
+    # 发布时间：meta 标签 / "发布时间：" 标签 → 页面可见文本里首个合理日期兜底
+    published = _extract_published(html, soup)
+    if not published:
+        published = _first_plausible_date(soup)
     container, explicit = _find_content_container(soup)
     lines = _extract_block_text(container) if container else []
     if not lines and container is not None:

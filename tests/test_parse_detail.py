@@ -6,6 +6,7 @@ import pytest
 
 from conftest import load_fixture, load_manifest
 
+from crawler import parse as crawl_parse
 from crawler.parse import infer_type, parse_detail
 
 MANIFEST = load_manifest()
@@ -55,6 +56,66 @@ def test_detail_title_falls_back_to_title_tag():
     """
     d = parse_detail(html, "https://gs.x.edu.cn/t/2.htm")
     assert d["title"].startswith("关于2026年硕士研究生招生考试报名")
+
+
+def test_detail_published_finds_bracketed_label():
+    """"[发表时间]：2026-09-06" 这类带方括号的标签要认（北外研究生院）。"""
+    html = """
+    <html><body>
+    <h1>关于北外接收推荐免试攻读研究生（含直博生）的问题解答</h1>
+    <p>发布者：[发表时间]：2026-03-06 [来源]：研究生院</p>
+    <div class="v_news_content">
+      <p>各位考生：我校接收推荐免试攻读研究生考试报名自2026年9月6日起，
+         请各位考生务必于报名时间段内登录系统完成报名。</p>
+    </div></body></html>
+    """
+    d = parse_detail(html, "https://graduate.bfsu.edu.cn/info/1074/4466.htm")
+    assert d["published_at"] == "2026-03-06"
+
+
+def test_detail_published_rejects_future_and_invalid_dates():
+    """发布时间不能落在未来，也不能是页面路径匹配出来的"2026-09-87"。
+
+    正文开头的日程（报名自X日起）常比发布时间更靠前，误当发布时间就会让
+    卡片右上角显示成未来日期——线上"发布 2027-09-06"正是这么来的。
+    """
+    from datetime import date, timedelta
+
+    future = date.today() + timedelta(days=40)
+    cn = f"{future.year}年{future.month}月{future.day}日"
+    html = f"""
+    <html><head><meta name="description" content="我校考试报名自{cn}起"></head>
+    <body>
+    <h1>关于接收推荐免试攻读研究生考试报名的通知</h1>
+    <div class="v_news_content">
+      <p>各位考生：我校接收推荐免试攻读研究生考试报名自{cn}起，
+         请按时登录系统完成报名，逾期不再受理。</p>
+      <img src="../images/2026-09/7abc123.png">
+      <p>特此通知。</p>
+    </div></body></html>
+    """
+    assert parse_detail(html, "https://gs.x.edu.cn/t/f.htm")["published_at"] == ""
+    assert crawl_parse._published_iso("2026", "09", "70") == ""   # 路径里的假日期
+
+
+def test_detail_published_skips_schedule_dates_in_visible_text():
+    """兜底扫描：日程/期限语境的日期跳过，普通日期仍可作发布时间。"""
+    schedule = """
+    <html><body><div id="content">
+      <p>2026-11-14（星期六）上午举行数学竞赛，即日起开始报名。</p>
+      <p>竞赛时间：2026-11-14 上午9:00-11:30，请提前半小时入场。</p>
+      <p>各学院请于报名截止时间前将名单报送教务处，逾期不再受理。</p>
+    </div></body></html>
+    """
+    assert parse_detail(schedule, "https://jwc.x.edu.cn/t/1.htm")["published_at"] == ""
+
+    plain = """
+    <html><body><div id="content">
+      <p>2026-03-05</p>
+      <p>各学院：现将研究生培养方案修订工作安排通知如下，请遵照执行。</p>
+    </div></body></html>
+    """
+    assert parse_detail(plain, "https://gs.x.edu.cn/t/2.htm")["published_at"] == "2026-03-05"
 
 
 def test_detail_garbage_page_yields_empty_content():

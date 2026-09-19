@@ -127,8 +127,18 @@ def load_config():
 
 
 
+def _pick_published(detail_published, list_date):
+    """发布时间取值：详情页给的优先，其次列表行日期，都没有就留空。
+
+    详情页没有发布标记时不再从正文里猜日期——正文开头的日程（报名自X日起、
+    考试时间、双选会举办时间）会被当成发布时间，卡片就显示成未来日期。
+    列表行日期是站点自己标在通知旁边的发布时间，猜不出来时宁可用它。
+    """
+    return detail_published or (list_date or "")
+
+
 def _fetch_detail_content(item_url, use_browser, use_real_browser=False,
-                          attempts=None):
+                          attempts=None, list_date=""):
     """抓取详情正文：按栏目配置 → 无头渲染 → 真实 Chrome（瑞数），逐级兜底。
 
     与首版不同：某一级**抛异常**（网络失败/反爬拦截）时同样继续降级尝试，
@@ -139,7 +149,7 @@ def _fetch_detail_content(item_url, use_browser, use_real_browser=False,
     返回 (content_md, published)。
     """
     if parse.is_file_url(item_url):
-        return None, ""
+        return None, list_date
     if attempts is None:
         if use_real_browser:
             attempts = [(True, True)]
@@ -157,30 +167,33 @@ def _fetch_detail_content(item_url, use_browser, use_real_browser=False,
             continue
         content = detail["content_md"] or ""
         if len(content) > 50:
-            return content, detail["published_at"]
+            return content, _pick_published(detail["published_at"], list_date)
         if len(content) > len(best_content or ""):
             best_content, best_published = content, detail["published_at"]
-    return best_content, best_published
+    return best_content, _pick_published(best_published, list_date)
 
 
-def _detail_quick_job(item_url):
+def _detail_quick_job(item):
     """并发快速通道：单次 requests 抓详情（不碰浏览器实例，线程安全）。
 
     正文达标返回 (url, content, published)；不达标/失败返回 (url, None, ...)，
     由调用方串行走完整升级链兜底。附件 URL 直接返回空（避免二进制乱码）。
     """
+    item_url = item["url"]
+    list_date = item.get("date", "")
     if parse.is_file_url(item_url):
-        return item_url, None, ""
+        return item_url, None, list_date
     try:
         html = fetch.http_get(item_url, use_browser=False,
                               use_real_browser=False)
         detail = parse.parse_detail(html, item_url)
     except Exception:  # noqa: BLE001
-        return item_url, None, ""
+        return item_url, None, list_date
     content = detail["content_md"] or ""
+    published = _pick_published(detail["published_at"], list_date)
     if len(content) > 50:
-        return item_url, content, detail["published_at"]
-    return item_url, None, detail["published_at"]
+        return item_url, content, published
+    return item_url, None, published
 
 
 def _fetch_details(items, use_browser, use_real, args):
@@ -195,21 +208,22 @@ def _fetch_details(items, use_browser, use_real, args):
     if use_browser or use_real or args.workers <= 1:
         for it in items:
             details[it["url"]] = _fetch_detail_content(
-                it["url"], use_browser, use_real_browser=use_real)
+                it["url"], use_browser, use_real_browser=use_real,
+                list_date=it.get("date", ""))
             time.sleep(args.sleep)
         return details
 
     with ThreadPoolExecutor(max_workers=args.workers) as ex:
-        for item_url, content, published in ex.map(
-                _detail_quick_job, [it["url"] for it in items]):
+        for item_url, content, published in ex.map(_detail_quick_job, items):
             if content is not None:
                 details[item_url] = (content, published)
     retry = [it for it in items if it["url"] not in details]
     if retry:
         print(f"  · {len(retry)} 条并发未达标，串行浏览器兜底…")
         for it in retry:
-            details[it["url"]] = _fetch_detail_content(it["url"], use_browser,
-                                                       use_real_browser=use_real)
+            details[it["url"]] = _fetch_detail_content(
+                it["url"], use_browser, use_real_browser=use_real,
+                list_date=it.get("date", ""))
             time.sleep(args.sleep)
     return details
 

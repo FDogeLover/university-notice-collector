@@ -4,8 +4,46 @@ import pytest
 
 from conftest import ROOT  # noqa: F401  确保 sys.path 已注入
 
-from crawler.extract import (clean_summary, extract_highlights,
-                             standardize_highlights)
+from crawler.extract import (clean_notice_title, clean_summary,
+                             extract_highlights, standardize_highlights)
+
+
+def test_event_time_as_period():
+    """活动/会议时间要落到"时间"标签：这类日程常是页面里唯一的日期，
+    以前会被当成发布时间填成未来日期（招聘会/宣讲会/竞赛页高发）。"""
+    cases = {
+        "举办时间：2026-10-23 08:00-14:00（周五）": "2026-10-23",
+        "竞赛时间：2026年11月14日上午9:00-11:30": "2026年11月14日",
+        "宣讲会时间：9月20日 19:00": "9月20日",
+    }
+    for text, expected in cases.items():
+        hl = extract_highlights(text)
+        assert hl.get("period") == expected, text
+        assert "deadline" not in hl, text
+    # 截止语义仍然优先
+    hl = extract_highlights("报名截止时间：2026年9月30日，考试时间：2026年10月8日")
+    assert hl["deadline"] == "2026年9月30日"
+
+
+# ---------- clean_notice_title ----------
+def test_clean_notice_title_strips_list_dates():
+    """列表页把发布日期渲染在标题同一行，入库前要把这部分垃圾摘掉。"""
+    cases = {
+        "09-18 教通知【2026】150号-关于公布项目检查结果的通知":
+            "教通知【2026】150号-关于公布项目检查结果的通知",
+        "2025/09/022025年研究生教育手册": "2025年研究生教育手册",
+        "182026-03综合办公室关于做好考试报名工作的通知":
+            "综合办公室关于做好考试报名工作的通知",
+        "082026.05吉林大学2026年博士招生简章": "吉林大学2026年博士招生简章",
+        "2026年研究生新生入学须知[2026-06-29]": "2026年研究生新生入学须知",
+        "…专项计划招生简章2025-05-06": "…专项计划招生简章",
+        # 不能误伤：学年/届次、正文里的活动日不是列表日期
+        "2026-2027学年第一学期选课工作的通知": "2026-2027学年第一学期选课工作的通知",
+        "关于做好3.15晚会活动安排的通知": "关于做好3.15晚会活动安排的通知",
+        "2026年硕士研究生招生简章": "2026年硕士研究生招生简章",
+    }
+    for raw, expected in cases.items():
+        assert clean_notice_title(raw) == expected, raw
 
 
 # ---------- extract_highlights ----------
