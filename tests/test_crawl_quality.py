@@ -31,13 +31,50 @@ def fake_fetch(monkeypatch):
 
 @pytest.fixture()
 def fake_parse(monkeypatch):
-    """替换 parse.parse_detail：payload 即返回的 content_md。"""
+    """替换 parse.parse_detail：payload 即返回的 content_md。
+
+    发布时间默认是页面自己写明的（label）——这档才压过列表行日期。
+    """
 
     def fake_parse_detail(html, url):
         return {"title": "t", "published_at": "2026-09-01",
-                "content_md": html}
+                "published_src": "label", "content_md": html}
 
     monkeypatch.setattr(run_mod.parse, "parse_detail", fake_parse_detail)
+
+
+def test_published_detail_label_beats_list_date(fake_fetch, fake_parse):
+    """详情页写明发布时间时用它，列表行日期只作补充。"""
+    fake_fetch.script = [("html", "详情页正文" * 20)]
+    _, published = run_mod._fetch_detail_content(
+        "https://gs.x.edu.cn/e.htm", use_browser=False,
+        list_date="2026-08-20")
+    assert published == "2026-09-01"
+
+
+def test_published_list_date_beats_detail_scan(monkeypatch, fake_fetch):
+    """详情页只能靠扫正文猜日期时，站点标在列表行上的日期更可信。"""
+    monkeypatch.setattr(
+        run_mod.parse, "parse_detail",
+        lambda html, url: {"title": "t", "published_at": "2026-09-01",
+                           "published_src": "scan", "content_md": html})
+    fake_fetch.script = [("html", "详情页正文" * 20)]
+    _, published = run_mod._fetch_detail_content(
+        "https://gs.x.edu.cn/f.htm", use_browser=False,
+        list_date="2026-08-20")
+    assert published == "2026-08-20"
+
+
+def test_published_blank_when_nothing_reliable(monkeypatch, fake_fetch):
+    """两处都没有发布时间 → 留空，不硬填一个正文里扫到的日期。"""
+    monkeypatch.setattr(
+        run_mod.parse, "parse_detail",
+        lambda html, url: {"title": "t", "published_at": "",
+                           "published_src": "", "content_md": html})
+    fake_fetch.script = [("html", "详情页正文" * 20)]
+    _, published = run_mod._fetch_detail_content(
+        "https://gs.x.edu.cn/g.htm", use_browser=False)
+    assert published == ""
 
 
 def test_detail_escalates_on_exception(fake_fetch, fake_parse):

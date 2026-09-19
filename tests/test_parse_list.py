@@ -100,6 +100,12 @@ def test_list_item_publish_dates():
     items = parse_list(html, "https://gs.x.edu.cn/", "x.edu.cn")
     assert [it["date"] for it in items] == [
         "2026-03-18", "2026-04-11", "2026-08-14", ""]
+    # date_exact 只认带年份的写法：覆盖库内历史日期时用它，避免"03/17"→今年
+    assert [it["date_exact"] for it in items] == [
+        "2026-03-18", "2026-04-11", "2026-08-14", ""]
+    yearless = parse_list(_min_page(_link("关于2026年研究生招生工作的通知")),
+                          "https://gs.x.edu.cn/", "x.edu.cn")[-1]
+    assert yearless["date"] == ""
 
 
 def test_list_item_date_yearless_backfills_year(monkeypatch):

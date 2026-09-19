@@ -127,14 +127,17 @@ def load_config():
 
 
 
-def _pick_published(detail_published, list_date):
-    """发布时间取值：详情页给的优先，其次列表行日期，都没有就留空。
+def _pick_published(detail_published, list_date, source=""):
+    """发布时间取值：详情页自己写明的（meta/发布标签）> 列表行日期 > 详情页扫到的。
 
-    详情页没有发布标记时不再从正文里猜日期——正文开头的日程（报名自X日起、
-    考试时间、双选会举办时间）会被当成发布时间，卡片就显示成未来日期。
-    列表行日期是站点自己标在通知旁边的发布时间，猜不出来时宁可用它。
+    详情页没有发布标记时，正文里扫到的第一个日期只是猜测（正文开头的日程
+    "报名自X日起"、"竞赛时间"就是靠它污染的卡片日期）；列表行日期是站点自己
+    标在通知旁边的发布时间，比猜测可信。都没有才退回那个扫到的日期，再没有
+    就留空——宁可显示"时间未知"，也不填一个假日期。
     """
-    return detail_published or (list_date or "")
+    if source in ("meta", "label"):
+        return detail_published
+    return list_date or detail_published or ""
 
 
 def _fetch_detail_content(item_url, use_browser, use_real_browser=False,
@@ -166,11 +169,13 @@ def _fetch_detail_content(item_url, use_browser, use_real_browser=False,
         except Exception:  # noqa: BLE001
             continue
         content = detail["content_md"] or ""
+        src = detail.get("published_src", "")
         if len(content) > 50:
-            return content, _pick_published(detail["published_at"], list_date)
+            return content, _pick_published(detail["published_at"], list_date, src)
         if len(content) > len(best_content or ""):
-            best_content, best_published = content, detail["published_at"]
-    return best_content, _pick_published(best_published, list_date)
+            best_content = content
+            best_published = _pick_published(detail["published_at"], list_date, src)
+    return best_content, best_published
 
 
 def _detail_quick_job(item):
@@ -190,7 +195,8 @@ def _detail_quick_job(item):
     except Exception:  # noqa: BLE001
         return item_url, None, list_date
     content = detail["content_md"] or ""
-    published = _pick_published(detail["published_at"], list_date)
+    published = _pick_published(detail["published_at"], list_date,
+                               detail.get("published_src", ""))
     if len(content) > 50:
         return item_url, content, published
     return item_url, None, published

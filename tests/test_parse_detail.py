@@ -71,6 +71,7 @@ def test_detail_published_finds_bracketed_label():
     """
     d = parse_detail(html, "https://graduate.bfsu.edu.cn/info/1074/4466.htm")
     assert d["published_at"] == "2026-03-06"
+    assert d["published_src"] == "label"   # 页面自己写明的，采集时优先采信
 
 
 def test_detail_published_rejects_future_and_invalid_dates():
@@ -115,7 +116,9 @@ def test_detail_published_skips_schedule_dates_in_visible_text():
       <p>各学院：现将研究生培养方案修订工作安排通知如下，请遵照执行。</p>
     </div></body></html>
     """
-    assert parse_detail(plain, "https://gs.x.edu.cn/t/2.htm")["published_at"] == "2026-03-05"
+    d = parse_detail(plain, "https://gs.x.edu.cn/t/2.htm")
+    assert d["published_at"] == "2026-03-05"
+    assert d["published_src"] == "scan"    # 扫描得到：采集时让位给列表行日期
 
 
 def test_detail_garbage_page_yields_empty_content():
