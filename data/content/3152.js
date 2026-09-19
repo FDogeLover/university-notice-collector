@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3152"]={"content": "学校官网 | 操作指南\n扫码登录\n账号登录\n推荐浏览器：谷歌、360极速模式、IE9/10/11、Edge\n账号规则：学生为学号，教工为工号，首次使用需进行账号激活。\n服务支持：0898-66262857；its@hainanu.edu.cn"};

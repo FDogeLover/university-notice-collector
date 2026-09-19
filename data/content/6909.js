@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6909"]={"content": "95861部队直接选拔招录军官宣讲会 南开大学学生就业指导中心代发 时间： 2026-09-14 10:00 地点： [津南校区]大通学生中心E305 浏览量： 439 招收专业："};

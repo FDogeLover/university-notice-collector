@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["715"]={"content": "温馨提示 X 报名时间已过期 确定\n天津大学招生管理系统考生端 忘记密码？ 注册 登录 建议使用谷歌和火狐浏览器使用 系统问题请联系管理员QQ：1713525199 推免和夏令营相关通知由统一公用邮箱（yzb@tju.edu.cn）发送，无需回复，感谢理解！"};

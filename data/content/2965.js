@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2965"]={"content": "各有关单位、研究生导师、研究生：\n根据我校《 2025 年下半年研究生毕业和学位授予工作安排》要求，研究生院对申请硕士学位研究生学位论文进行抽查指定送审，现将指定送审名单公布如下（见附件）。"};

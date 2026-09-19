@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3284"]={"content": "首页\n培养过程\n学籍管理\n新生学籍管理\n本科生\n关于 2026 级新生学籍图像采集工作的通知\n发布时间：2026-09-01 阅读 次\nhttps://one.bnu.edu.cn/tp_nup/index.html#act=sems-tp-nup_28585749&typeid=7c174654857471bb2b914667ff32313&rid=7c174654857471bb2b914667ff32313&contentid=&ownerid=&website=0&pim_id=41230292037070848"};

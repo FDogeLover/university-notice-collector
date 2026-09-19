@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5345"]={"content": "文件下载： 华南师范大学2026年夏季普通高考招生章程.pdf"};

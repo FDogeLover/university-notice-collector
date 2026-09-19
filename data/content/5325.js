@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5325"]={"content": "通知公告\n微信扫一扫：分享\n微信里点“发现”，扫一下\n二维码便可将本文分享至朋友圈。\nQQ扫一扫：分享\n手机QQ点击右下角...按钮\n分享到好友或QQ空间"};

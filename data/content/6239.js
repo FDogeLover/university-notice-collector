@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6239"]={"content": "根据麦可思\n-\n青海大学\n2023\n届毕业生培养质量评价数据\n，\n2023\n届毕业生在求职过程中遇到的困难主要是缺乏实践和工作经验（\n58%\n）、缺乏求职技巧（\n49%\n）。"};

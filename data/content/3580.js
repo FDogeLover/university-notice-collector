@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3580"]={"content": "202 6 年暑期（ 7 月 29 日 -8月3 0 日），本科招生咨询可通过电子邮件与我们联系，邮箱： zsb@ecnu.edu.cn。\n新生报到相关事宜，可 登录 “新生门户” 网站 （ https://freshman.ecnu.edu.cn ）查看 新生报到须知 。\n本科招生资讯与招生动态，请关注华东师范大学本科招生网 zsb.ecnu.edu.cn 、 “华东师大本科招生”微信公众号（ecnuzsb）。\n华东师范大学招生办公室\n202 6 年 7 月 28 日"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["7060"]={"content": "根据《南京农业大学关于做好 2026 年秋季学期本科生教材选用和征订工作的通知》，现对学工处 2026-2027 学年第一学期《大学生心理健康教育》课程教材选用结果进行公示，公示期为 2026 年 7 月 3 日 -7 月 5 日，如有异议，请于公示期内反馈至林静，邮箱： linjing@njau.edu.cn 。"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4246"]={"content": "云南大学2025年国家普通话水平测试缴费通知及操作指南详见附件，请下载查看。"};

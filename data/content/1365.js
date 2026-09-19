@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1365"]={"content": "根据教育部有关文件精神和《东北师范大学2026年第二学士学位招生简章》规定，经学校考核，现已确定拟录取考生名单。考生可登录东北师范大学第二学士学位网上报名系统( https://tslxbm.nenu.edu.cn/login )查询本人录取结果。如有异议，请于7月22日前实名书面向我校招生办公室提出。招生办公室电话:0431-85098500。"};

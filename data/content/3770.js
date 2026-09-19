@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3770"]={"content": "综合楼、研究生院楼： N1、N2、N3、N4、N5\n注： 本校为开放校园，暂无入校条件限制；进入考场的要求见《准考证》。"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2725"]={"content": "报考管理科学与工程专业博士研究生承诺书"};

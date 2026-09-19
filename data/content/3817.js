@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3817"]={"content": "各位老师：\n北京市就创中心将于近日举办“ 2026 年北京高校职业规划与就业指导骨干师资培训班”，还请各位老师按需报名，相关费用由各院系自理。\n学生职业发展指导中心\n2026年5月1 8日"};

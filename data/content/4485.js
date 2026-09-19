@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4485"]={"content": "简体中文\nEnglish\nFriendship link: eHall Ecampus Email Cloud@Fudan Copyright © Fudan University. All rights reserved. Contact us: urp@fudan.edu.cn (86)021-65643207"};

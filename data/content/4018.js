@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4018"]={"content": "本部（普通类专业）\n本部（中外合作办学）\n威海校区（中外合作办学）\n北京交通大学2023年招生指南下载"};

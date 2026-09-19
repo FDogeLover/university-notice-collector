@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2160"]={"content": "查阅或下载： 厦门大学研究生教育手册（2020年版）.pdf\n\n【正文图片1】下载失败: https://gs.xmu.edu.cn/system/resource/images/fileTypeImages/"};

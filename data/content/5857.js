@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5857"]={"content": "地址 Address 北京市海淀区 中关村南大街5号 中心教学楼二层215房间 邮编100081 咨询电话 Phone 010-68913345 010-68949926 传真 Fax 010-68423233 邮件 Email admission@bit.edu.cn 官方微信 WeChat 网上高招办 常用链接 Links 学校官网主页 北京理工大学迎新网 教育部阳光高考平台"};

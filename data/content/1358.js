@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1358"]={"content": "2026年，我校招生计划覆盖全国31个省、自治区、直辖市，包括普通类、普通类（中外合作办学）、艺考类、国家专项计划、地方专项计划、内地新疆班等计划类别。\n具体录取进展情况如下："};

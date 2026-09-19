@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4541"]={"content": "各位同学： 2016年秋季学期，大学德语Ⅰ（第二外语）（ 选课号13005060,教师王凯），因选课人数过少，取消开课。\n请涉及到的同学及时改选其他第二外语类课程。\n教务处\n2016年6月28日"};

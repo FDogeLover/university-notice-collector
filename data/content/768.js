@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["768"]={"content": "【附件正文：27e00d43-1867-4207-b4c8-cbd72b9c46a2.pdf】\n 服务中心学期中开放时间公告 \n \n研究生与导师服务中心学期中开放时间为： \n工作日每天上午8点到下午17点。 \n寒暑假开放时间届时另行公告。 \n \n办公地点：第一教学楼1102房间 \n在校生和校友服务电话：65642670，65643563 \nEmail：fdgs@fudan.edu.cn \n招生咨询电话：65643991，65642673 \nEmail：gs_admission@fudan.edu.cn（招生咨询）"};
