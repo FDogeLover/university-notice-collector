@@ -4,6 +4,7 @@
 默认用 requests 直接抓取；对启用反爬（如 HTTP 412 JS 挑战）的站点，
 可用 use_browser=True 走 Playwright 真实浏览器渲染，跨请求复用同一浏览器实例。
 """
+import os
 import threading
 import time
 from pathlib import Path
@@ -73,8 +74,52 @@ _browser = None
 # 渲染进程内的死循环，唯一可靠手段是杀掉 chromium 进程（连接断开后
 # 阻塞调用立即抛 TargetClosedError 返回）。
 _BROWSER_PAGE_TIMEOUT = 60
+# 浏览器上下文统一使用的桌面 Chrome UA。
+# Playwright 自带的无头 chromium 默认 UA 带 "HeadlessChrome/…X11; Linux x86_64"，
+# 北邮/兰大等站的 WAF 见到就回 39 字节空文档——日志记成"ok 抽到 0 条"，属静默零。
+# 固定一个真实桌面 UA（不轮换：同一会话内 UA 跳变同样是反爬特征）。
+_BROWSER_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+               "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
 # chromium 进程匹配特征（拼装避免 pkill 匹配到调用方自身 cmdline）
 _CHROMIUM_MATCH = "chrome-headless" + "-shell-linux64" + "/chrome-headless-shell"
+# 本项目持久化 profile 目录名：真实 Chrome 的 cmdline 里带它，强杀时据此
+# 只杀本项目自己的浏览器，不误伤同机其它 Chrome
+_PROFILE_NAME = ".university_info_profile"
+# 取到的内容像"挑战页/拦截页"时的特征（需刷新或换通道重取）
+_CHALLENGE_HINTS = ("$_ts", "$_ss", "dynamic_challenge", "访问被限制",
+                    "浏览器环境不被允许", "enable javascript",
+                    "please enable js")
+# 句柄失效类异常的特征串（浏览器崩溃/被强杀后必须重建，不能原样抛给站点层）
+_GONE_HINTS = ("has been closed", "targetclosed", "browser has been closed",
+               "connection closed", "epipe", "browser closed",
+               "target page, context or browser")
+
+
+def _looks_like_challenge(html):
+    """内容是否像反爬挑战页/拦截页（体量过小或含挑战特征）。"""
+    if len(html or "") < 3000:
+        return True
+    low = (html or "").lower()
+    return any(h.lower() in low for h in _CHALLENGE_HINTS)
+
+
+def _is_block_page(html):
+    """内容是否已被拦死（刷新也救不回：空文档或明确的拦截/挑战特征）。
+
+    只用来决定"要不要报错"——报错才会在日志里留下痕迹；否则一次 WAF 拦截
+    会被记成"ok 抽到 0 条"，静默零（北邮/兰大/政法都这么丢过数据）。
+    """
+    text = html or ""
+    if len(text) < 500:
+        return True
+    low = text.lower()
+    return any(h.lower() in low for h in _CHALLENGE_HINTS)
+
+
+def _is_browser_gone(err):
+    """异常是否表示浏览器/上下文句柄失效（而非站点本身的问题）。"""
+    text = f"{type(err).__name__}: {err}".lower()
+    return any(h in text for h in _GONE_HINTS)
 
 
 class _BrowserTimeout(Exception):
@@ -82,12 +127,48 @@ class _BrowserTimeout(Exception):
 
 
 def _kill_browser_processes():
-    """强杀当前 playwright chromium 进程树（含卡死的渲染进程）。"""
+    """强杀本项目的 playwright 浏览器进程（含卡死的渲染进程）。
+
+    Linux：按 bundled headless shell 路径与本项目 profile 名匹到进程再杀；
+    Windows：只能用 PowerShell 按可执行文件路径筛 ms-playwright——绝不按
+    进程名杀，那会把用户自己的 Chrome 一起杀掉（本机实测 pkill 不存在，
+    原实现在 Windows 上直接抛 FileNotFoundError，看门狗等于没生效）。
+    """
     import subprocess
 
-    subprocess.run(["pkill", "-9", "-f", _CHROMIUM_MATCH],
-                   check=False, stdout=subprocess.DEVNULL,
-                   stderr=subprocess.DEVNULL)
+    if os.name == "nt":
+        ps = ("Get-CimInstance Win32_Process -Filter \"Name='chrome.exe' or "
+              "Name='chrome-headless-shell.exe'\" | Where-Object "
+              "{ $_.ExecutablePath -like '*ms-playwright*' } | "
+              "ForEach-Object { Stop-Process -Id $_.ProcessId -Force "
+              "-ErrorAction SilentlyContinue }")
+        try:
+            subprocess.run(["powershell", "-NoProfile", "-Command", ps],
+                           check=False, timeout=30, stdout=subprocess.DEVNULL,
+                           stderr=subprocess.DEVNULL)
+        except Exception:  # noqa: BLE001  看门狗线程里绝不能抛异常
+            pass
+        return
+    for pattern in (_CHROMIUM_MATCH, _PROFILE_NAME):
+        try:
+            subprocess.run(["pkill", "-9", "-f", pattern], check=False,
+                           timeout=30, stdout=subprocess.DEVNULL,
+                           stderr=subprocess.DEVNULL)
+        except Exception:  # noqa: BLE001
+            pass
+
+
+def _invalidate_browser_handles():
+    """浏览器进程被强杀后把全局句柄一律作废，下次调用自动重建。
+
+    这是"一个栏目卡死 → 同进程后续所有浏览器栏目报 closed"的根因：原实现
+    只用 pkill 杀进程，句柄仍是旧对象，_get_browser()/_get_real_context()
+    见非 None 就直接复用，于是接连报 Target page/context closed。
+    """
+    global _browser, _real_ctx, _real_page
+    _browser = None
+    _real_ctx = None
+    _real_page = None
 
 
 def _browser_call_with_timeout(fn, *args, **kwargs):
@@ -107,6 +188,7 @@ def _browser_call_with_timeout(fn, *args, **kwargs):
         if not finished.wait(_BROWSER_PAGE_TIMEOUT):
             timed_out.set()
             _kill_browser_processes()
+            _invalidate_browser_handles()
 
     threading.Thread(target=watchdog, daemon=True).start()
     try:
@@ -169,6 +251,8 @@ def _restart_playwright():
 
 def _get_browser():
     global _browser
+    if _browser is not None and not _browser.is_connected():
+        _browser = None          # 进程已不在（被看门狗杀过或自身崩溃）
     if _browser is None:
         try:
             _browser = _get_playwright().chromium.launch(headless=True)
@@ -180,14 +264,50 @@ def _get_browser():
 # 真实 Chrome 模式（瑞数反爬用）：持久化上下文，跨请求复用
 _real_ctx = None
 _real_page = None
+_xvfb_display = None
+
+
+def _ensure_xvfb():
+    """无桌面环境（服务器）上准备一个虚拟显示，返回 DISPLAY 值或 None。
+
+    服务器没有系统 Chrome 时，回退的无头 chromium 会被瑞数类 WAF 直接拒绝
+    （北邮 400/39 字节），而 xvfb 下的**有头** chromium 实测能过（政法信息
+    公开 4774227 字节/parse 10、北邮研招 63687 字节/parse 10）。这里自建
+    Xvfb 而不是靠 xvfb-run 包一层：浏览器是在本进程内启动的，包不了。
+    """
+    global _xvfb_display
+    if _xvfb_display:
+        return _xvfb_display
+    if os.name == "nt" or os.environ.get("DISPLAY"):
+        return None                     # 本机/已有显示：直接用
+    if not Path("/usr/bin/Xvfb").exists():
+        return None
+    if not Path("/tmp/.X99-lock").exists():
+        import subprocess
+        try:
+            subprocess.Popen(["/usr/bin/Xvfb", ":99", "-screen", "0",
+                              "1366x900x24", "-nolisten", "tcp"],
+                             stdout=subprocess.DEVNULL,
+                             stderr=subprocess.DEVNULL, start_new_session=True)
+            time.sleep(1.5)
+        except Exception:  # noqa: BLE001
+            return None
+    if not Path("/tmp/.X99-lock").exists():
+        return None
+    _xvfb_display = ":99"
+    os.environ["DISPLAY"] = _xvfb_display
+    return _xvfb_display
 
 
 def _launch_real_context(pw):
     """创建真实浏览器持久化上下文（本机 Chrome 优先，服务器回退自带 chromium）。
 
     本机有 Chrome/Edge 时用有头持久化上下文（可过瑞数等强反爬，窗口置于
-    屏幕外）；服务器/无桌面环境没有本机 Chrome 时，回退 Playwright 自带
-    chromium 无头渲染，保证 real_browser 栏目在服务器也能运行。
+    屏幕外）；服务器/无桌面环境没有本机 Chrome 时，优先在 Xvfb 虚拟显示上
+    用**有头** chromium（实测能过瑞数），实在没有 Xvfb 才退无头。
+
+    两种回退都必须显式带桌面 UA：Playwright 默认 UA 是 HeadlessChrome，
+    北邮/兰大这类站的 WAF 见到直接回 39 字节空文档。
     """
     chrome_candidates = [
         r"C:\Program Files\Google\Chrome\Application\chrome.exe",
@@ -199,33 +319,55 @@ def _launch_real_context(pw):
     ]
     exe = next((c for c in chrome_candidates
                 if Path(c).exists()), None)
-    profile = Path.home() / ".university_info_profile"
+    profile = Path.home() / _PROFILE_NAME
     profile.mkdir(parents=True, exist_ok=True)
+    common = {
+        "args": ["--disable-blink-features=AutomationControlled",
+                 "--no-first-run", "--no-default-browser-check"],
+        "ignore_default_args": ["--enable-automation"],
+        "viewport": {"width": 1366, "height": 900},
+        "user_agent": _BROWSER_UA,      # 见 _BROWSER_UA：去掉 HeadlessChrome 指纹
+    }
     if exe is None:
-        # 服务器兜底：Playwright 自带 chromium 无头
+        # 服务器兜底：优先 Xvfb 虚拟显示 + 有头 chromium（能过瑞数），
+        # 拿不到虚拟显示才退无头（会被部分 WAF 拒绝，至少不再伪装成"0 条"）
+        if _ensure_xvfb():
+            return pw.chromium.launch_persistent_context(
+                str(profile), headless=False,
+                args=common["args"] + ["--window-position=-32000,-32000"],
+                ignore_default_args=common["ignore_default_args"],
+                viewport=common["viewport"], user_agent=common["user_agent"],
+            )
         return pw.chromium.launch_persistent_context(
             str(profile), headless=True,
-            args=["--disable-blink-features=AutomationControlled",
-                  "--no-first-run", "--no-default-browser-check"],
-            ignore_default_args=["--enable-automation"],
-            viewport={"width": 1366, "height": 900},
+            args=common["args"],
+            ignore_default_args=common["ignore_default_args"],
+            viewport=common["viewport"], user_agent=common["user_agent"],
         )
     return pw.chromium.launch_persistent_context(
         str(profile), executable_path=exe, headless=False,
-        args=["--disable-blink-features=AutomationControlled",
-              "--no-first-run", "--no-default-browser-check",
-              # 窗口定位到屏幕外：不遮挡用户桌面、不抢前台焦点。
-              # 不能用最小化——最小化会让页面进入后台可见性状态，
-              # 反而触发部分 WAF（如瑞数）的检测。
-              "--window-position=-32000,-32000"],
-        ignore_default_args=["--enable-automation"],
-        viewport={"width": 1366, "height": 900},
+        args=common["args"] + [
+            # 窗口定位到屏幕外：不遮挡用户桌面、不抢前台焦点。
+            # 不能用最小化——最小化会让页面进入后台可见性状态，
+            # 反而触发部分 WAF（如瑞数）的检测。
+            "--window-position=-32000,-32000"],
+        ignore_default_args=common["ignore_default_args"],
+        viewport=common["viewport"], user_agent=common["user_agent"],
     )
 
 
 def _get_real_context():
-    """获取真实 Chrome 持久化上下文（与无头浏览器共用同一驱动）。"""
+    """获取真实浏览器持久化上下文（与无头浏览器共用同一驱动）。
+
+    取用前先探活：句柄指向的上下文已关闭（被强杀/崩溃）时直接作废重建，
+    而不是把它原样交出去、让之后每个栏目都报 context closed。
+    """
     global _real_ctx
+    if _real_ctx is not None:
+        try:
+            _real_ctx.pages            # 上下文失效时这里就会抛
+        except Exception:  # noqa: BLE001
+            _real_ctx = None
     if _real_ctx is None:
         try:
             _real_ctx = _launch_real_context(_get_playwright())
@@ -266,17 +408,26 @@ def _get_real_content(page, attempts=4, wait_ms=3000):
 
 
 def _http_get_real(url, wait_ms=5000):
-    """用真实 Chrome（有头 + 持久化 cookie）访问，可过瑞数 JS 挑战。
+    """用真实浏览器（有头 + 持久化 cookie）访问，可过瑞数 JS 挑战。
 
     复用同一个长生命周期页面：不 close 页面，否则持久化上下文会随
     最后一个页面关闭而整体关闭（后续 new_page 报 context closed）。
     同样受超时护栏保护，卡死时强杀 chromium 并重建上下文。
+    句柄失效（上次强杀/崩溃留下）时作废重建并重试一次，而不是把它抛给
+    站点层——否则一个栏目出问题会连坐同进程之后所有浏览器栏目。
     """
-    try:
-        return _browser_call_with_timeout(_http_get_real_inner, url, wait_ms)
-    except _BrowserTimeout:
-        close_real_browser()
-        raise RuntimeError(f"真实浏览器渲染超时（>{_BROWSER_PAGE_TIMEOUT}s，已重建）: {url}")
+    for attempt in (1, 2):
+        try:
+            return _browser_call_with_timeout(_http_get_real_inner, url, wait_ms)
+        except _BrowserTimeout:
+            close_real_browser()
+            raise RuntimeError(
+                f"真实浏览器渲染超时（>{_BROWSER_PAGE_TIMEOUT}s，已重建）: {url}")
+        except Exception as e:  # noqa: BLE001
+            if not _is_browser_gone(e) or attempt == 2:
+                raise
+            close_real_browser()
+            _invalidate_browser_handles()
 
 
 def _http_get_real_inner(url, wait_ms=5000):
@@ -287,11 +438,16 @@ def _http_get_real_inner(url, wait_ms=5000):
     try:
         _real_page.goto(url, timeout=30000, wait_until="domcontentloaded")
         _smart_wait(_real_page, fallback_ms=wait_ms)
-        # 瑞数挑战：首访后刷新一次
+        # 反爬挑战：首访后刷新一次再取（阈值放宽到"像挑战页就刷新"——
+        # 政法那次 1245 字节的挑战页因为原阈值 1000 被漏过，记成了静默 0）
         html = _get_real_content(_real_page)
-        if "$_ts" in html or len(html) < 1000:
+        if _looks_like_challenge(html):
             _real_page.reload(wait_until="domcontentloaded")
             _smart_wait(_real_page, fallback_ms=wait_ms)
+            html = _get_real_content(_real_page)
+        if _is_block_page(html):
+            raise RuntimeError(
+                f"疑似被反爬拦截（{len(html)} 字节，含挑战/拦截特征）: {url}")
         _real_page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
         _real_page.wait_for_timeout(600)
         _real_page.evaluate("window.scrollTo(0, 0)")
@@ -368,22 +524,28 @@ def _http_get_browser(url, wait_ms=4500):
 
     滚动到底部再回顶，触发懒加载图片加载；随后返回渲染后的 HTML 文本。
     受 watchdog 超时保护：站点 JS 卡死时强杀 chromium 并抛异常，由上层
-    降级逻辑继续下一站点，避免单个站点拖垮整个采集。
+    降级逻辑继续下一站点，避免单个站点拖垮整个采集。句柄失效时作废重建
+    并重试一次（同 _http_get_real，避免一个栏目连坐后面所有浏览器栏目）。
     """
-    try:
-        return _browser_call_with_timeout(_http_get_browser_inner, url, wait_ms)
-    except _BrowserTimeout:
-        # 浏览器已损坏（chromium 被强杀）：只丢句柄、保留驱动，
-        # 下次 _get_browser() 自动重建浏览器（驱动若也坏了会自动重启）
-        global _browser
-        _browser = None
-        raise RuntimeError(
-            f"浏览器渲染超时（>{_BROWSER_PAGE_TIMEOUT}s，chromium 已重建）: {url}")
+    for attempt in (1, 2):
+        try:
+            return _browser_call_with_timeout(_http_get_browser_inner, url,
+                                              wait_ms)
+        except _BrowserTimeout:
+            # 浏览器已损坏（chromium 被强杀）：丢句柄、保留驱动，
+            # 下次 _get_browser() 自动重建（驱动若也坏了会自动重启）
+            _invalidate_browser_handles()
+            raise RuntimeError(
+                f"浏览器渲染超时（>{_BROWSER_PAGE_TIMEOUT}s，chromium 已重建）: {url}")
+        except Exception as e:  # noqa: BLE001
+            if not _is_browser_gone(e) or attempt == 2:
+                raise
+            _invalidate_browser_handles()   # 句柄失效：重建后重试一次
 
 
 def _http_get_browser_inner(url, wait_ms=4500):
     browser = _get_browser()
-    page = browser.new_page()
+    page = browser.new_page(user_agent=_BROWSER_UA)   # 见 _BROWSER_UA
     _block_heavy_resources(page)
     try:
         page.goto(url, timeout=30000, wait_until="domcontentloaded")
@@ -393,7 +555,13 @@ def _http_get_browser_inner(url, wait_ms=4500):
         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
         page.wait_for_timeout(600)
         page.evaluate("window.scrollTo(0, 0)")
-        return page.content()
+        html = page.content()
+        if _is_block_page(html):
+            raise RuntimeError(
+                f"疑似被反爬拦截（{len(html)} 字节，含挑战/拦截特征）: {url}")
+        return html
+    except RuntimeError:
+        raise
     except Exception:  # noqa: BLE001
         try:
             return page.content()
