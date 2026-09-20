@@ -36,6 +36,51 @@ def _next_ua():
     return ua
 
 
+# 出网目标边界（与 scripts/find_list_url.py 同一套口径，见其 safe_url/guarded_get）：
+# 只允许公网 http/https，拒绝 localhost/内网主机名，以及 DNS 解析出的任何非
+# global 地址（环回、私有、链路本地、保留）。生产路径过去没有这道校验，而附件
+# 与 iframe 的目标来自页面内容——页面被改或被投毒就会把采集器指向内网。
+_BAD_HOST_SUFFIX = (".local", ".internal", ".localhost", ".home.arpa")
+
+
+def target_problem(url):
+    """目标不可访问的原因（可访问返回 ""）；顺带区分 DNS 失败与非公网地址。"""
+    import ipaddress
+    import socket
+
+    p = urlparse(url or "")
+    if p.scheme not in ("http", "https"):
+        return f"仅允许 http/https（当前 {p.scheme or '无协议'}）"
+    host = (p.hostname or "").lower()
+    if not host:
+        return "缺少主机名"
+    if host == "localhost" or host.endswith(_BAD_HOST_SUFFIX):
+        return f"拒绝内网主机名 {host}"
+    try:
+        infos = socket.getaddrinfo(host, None)
+    except OSError:
+        return f"DNS 解析失败 {host}"
+    for info in infos:
+        try:
+            ip = ipaddress.ip_address(info[4][0])
+        except ValueError:
+            return f"无法解析地址 {info[4][0]}"
+        if not ip.is_global:
+            return f"拒绝非公网地址 {ip}"
+    return ""
+
+
+def ensure_public_target(url):
+    """取数前的目标校验：通过则原样返回 URL，否则抛 ValueError。
+
+    返回 URL（而不是布尔）是为了让校验紧贴调用点，后续改动绕不开它。
+    """
+    problem = target_problem(url)
+    if problem:
+        raise ValueError(f"{problem}: {url}")
+    return url
+
+
 def _browser_headers(url):
     """带浏览器特征与动态 Referer 的请求头。"""
     headers = dict(HEADERS)
@@ -578,7 +623,11 @@ def http_get(url, timeout=20, retries=2, encoding=None, use_browser=False,
 
     use_real_browser=True 时用真实 Chrome（有头+持久化 cookie）抓取，可过瑞数反爬；
     use_browser=True 时走 Playwright 无头渲染；否则 requests 直接抓取。
+
+    三种通道都先过 block_private_target()：附件/iframe 的目标由页面内容决定，
+    不校验就等于把内网地址交给采集器（与 scripts/find_list_url.py 同一套口径）。
     """
+    ensure_public_target(url)
     if use_real_browser:
         last_err = None
         for i in range(retries + 1):
@@ -617,6 +666,7 @@ def http_get(url, timeout=20, retries=2, encoding=None, use_browser=False,
 
 def http_get_bytes(url, timeout=30, retries=2):
     """下载二进制内容（PDF/附件等），返回 bytes。"""
+    ensure_public_target(url)
     last_err = None
     for i in range(retries + 1):
         try:

@@ -34,6 +34,11 @@ CONFIG = ROOT / "config" / "schools.yaml"
 # 规则提取写入 notice_meta 的字段（刷新时先清掉这几个，避免陈旧数据）
 RULE_META_FIELDS = ("deadline", "period", "target", "college", "deadline_iso")
 
+# 本轮运行的收尾自检计数：crawl_source 逐栏目累加，main 结束前据此决定是否
+# 以非零退出告警（见 check_run_health）。原实现逐栏目异常只 print，python 正常
+# 退出 → 定时任务 last_status 永远是 ok，日志里堆着几千条失败也没人知道。
+RUN_STATS = {"sources": 0, "errors": 0, "zero_output": 0, "new": 0}
+
 
 def _save_notice_meta(conn, notice_id, content_md, title, published_at=""):
     """从正文提取截止日期/对象/学院等结构化字段，写入 notice_meta。"""
@@ -242,6 +247,7 @@ def crawl_source(conn, school, school_id, source, args):
     source_id = conn.execute(
         "SELECT id FROM sources WHERE url=?", (url,)
     ).fetchone()["id"]
+    RUN_STATS["sources"] += 1
     try:
         html = fetch.http_get(url, use_browser=use_browser,
                               use_real_browser=use_real)
@@ -253,10 +259,12 @@ def crawl_source(conn, school, school_id, source, args):
             except Exception:  # noqa: BLE001
                 store.log_fetch(conn, source_id, school_id, "error", 0, str(e))
                 print(f"  !! [{school['name']}][{source['name']}] 抓取失败: {e}")
+                RUN_STATS["errors"] += 1
                 return 0
         else:
             store.log_fetch(conn, source_id, school_id, "error", 0, str(e))
             print(f"  !! [{school['name']}][{source['name']}] 抓取失败: {e}")
+            RUN_STATS["errors"] += 1
             return 0
 
     items = parse.parse_list(html, url, domain, max_items=args.max_items,
@@ -265,6 +273,7 @@ def crawl_source(conn, school, school_id, source, args):
         # 列表页无有效通知：可能是导航页 / 反爬拦截 / URL 错误，醒目标注便于清理配置
         print(f"  ⚠ [{school['name']}][{source['name']}] 列表页未解析到有效通知："
               f"可能是导航页 / 反爬拦截 / 栏目 URL 错误")
+        RUN_STATS["zero_output"] += 1
     # 第一阶段：去重筛出待入库条目
     new_items = []
     for it in items:
@@ -294,7 +303,28 @@ def crawl_source(conn, school, school_id, source, args):
         print(f"  + [{school['name']}][{source['name']}] {title}\n      {item_url}")
     store.log_fetch(conn, source_id, school_id, "ok", new_count,
                     f"抽到 {len(items)} 条，新增 {new_count} 条")
+    RUN_STATS["new"] += new_count
     return new_count
+
+
+def check_run_health(error_ratio=0.25):
+    """收尾自检：本轮抓取失败占比过高就以非零退出，让定时任务能报警。
+
+    逐栏目异常在 crawl_source 里被吞成一行 print，python 正常退出 → hermes 的
+    last_status 永远是 ok；服务器日志里因此堆了 7000+ 条失败而无人知晓（审计
+    P1-9）。这里只做一个判据：**抓取失败**占本轮栏目数的比例超阈值（默认 25%）
+    就失败退出——"跑完但没新增"是正常现象，不作为失败条件。
+    """
+    total = RUN_STATS["sources"]
+    if not total:
+        return
+    ratio = RUN_STATS["errors"] / total
+    print(f"\n[自检] 本轮栏目 {total}：抓取失败 {RUN_STATS['errors']}"
+          f"（{ratio:.0%}）、列表零产出 {RUN_STATS['zero_output']}、"
+          f"新增 {RUN_STATS['new']} 条")
+    if ratio > error_ratio:
+        sys.exit(f"[自检] 抓取失败占比 {ratio:.0%} > {error_ratio:.0%}，"
+                 f"本轮判为异常（退出码 1，便于定时任务报警）")
 
 
 def main():
@@ -383,6 +413,7 @@ def main():
     conn.close()
     print(f"\n完成，共新增 {total_new} 条。"
           f"数据库：{store.get_db_path()}")
+    check_run_health()
 
 
 if __name__ == "__main__":

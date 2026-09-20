@@ -115,6 +115,36 @@ def test_detail_all_fail_returns_best(fake_fetch, fake_parse):
     assert content is None
 
 
+def test_public_target_guard_matches_diagnostic_tool():
+    """生产采集路径与诊断脚本的出网口径必须一致（审计 P2-14）。"""
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+    from find_list_url import safe_url as diag_safe
+
+    cases = [
+        "https://gs.njust.edu.cn/",          # 公网：两边都放行
+        "http://127.0.0.1:8000/admin",       # 环回
+        "http://10.1.2.3/x",                 # 私有
+        "https://localhost/a",               # 内网主机名
+        "http://169.254.169.254/latest",     # 云元数据（链路本地）
+        "ftp://example.com/x",               # 非 http/https
+        "http://no-such-host-zzz.example/",  # DNS 失败
+    ]
+    for url in cases:
+        mine = not run_mod.fetch.target_problem(url)
+        assert mine == diag_safe(url), f"口径不一致: {url}"
+
+
+def test_public_target_guard_blocks_private_targets():
+    """附件/iframe 的目标来自页面内容，采集前必须挡住内网地址。"""
+    for url in ("http://127.0.0.1:8000/x", "http://10.1.2.3/x",
+                "http://169.254.169.254/latest/meta-data/"):
+        with pytest.raises(ValueError):
+            run_mod.fetch.http_get(url, retries=0)
+
+
 # ---------- parse.py 采集质量 ----------
 def test_list_strips_cms_junk_in_titles():
     html = (

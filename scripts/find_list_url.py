@@ -132,13 +132,22 @@ def _parse_count(url, domain, html, stype=None):
 
 
 def _render(url):
-    """浏览器渲染取 HTML（URL 先过边界校验；实际请求由 crawler 层负责）。"""
+    """浏览器渲染取 HTML（URL 先过边界校验；实际请求由 crawler 层负责）。
+
+    先试真实浏览器通道（本机 Chrome 或服务器 Xvfb 下能过瑞数类 WAF），再试
+    无头。瑞数站点对无头 chromium 直接回空壳，只试无头会把"生产端其实正常
+    出数"的栏目误判成拿不到。
+    """
     if not safe_url(url):
         return ""
-    try:
-        return fetch.http_get(url, use_browser=True)
-    except Exception:  # noqa: BLE001
-        return ""
+    for kwargs in ({"use_real_browser": True}, {"use_browser": True}):
+        try:
+            html = fetch.http_get(url, **kwargs)
+            if html:
+                return html
+        except Exception:  # noqa: BLE001
+            continue
+    return ""
 
 
 def _candidates_from(html, base_url, domain):
