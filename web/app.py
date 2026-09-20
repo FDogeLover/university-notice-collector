@@ -409,7 +409,7 @@ def deadlines(days: int = Query(30, ge=1, le=365)):
         "JOIN schools sc ON sc.id = n.school_id "
         "WHERE m.field_name='deadline_iso' AND sc.enabled=1 "
         "AND m.field_value >= ? AND m.field_value <= ? "
-        "ORDER BY m.field_value ASC, n.published_at DESC LIMIT 50",
+        "ORDER BY m.field_value ASC, n.published_at DESC LIMIT 300",
         (today.isoformat(), until.isoformat()),
     )
 

@@ -1,0 +1,21 @@
+# 运行依赖（生产实测版本，服务器 venv / Python 3.10）
+# 安装：pip install -r requirements.txt
+# 说明：仓库此前只有 requirements-dev.txt（pytest），文档让裸装 requests/bs4/pyyaml，
+# 而 Web 站要 fastapi/uvicorn、AI 助手要 httpx、浏览器栏目要 playwright、
+# 附件正文要 pypdf/pdfminer/Pillow —— 换机器装就会缺件（审计 P1-13）。
+requests==2.34.2
+beautifulsoup4==4.15.0
+PyYAML==6.0.3
+# Web 应用（web/app.py）
+fastapi==0.141.1
+uvicorn==0.52.4
+# AI 助手（web/ai_client.py）
+httpx==0.28.1
+# 反爬栏目渲染（browser: true / real_browser: true 的 44 个栏目）
+playwright==1.62.0
+# 附件正文（PDF）抽取：服务器此前没装，导致纯 PDF 正文的通知在服务器上取不到正文
+pypdf==6.19.0
+pdfminer.six
+Pillow==12.3.0
+# 注：图片型正文的 OCR（easyocr/pytesseract）未列入——它会拉入 torch（数 GB），
+# 而 OCR 命中的通知极少（本机库 2 条）。需要的机器自行 pip install easyocr。

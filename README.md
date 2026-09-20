@@ -6,9 +6,9 @@
 
 ## 功能特性
 
-- **采集层**：requests → Playwright 无头渲染 → 真实 Chrome，多级兜底过反爬；域名白名单过滤；URL + 标题指纹去重
+- **采集层**：requests → Playwright 无头渲染 → 真实 Chrome，多级兜底过反爬；域名白名单过滤；URL 精确去重（标题指纹去重需发布时间非空，见"已知限制"）
 - **Web 界面**（FastAPI + 原生 JS，无前端框架）：
-  - 统计概览、按学校 / 类型 / 关键词筛选（支持多词与学校简称，如"深大推免"）
+  - 统计概览、按学校 / 类型 / 关键词筛选（支持多词与学校简称，如"深大推免"；简称表目前只覆盖 5 所，其余学校按全名匹配）
   - 通知卡片 → 正文快照弹窗 → 一键跳官方原文
   - 顶部"触发采集"按钮，后台运行、实时进度
 - **AI 助手**：
@@ -27,8 +27,9 @@ Python 3.10+ · FastAPI · SQLite · httpx · requests / BeautifulSoup / Playwri
 ## 快速开始
 
 ```bash
-# 1. 安装依赖
-pip install fastapi uvicorn httpx requests beautifulsoup4 pyyaml
+# 1. 安装依赖（运行依赖全部锁在 requirements.txt：Web / AI / 浏览器渲染 / PDF 附件抽取）
+pip install -r requirements.txt
+python -m playwright install chromium   # 仅 browser / real_browser 栏目需要
 
 # 2. 查看已配置的学校/栏目（首次运行自动建库）
 python run.py --list
@@ -91,16 +92,18 @@ API Key 只写入 `data/ai_config.json`（已被 `.gitignore` 忽略），不会
 - **前端**：点顶部 **"添加学校"** → 手动填写栏目，或输入校名用 **"AI 智能填写"** 自动生成 → 核对后保存
 - **管理学校**：点顶部 **"管理学校"** → **停用**（数据保留，仅不再显示与采集，可随时恢复）或**删除**（连同通知与栏目一并移除，不可恢复）
 - **批量覆盖 985/211**：`python add_985_211.py` 一键补齐全部 985/211 高校配置（AI 智能填写 + 域名校验，可重复执行续跑），学校卡片与筛选支持 985/211 标签
+  - 注意：标签是**互斥**的——985 校只带 `985` 标签，筛"211"只会返回非 985 的 211 校（38 所 985 不在其中）
 - **配置文件**：编辑 `config/schools.yaml` 追加学校与栏目入口（详见 [用法说明.md](用法说明.md) 第四节）
 
 ## 目录结构
 
 ```
-├── config/schools.yaml   # 学校 + 栏目入口清单
+├── config/schools.yaml   # 学校 + 栏目入口清单（唯一权威副本）
 ├── crawler/              # 采集：fetch / parse / dedup / extract
 ├── db/                   # SQLite：建表 + 存储 + 查询
 ├── data/                 # 运行时数据（数据库、AI 配置，不入库）
 ├── web/                  # FastAPI 后端 + 静态前端（含 AI 助手）
+├── scripts/              # 运维工具：巡检 / 实探 / 日期修复 / 备份 / 回滚 / 栏目换址
 ├── run.py                # 手动触发采集
 └── query.py              # 命令行检索工具
 ```
@@ -109,7 +112,7 @@ API Key 只写入 `data/ai_config.json`（已被 `.gitignore` 忽略），不会
 
 ```bash
 pip install -r requirements-dev.txt     # pytest
-python -m pytest tests/ -q              # 回归测试（完全离线，0.5s 左右）
+python -m pytest tests/ -q              # 回归测试（完全离线，约 2s，70 项）
 
 # 网站可能改版，可随时刷新 fixture 快照（自动保留抓取失败栏目的旧快照）
 python tests/update_fixtures.py
@@ -117,8 +120,49 @@ python tests/update_fixtures.py
 
 测试基于 `tests/fixtures/` 中 10 份各校真实页面快照（7 列表页 + 3 详情页），
 解析器行为被意外改坏时会在这里第一时间红灯，而不是等线上采集才发现。
+生产部署前建议在目标机器上跑一遍 `python -m pytest -q`（服务器 venv 已装 pytest）。
+
+## 运维
+
+线上由服务器（`ssh study` 的 `/home/university-notice-collector`）承担：cron 每小时
+抓一片（3 片覆盖全量 667 个栏目）、每周巡检、每日 04:00 数据库备份、每日 05:00
+发布静态站快照 **（线上站是每日快照，不是实时数据）**。
+
+```bash
+python scripts/audit_probe.py --db-health     # 栏目健康清单（零产出/失败/停更，不联网）
+python scripts/audit_probe.py --sweep          # 全量实探：每个栏目真的能不能采到
+python scripts/fix_published_dates.py          # 发布时间体检修复（缺省只报告）
+python scripts/backup_db.py --keep 7           # 在线备份（WAL 库不能用 cp）
+python scripts/rollback_site.py                # 列出历史快照 / --to <hash> --apply 回滚
+```
+
+发布护栏：`deploy_site.py` 会拒绝"构建库超过 3 天没新数据"或"条数比上次发布少 5%
+以上"的发布（本机库比服务器库旧时最容易被拦），确需强制发布加 `--force`。
+
+## 已知限制
+
+审计（2026-09-20，全量实探 667 个栏目）确认、本轮尚未处理的项：
+
+- **无分页**：每个栏目只取列表首页最新的 N 条（服务器 cron 用 `--max-items 20`），
+  历史存档无法回溯补齐
+- **标题指纹去重依赖发布时间**：`--no-detail` 模式下不生效；库里同校同名但日期不同的
+  条目按"不同通知"保留（年度重复的名单/安排属正常）
+- **静态站与 Web 站口径不同**：静态站搜索只覆盖标题 + 摘要（Web 站搜全文）；
+  "近 7/30 天"快筛以**构建日**为基准；两站的"学校数"分别指"有通知的学校"与"启用学校"
+- **服务器出口限制**：服务器没有系统 Chrome，走 Xvfb + chromium 有头渲染（可过瑞数类
+  WAF）；但个别站点同时校验出口 IP（如南京师范大学研招），在服务器仍拿不到，只有本机能采
+- **图片型正文未 OCR**：`easyocr` 会拉入 torch（数 GB），未列入运行依赖；正文是图片的
+  通知正文可能为空
+- **约 60 条历史通知的发布时间无法自动确认**：标题年份与发布日期相差 ≥2 年，但栏目列表页
+  也给不出真实日期，按原值保留（未置空、也未替换）
+- **无 CI**：仓库没有 `.github/workflows`；服务器 venv 已装 pytest，部署前手动跑
+  `python -m pytest -q`
+- **健康度无界面**：Web 站/静态站都没有"哪些栏目是僵尸"的视图，用
+  `python scripts/audit_probe.py --db-health` 在命令行看
 
 ## 安全声明
 
 - 采集目标为各高校官网**公开公告**，数据仅供个人学习与信息聚合，请合理控制采集频率
+- 采集路径只访问公网 http/https：请求前校验协议、主机名与 DNS 解析出的每个 IP，
+  拒绝环回/私有/保留地址（含页面里的附件与 iframe 链接）
 - 每条通知均附官方原文链接，可点击核对

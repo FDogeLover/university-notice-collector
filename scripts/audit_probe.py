@@ -247,6 +247,57 @@ def run_sweep(args, vantage):
     return payload
 
 
+def db_health(limit=25):
+    """库内健康清单（不联网）：零产出 / 连续失败 / 最新发布超期 的栏目。
+
+    收尾对账用：667 个栏目里哪些长期没出数、哪些一直在失败、哪些最新一条
+    通知已经是几个月前——这些信号以前只在每周巡检里出现一次，而且判据是
+    "历史累计失败数"，一次失败就永久上榜（审计 P2-15②）。
+    """
+    conn = store.connect()
+    today = date.today()
+    rows = conn.execute(
+        "SELECT sc.name school, s.name src, s.url,"
+        "  (SELECT COUNT(*) FROM notices n WHERE n.source_id=s.id) cnt,"
+        "  (SELECT MAX(n.published_at) FROM notices n WHERE n.source_id=s.id"
+        "     AND n.published_at != '') newest,"
+        "  (SELECT MAX(f.run_at) FROM fetch_logs f WHERE f.source_id=s.id)"
+        "     last_run,"
+        "  (SELECT COUNT(*) FROM fetch_logs f WHERE f.source_id=s.id"
+        "     AND f.status='error' AND f.run_at >= date('now','localtime','-7 day'))"
+        "     err7"
+        " FROM sources s JOIN schools sc ON sc.id=s.school_id"
+        " WHERE sc.enabled=1").fetchall()
+    zero, failing, stale = [], [], []
+    for r in rows:
+        if r["cnt"] == 0:
+            zero.append(r)
+        if r["err7"] > 0:
+            failing.append(r)
+        if r["newest"]:
+            try:
+                days = (today - date.fromisoformat(r["newest"][:10])).days
+                if days > 180:
+                    stale.append((days, r))
+            except ValueError:
+                pass
+    stale.sort(key=lambda x: -x[0])
+    print(f"栏目 {len(rows)} 个：零产出 {len(zero)}、近 7 天有失败 {len(failing)}、"
+          f"最新通知超 180 天 {len(stale)}")
+    for title, items, fmt in (
+            ("零产出（从未入库一条）", zero,
+             lambda r: f"{r['school']} / {r['src']}  {r['url']}"),
+            ("近 7 天抓取失败", failing,
+             lambda r: f"{r['school']} / {r['src']} 失败{r['err7']}次 "
+                       f"（最近 {r['last_run']}）"),
+            ("最新通知超 180 天（疑似停更）", [r for _d, r in stale],
+             lambda r: f"{r['school']} / {r['src']} 最新 {r['newest']}")):
+        print(f"\n== {title}（{len(items)}，列前 {limit}）")
+        for r in items[:limit]:
+            print("  " + fmt(r))
+    conn.close()
+
+
 def main():
     ap = argparse.ArgumentParser(description="栏目可用性全量审计探针")
     ap.add_argument("--sweep", action="store_true", help="实探全部栏目")
@@ -254,6 +305,8 @@ def main():
     ap.add_argument("--domain", default="", help="--url 时的学校域名")
     ap.add_argument("--stype", default="研究生教育", help="--url 时的栏目领域")
     ap.add_argument("--db-stats", action="store_true", help="只输出库内统计")
+    ap.add_argument("--db-health", action="store_true",
+                    help="库内健康清单：零产出/失败/停更栏目（不联网）")
     ap.add_argument("--db", default=None, help="库路径（默认 data/university.db）")
     ap.add_argument("--limit", type=int, default=0, help="最多探多少个栏目")
     ap.add_argument("--school", help="只探名字包含该词的学校")
@@ -268,6 +321,9 @@ def main():
     if args.db_stats:
         print(json.dumps(db_stats(args.db)["summary"], ensure_ascii=False,
                          indent=2))
+        return
+    if args.db_health:
+        db_health()
         return
     if args.url:
         # 单栏目复核默认带浏览器兜底：瑞数类站点裸请求必被挡，只按 requests

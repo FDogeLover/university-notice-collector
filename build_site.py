@@ -104,13 +104,37 @@ def collect(conn, max_content):
 
     today = date.today()
     until = today + timedelta(days=30)
+    # 上限从 50 提到 300：线上顶层 deadlines 50 条里 34 条的截止日就是生成当天，
+    # 真正几天后才截止的通知全被截在外面（库内 [今天,+30天] 有 140+ 条）
     deadlines = [
         {"id": n["id"], "title": n["title"], "school": n["school"],
          "deadline": n["deadline"]}
         for n in sorted(notices, key=lambda x: x["deadline"])
         if n["deadline"] and today.isoformat() <= n["deadline"] <= until.isoformat()
-    ][:50]
+    ][:300]
     return notices, stats, deadlines, content_dir_ids, school_tags
+
+
+def check_quality(notices):
+    """发布前质量闸门：未来/畸形发布日期即判不合格（`--check` 用）。
+
+    未来日期会把卡片顶到列表最前（用户报过的"发布 2027-09-06"就是这么来的），
+    构建时拦下来，别等发出去再发现。
+    """
+    today = date.today().isoformat()
+    problems = []
+    for n in notices:
+        d = (n.get("date") or "")[:10]
+        if not d:
+            continue
+        try:
+            if len(d) != 10 or date.fromisoformat(d).isoformat() != d:
+                problems.append(f"畸形日期 {d} | {n['title'][:36]}")
+            elif d > today:
+                problems.append(f"未来日期 {d} | {n['title'][:36]}")
+        except ValueError:
+            problems.append(f"无法解析日期 {d} | {n['title'][:36]}")
+    return problems
 
 
 def write_site(out_dir, notices, stats, deadlines, content_dir_ids,
@@ -160,6 +184,8 @@ def main():
     ap.add_argument("--out", default=str(ROOT / "site"), help="输出目录")
     ap.add_argument("--max-content", type=int, default=20000,
                     help="每条正文快照最多保留字符数")
+    ap.add_argument("--check", action="store_true",
+                    help="只做发布前质量闸门（未来/畸形日期），不合格非零退出")
     args = ap.parse_args()
 
     conn = store.connect()
@@ -169,6 +195,18 @@ def main():
             conn, args.max_content)
     finally:
         conn.close()
+    problems = check_quality(notices)
+    if args.check:
+        if problems:
+            print(f"质量闸门未通过：{len(problems)} 条日期异常")
+            for p in problems[:20]:
+                print("  " + p)
+            sys.exit(1)
+        print(f"质量闸门通过：{len(notices)} 条通知，日期无未来/畸形值")
+        return
+    if problems:
+        print(f"! 注意：{len(problems)} 条日期异常会进入站点（先跑 "
+              f"scripts/fix_published_dates.py，或 build_site.py --check 看明细）")
     out = write_site(args.out, notices, stats, deadlines, contents, school_tags)
     n_files = len(list((out / "data" / "content").glob("*.js")))
     print(f"静态站已生成：{out}")
