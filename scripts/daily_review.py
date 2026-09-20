@@ -79,6 +79,9 @@ def run_review(since):
     if not crawl_tail:
         print("cron-crawl.log 为空，跳过复盘")
         return
+    # 报告路径原来只在 :122/:137/:140 被读、从未赋值 → 一写报告就 NameError，
+    # 报告永不落盘、邮件永不发出（审计 P1-9 点名的死代码）。这里补上定义。
+    out = LOG_DIR / f"review-{date.today().isoformat()}.md"
 
     prompt = f"""你是高校信息采集项目的质量复盘员。今天是 {date.today().isoformat()}。
 
