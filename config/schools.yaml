@@ -513,10 +513,6 @@ schools:
     url: https://jiaowu.buaa.edu.cn/
     category: 通知公告
     stype: 综合信息
-  - name: 学生处
-    url: https://xsc.buaa.edu.cn/
-    category: 通知公告
-    stype: 综合信息
   - name: 就业指导中心
     url: https://career.buaa.edu.cn/
     category: 通知公告
@@ -691,7 +687,7 @@ schools:
     url: https://yz.neu.edu.cn/
     category: 招生
   - name: 信息公开网
-    url: https://xxgk.neu.edu.cn/
+    url: http://info.neu.edu.cn/mainm.htm
     category: 信息公开
   - name: 教务处
     url: https://aao.neu.edu.cn/
@@ -980,7 +976,7 @@ schools:
     url: https://yz.ouc.edu.cn
     category: 招生
   - name: 信息公开网
-    url: https://xxgk.ouc.edu.cn
+    url: https://www.ouc.edu.cn/tzgg/list.htm
     category: 信息公开
   - name: 教务处
     url: https://jwc.ouc.edu.cn/
@@ -1000,7 +996,7 @@ schools:
   domain: scut.edu.cn
   sources:
   - name: 研究生院
-    url: https://gs.scut.edu.cn/
+    url: https://www2.scut.edu.cn/graduate/
     category: 招生
   - name: 研究生招生网
     url: https://yz.scut.edu.cn/
@@ -1062,8 +1058,9 @@ schools:
     url: https://yz.uestc.edu.cn/
     category: 招生
   - name: 信息公开网
-    url: https://xxgk.uestc.edu.cn/
+    url: https://xxgkw.uestc.edu.cn/index/gggs.htm
     category: 信息公开
+    stype: 综合信息
   - name: 教务处
     url: https://www.jwc.uestc.edu.cn/
     category: 通知公告
@@ -1226,7 +1223,7 @@ schools:
     url: https://gs.ustb.edu.cn/
     category: 通知公告
   - name: 研究生招生信息网
-    url: https://yz.ustb.edu.cn/
+    url: https://yzxc.ustb.edu.cn/
     category: 招生
   - name: 信息公开网
     url: https://xxgk.ustb.edu.cn/
@@ -1425,7 +1422,7 @@ schools:
     url: https://gs.cufe.edu.cn/
     category: 招生
   - name: 信息公开网
-    url: https://xxgk.cufe.edu.cn/
+    url: https://op.cufe.edu.cn/xxgk/xxgk/xxgkjtsx.htm
     category: 信息公开
   - name: 教务处
     url: https://jwc.cufe.edu.cn/
@@ -1445,12 +1442,7 @@ schools:
   domain: cupl.edu.cn
   sources:
   - name: 研究生院
-    url: https://yjsy.cupl.edu.cn/
-    category: 招生
-    browser: true
-    real_browser: true
-  - name: 本科招生信息网
-    url: https://bkzs.cupl.edu.cn/
+    url: https://yjsy.cupl.edu.cn/tzgg.htm
     category: 招生
     browser: true
     real_browser: true
@@ -1537,7 +1529,7 @@ schools:
     url: https://zhsh.cugb.edu.cn/
     category: 招生
   - name: 信息公开网
-    url: https://xxgk.cugb.edu.cn/
+    url: https://bm.cugb.edu.cn/info/
     category: 信息公开
   - name: 教务处
     url: https://jwc.cugb.edu.cn/
@@ -1628,7 +1620,7 @@ schools:
   domain: tyut.edu.cn
   sources:
   - name: 太原理工大学研究生院
-    url: https://graduate.tyut.edu.cn/
+    url: http://www.gs.tyut.edu.cn/
     category: 招生
   - name: 太原理工大学研究生招生网
     url: https://yz.tyut.edu.cn/
@@ -1707,7 +1699,7 @@ schools:
   domain: ybu.edu.cn
   sources:
   - name: 研究生院
-    url: https://yjs.ybu.edu.cn
+    url: https://grad.ybu.edu.cn/
     category: 招生
   - name: 信息公开网
     url: https://xxgk.ybu.edu.cn
@@ -1762,7 +1754,7 @@ schools:
     url: https://zsb.nenu.edu.cn/
     category: 招生
   - name: 信息公开网
-    url: https://xxgk.nenu.edu.cn/
+    url: https://publish.nenu.edu.cn/
     category: 信息公开
   - name: 教务处
     url: https://jwc.nenu.edu.cn/
@@ -1812,17 +1804,13 @@ schools:
   domain: nefu.edu.cn
   sources:
   - name: 研究生院
-    url: https://yjsy.nefu.edu.cn
+    url: https://gra.nefu.edu.cn/index/tzgg.htm
     category: 招生
   - name: 信息公开网
     url: https://xxgk.nefu.edu.cn
     category: 信息公开
   - name: 本科生院
     url: https://bksy.nefu.edu.cn/
-    category: 通知公告
-    stype: 综合信息
-  - name: 学工部
-    url: https://xgb.nefu.edu.cn/
     category: 通知公告
     stype: 综合信息
   - name: 就业网
@@ -1898,7 +1886,7 @@ schools:
     url: https://graduate.shisu.edu.cn/
     category: 招生
   - name: 信息公开网
-    url: https://xxgk.shisu.edu.cn/
+    url: https://info.shisu.edu.cn/
     category: 信息公开
   - name: 本科招生网
     url: https://admissions.shisu.edu.cn/
@@ -1949,7 +1937,7 @@ schools:
     url: https://yz.sufe.edu.cn/
     category: 招生
   - name: 信息公开网
-    url: https://xxgk.sufe.edu.cn/
+    url: https://gongkai.sufe.edu.cn/
     category: 信息公开
   - name: 教务处
     url: https://jwc.sufe.edu.cn/
@@ -1979,7 +1967,7 @@ schools:
     url: https://zsb.suda.edu.cn/
     category: 招生
   - name: 苏州大学信息公开网
-    url: https://xxgk.suda.edu.cn/
+    url: https://www.suda.edu.cn/xxgk/
     category: 信息公开
   - name: 教务处
     url: https://jwc.suda.edu.cn/
@@ -2098,7 +2086,7 @@ schools:
   domain: njau.edu.cn
   sources:
   - name: 研究生院
-    url: https://grs.njau.edu.cn/
+    url: https://grasch.njau.edu.cn/
     category: 招生
   - name: 信息公开网
     url: https://xxgk.njau.edu.cn/
@@ -2121,33 +2109,39 @@ schools:
   domain: njnu.edu.cn
   sources:
   - name: 研究生招生网
-    url: https://yz.njnu.edu.cn/
+    url: https://yjszs.njnu.edu.cn/
     category: 招生
+    real_browser: true
   - name: 研究生院
     url: https://grad.njnu.edu.cn/
     category: 招生
+    real_browser: true
   - name: 信息公开网
     url: https://xxgk.njnu.edu.cn/
     category: 信息公开
+    real_browser: true
   - name: 教务处
     url: https://jwc.njnu.edu.cn/
     category: 通知公告
     stype: 综合信息
+    real_browser: true
   - name: 学工处
     url: https://xgc.njnu.edu.cn/
     category: 通知公告
     stype: 综合信息
+    real_browser: true
   - name: 本科招生网
     url: https://bkzs.njnu.edu.cn/
     category: 通知公告
     stype: 本科招生
+    real_browser: true
   tags:
   - '211'
 - name: 中国矿业大学
   domain: cumt.edu.cn
   sources:
   - name: 研究生招生网
-    url: https://yzb.cumt.edu.cn/
+    url: https://yz.cumt.edu.cn/
     category: 招生
   - name: 研究生院
     url: https://gs.cumt.edu.cn/
@@ -2312,9 +2306,6 @@ schools:
   - name: 郑州大学研究生招生网
     url: https://yz.zzu.edu.cn/
     category: 招生
-  - name: 郑州大学信息公开网
-    url: https://xxgk.zzu.edu.cn/
-    category: 信息公开
   - name: 教务处
     url: https://www5.zzu.edu.cn/jwc/
     category: 通知公告
@@ -2412,9 +2403,6 @@ schools:
   - name: 本科招生网
     url: https://zs.ccnu.edu.cn/
     category: 招生
-  - name: 信息公开网
-    url: https://xxgk.ccnu.edu.cn/
-    category: 信息公开
   tags:
   - '211'
 - name: 中国地质大学（武汉）
@@ -2479,7 +2467,7 @@ schools:
     url: https://yz.scnu.edu.cn/
     category: 招生
   - name: 信息公开网
-    url: https://xxgk.scnu.edu.cn/
+    url: http://xxgk.scnu.edu.cn/category/
     category: 信息公开
   - name: 本科生院
     url: https://jw.scnu.edu.cn/
@@ -2528,9 +2516,6 @@ schools:
 - name: 南昌大学
   domain: ncu.edu.cn
   sources:
-  - name: 南昌大学招生信息网
-    url: https://zhaosheng.ncu.edu.cn/
-    category: 招生
   - name: 南昌大学研究生院
     url: https://yjsy.ncu.edu.cn/
     category: 招生
@@ -2550,7 +2535,7 @@ schools:
     category: 通知公告
     stype: 就业招聘
   - name: 本科招生网
-    url: https://bkzs.ncu.edu.cn/
+    url: https://bkzs.ncu.edu.cn/zs
     category: 通知公告
     stype: 本科招生
   tags:
@@ -2602,10 +2587,6 @@ schools:
     url: https://xg.swjtu.edu.cn/web/Home/NewsList
     category: 通知公告
     stype: 综合信息
-  - name: 就业中心
-    url: https://jiuye.swjtu.edu.cn/
-    category: 通知公告
-    stype: 就业招聘
   - name: 本科招生网
     url: https://zhaosheng.swjtu.edu.cn/zsxin_xi/tzgg.htm
     category: 通知公告
@@ -2645,7 +2626,7 @@ schools:
     url: https://zs.sicau.edu.cn/
     category: 招生
   - name: 研究生招生网
-    url: https://yz.sicau.edu.cn/
+    url: https://yan.sicau.edu.cn/
     category: 招生
   - name: 信息公开网
     url: https://xxgk.sicau.edu.cn/
@@ -2698,7 +2679,7 @@ schools:
   domain: ynu.edu.cn
   sources:
   - name: 研究生院
-    url: https://www.grs.ynu.edu.cn
+    url: http://www.grs.ynu.edu.cn/
     category: 招生
   - name: 本科招生网
     url: https://zsb.ynu.edu.cn
@@ -2725,9 +2706,6 @@ schools:
   sources:
   - name: 贵州大学研究生院
     url: https://gs.gzu.edu.cn
-    category: 招生
-  - name: 贵州大学本科招生网
-    url: https://zs.gzu.edu.cn
     category: 招生
   - name: 贵州大学信息公开网
     url: https://www.gzu.edu.cn/18096/list.htm
@@ -2954,10 +2932,12 @@ schools:
     url: https://jwc.shzu.edu.cn/
     category: 通知公告
     stype: 综合信息
+    browser: true
   - name: 学工部
     url: https://xgb.shzu.edu.cn/1025/list.htm
     category: 通知公告
     stype: 综合信息
+    browser: true
   tags:
   - '211'
 - name: 中央音乐学院
