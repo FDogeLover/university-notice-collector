@@ -145,13 +145,34 @@ _SCHEDULE_LEAD_RE = re.compile(
 _NON_TEXT_TAGS = {"script", "style", "noscript", "head", "title"}
 
 
+# 页脚/版权类容器：日期正则扫到"版权所有 2006-07-02"就会被当成发布时间
+_FOOTER_HINT_RE = re.compile(r"foot|copyright|copy|banquan|版权|备案|icp", re.I)
+# 日期前后出现这些词说明它属于版权/备案信息，不是发布时间
+_NOISE_NEAR_RE = re.compile(r"版权|备案|©|copyright|icp|公安局|保留所有权利", re.I)
+
+
+def _strip_footer_blocks(soup):
+    """移除页脚/版权类容器（`div.footer` 这类不在 decompose 标签列表里）。
+
+    按快照遍历并跳过已被祖先 decompose 掉的节点（其 attrs 已置空）。
+    """
+    for el in list(soup.find_all(True)):
+        if el.attrs is None or not el.name:      # 祖先已先被删掉
+            continue
+        cls = " ".join(el.get("class") or [])
+        eid = el.get("id") or ""
+        if _FOOTER_HINT_RE.search(f"{cls} {eid}"):
+            el.decompose()
+
+
 def _first_plausible_date(soup):
     """页面可见文本里第一个"像发布时间"的日期；没有返回 ""。
 
     兜底用（页面没有任何发布标记时）。只扫可见文本：属性和脚本里的
     日期串（图片路径 ``2026-09/7abc.png``）不属于页面内容，正是库里
     "2026-09-70" 这类假日期的来源。引导词是日程/期限语义的日期同样跳过——
-    那些是"什么时候截止/举办"，不是"什么时候发布的"。
+    那些是"什么时候截止/举办"，不是"什么时候发布的"；页脚版权行里的日期
+    （"版权所有 2006-07-02"）同样跳过，苏州大学那批 2006-07-02 就是它来的。
     """
     chunks = []
     for s in soup.find_all(string=True):
@@ -166,7 +187,10 @@ def _first_plausible_date(soup):
         iso = _published_iso(*m.groups())
         if not iso:
             continue
-        if _SCHEDULE_LEAD_RE.search(text[max(0, m.start() - 12):m.start()]):
+        before = text[max(0, m.start() - 12):m.start()]
+        if _SCHEDULE_LEAD_RE.search(before):
+            continue
+        if _NOISE_NEAR_RE.search(text[max(0, m.start() - 30):m.end() + 30]):
             continue
         return iso
     return ""
@@ -635,6 +659,7 @@ def parse_detail(html, url):
     # 正文快照：定位正文容器 → 按块级聚合 → 质量门禁 → PDF 附件兜底
     for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
         tag.decompose()
+    _strip_footer_blocks(soup)   # <div class="footer"> 这类不在上面的标签列表里
 
     # 发布时间：meta 标签 / "发布时间：" 标签 → 页面可见文本里首个合理日期兜底
     published, published_src = _extract_published(html, soup)

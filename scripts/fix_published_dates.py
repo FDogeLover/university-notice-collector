@@ -27,6 +27,7 @@ data/fix_dates_cache.json，复核或重跑不再抓站。
 import argparse
 import csv
 import json
+import re
 import sys
 import time
 from datetime import date
@@ -37,7 +38,8 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from crawler import fetch, parse  # noqa: E402
+from crawler import fetch as fh  # noqa: E402
+from crawler import parse  # noqa: E402
 from db import store  # noqa: E402
 
 
@@ -98,6 +100,70 @@ def list_dates(source, flags, domain, cache):
     return {u: de for u, _d, de in cache[source["url"]] if de}
 
 
+def suspicious_keys(conn, min_group=5, stale_days=730):
+    """找出"看似合法但可疑"的日期：成批出现**且明显陈旧**的同一个日期。
+
+    苏州大学本科招生网 28 条全错成 2006-07-02、另有 2019-11-25×18、
+    2013-02-06×16 这类值——单看每条都"合法"，只有成批出现才暴露它是从
+    页脚/模板里读来的常量。但"同一天发了 5 篇"是完全正常的，所以要再加
+    一条：该日期比这所学校库内最新发布日期还早两年以上（模板常量必然
+    远离当前语料的时间范围）。返回 {school_id|published_at}。
+    """
+    newest = {r["school_id"]: r["m"] for r in conn.execute(
+        "SELECT school_id, MAX(published_at) m FROM notices "
+        "WHERE published_at != '' GROUP BY school_id")}
+    rows = conn.execute(
+        "SELECT school_id, published_at, COUNT(*) c FROM notices "
+        "WHERE published_at != '' GROUP BY school_id, published_at "
+        "HAVING c >= ?", (min_group,)).fetchall()
+    out = set()
+    for r in rows:
+        top = newest.get(r["school_id"]) or ""
+        if len(top) < 10 or len(r["published_at"]) < 10:
+            continue
+        try:
+            gap = (date.fromisoformat(top[:10])
+                   - date.fromisoformat(r["published_at"][:10])).days
+        except ValueError:
+            continue
+        if gap >= stale_days:
+            out.add(f"{r['school_id']}|{r['published_at']}")
+    return out
+
+
+def page_has_date(url, iso, timeout=20):
+    """详情页**可见文本**里是否真的写着这个日期（True/False/None=抓不到页面）。
+
+    "成批可疑"只是嫌疑，落锤要看页面。但必须剔掉 script/style：苏州大学那批
+    2006-07-02 来自页面 JS 示例里的 `Format("yyyy-MM-dd")==>2006-07-02`，
+    按整页搜会误判成"页面上真有这个日期"；海南大学 2024-05-22 那批则是正文
+    里真实的同日公告——两者的区别就在"可见文本里有没有它"。
+    """
+    if not iso:
+        return None
+    try:
+        html = fh.http_get(url, timeout=timeout, retries=1)
+    except Exception:  # noqa: BLE001
+        return None
+    text = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", html)
+    text = re.sub(r"<[^>]+>", " ", text)
+    y, m, d = iso[:4], iso[5:7], iso[8:10]
+    forms = (iso, f"{y}.{m}.{d}", f"{y}/{m}/{d}",
+             f"{y}年{int(m)}月{int(d)}日", f"{y}年{m}月{d}日")
+    return any(f in text for f in forms)
+
+
+def title_year_conflict(title, published_at):
+    """标题里的年份与发布日期年份相差 ≥2 年 → 可疑（差值 1 是正常的年份周期）。"""
+    ym = re.search(r"(20\d{2})\s*年", title or "")
+    if not ym or len(published_at or "") < 4:
+        return False
+    try:
+        return abs(int(ym.group(1)) - int(published_at[:4])) >= 2
+    except ValueError:
+        return False
+
+
 def detail_date(url):
     """列表页没有日期时，重抓详情页取发布时间。
 
@@ -123,6 +189,9 @@ def main():
     ap.add_argument("--no-list", action="store_true", help="不抓列表页")
     ap.add_argument("--no-prefer-list", action="store_true",
                     help="只修'一定错'的日期，不用列表日期覆盖已有的历史日期")
+    ap.add_argument("--blank-suspicious", action="store_true",
+                    help="成批出现且明显陈旧、又拿不到列表日期的可疑日期置空"
+                         "（如苏州大学 19 条 2006-07-02，来自页面 JS 示例常量）")
     ap.add_argument("--detail", action="store_true",
                     help="列表页取不到日期时再抓详情页（慢，但比置空强）")
     ap.add_argument("--sleep", type=float, default=0.3, help="列表页间隔秒数")
@@ -164,6 +233,7 @@ def main():
             time.sleep(args.sleep)
         print(f"\n列表页共取到 {len(hints)} 条带日期的通知\n")
 
+    suspicious = suspicious_keys(conn)
     changes = []
     for n in notices:
         if args.school and args.school not in n["school_name"]:
@@ -177,9 +247,31 @@ def main():
             reason = "未来/畸形日期" if old else "原为空"
             need_detail = args.detail and not exact and bool(old)
             new = exact or (detail_date(n["url"]) if need_detail else "")
-        elif exact and exact != old and not args.no_prefer_list:
-            # 库内日期看着合法但可能来自正文日程，列表行的完整日期更权威
-            reason, new = "改用列表日期", exact
+        elif exact and exact != old and (
+                not args.no_prefer_list
+                or f"{n['school_id']}|{old}" in suspicious
+                or title_year_conflict(n["title"], old)):
+            # 库内日期看着合法但可能来自正文日程/页脚模板，列表行的完整日期
+            # 更权威；--no-prefer-list 只放行"可疑"的那些（批量重复或标题
+            # 年份冲突），避免大面积改写历史值
+            if f"{n['school_id']}|{old}" in suspicious:
+                reason = "批量可疑日期"
+            elif title_year_conflict(n["title"], old):
+                reason = "标题年份冲突"
+            else:
+                reason = "改用列表日期"
+            new = exact
+        elif (args.blank_suspicious and old
+              and f"{n['school_id']}|{old}" in suspicious):
+            # "成批 + 明显陈旧"只是嫌疑，落锤看页面：页面里根本没有这个日期
+            # 才置空（苏州大学 2006-07-02 来自页面 JS 示例常量）；页面里确实
+            # 写着它（海南大学 2024-05-22 那批真实的同日公告）就原样留着。
+            # 先试详情页的发布标记——有就用它，比置空强。
+            hit = page_has_date(n["url"], old[:10])
+            if hit is not False:
+                continue
+            labeled = detail_date(n["url"]) if args.detail else ""
+            reason, new = "可疑日期置空", labeled
         else:
             continue
         if new == old:

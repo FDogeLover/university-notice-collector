@@ -121,6 +121,25 @@ def test_detail_published_skips_schedule_dates_in_visible_text():
     assert d["published_src"] == "scan"    # 扫描得到：采集时让位给列表行日期
 
 
+def test_detail_published_skips_footer_copyright_dates():
+    """页脚版权行里的日期不是发布时间（苏州大学那批 2006-07-02 就是它来的）。"""
+    html = """
+    <html><body>
+    <h1>苏州大学2026年全日制普通本科招生章程</h1>
+    <div class="v_news_content">
+      <p>第一章 总则。为保证学校招生工作顺利进行，切实维护考生合法权益，
+         根据相关法律法规和教育部有关规定，结合学校实际制定本章程。</p>
+      <p>第二章 组织机构。学校成立招生工作领导小组，负责招生工作的
+         组织、协调与监督，招生办公室负责具体实施。</p>
+    </div>
+    <div class="footer">版权所有 2006-07-02 苏州大学 苏ICP备05012345号</div>
+    </body></html>
+    """
+    d = parse_detail(html, "https://zsb.suda.edu.cn/t/1.htm")
+    assert d["published_at"] == ""
+    assert d["published_src"] == ""
+
+
 def test_detail_garbage_page_yields_empty_content():
     """纯导航/菜单页（多行短行）：宁可置空也不留垃圾快照。"""
     links = "".join(f"<p><a href='a{i}.htm'>栏目{i}</a></p>" for i in range(20))

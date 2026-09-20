@@ -85,10 +85,11 @@ _CHROMIUM_MATCH = "chrome-headless" + "-shell-linux64" + "/chrome-headless-shell
 # 本项目持久化 profile 目录名：真实 Chrome 的 cmdline 里带它，强杀时据此
 # 只杀本项目自己的浏览器，不误伤同机其它 Chrome
 _PROFILE_NAME = ".university_info_profile"
-# 取到的内容像"挑战页/拦截页"时的特征（需刷新或换通道重取）
+# 取到的内容像"挑战页/拦截页"时的特征（需刷新或换通道重取）。
+# 只放硬特征：很多正常页面都有 <noscript>Please enable JavaScript</noscript>，
+# 把这类提示语当拦截信号会把好页面误判成被拦。
 _CHALLENGE_HINTS = ("$_ts", "$_ss", "dynamic_challenge", "访问被限制",
-                    "浏览器环境不被允许", "enable javascript",
-                    "please enable js")
+                    "浏览器环境不被允许")
 # 句柄失效类异常的特征串（浏览器崩溃/被强杀后必须重建，不能原样抛给站点层）
 _GONE_HINTS = ("has been closed", "targetclosed", "browser has been closed",
                "connection closed", "epipe", "browser closed",
