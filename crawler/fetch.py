@@ -678,6 +678,13 @@ def _http_get_browser_inner(url, wait_ms=4500):
         page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
         page.wait_for_timeout(600)
         page.evaluate("window.scrollTo(0, 0)")
+        # 注意：这里【不】接入 _settle_challenge（real_browser 通道专用于瑞数）。
+        # 核查结论（2026-09-23 服务器实测，见 _settle_challenge 注释）：
+        # 无头通道抓到低产出的页面在 10s 内体积/<a>/parse 全部零变化，是稳定结构
+        # ——中南财经研院 36480B 但 <a>=0（列表非 <a> 渲染）、中南财经就业 25 个
+        # <a> 全是登录/导航（登录墙）、中央音乐 <a>=192 但 parse=1（标题过滤）。
+        # 它们不是政法那种会自解增长的"中间态"，等待救不回；接入反而让正常站点
+        # 每次多等约 2s 确认拍却无收益。真瑞数通道请用 real_browser。
         html = page.content()
         if _is_block_page(html):
             raise RuntimeError(
