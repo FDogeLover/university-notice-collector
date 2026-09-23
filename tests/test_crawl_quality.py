@@ -302,3 +302,130 @@ def test_unmarked_source_still_counts_error(crawl_db, monkeypatch):
         "SELECT status FROM fetch_logs ORDER BY id DESC LIMIT 1").fetchone()
     assert row["status"] == "error"
     conn.close()
+
+
+# ---------- fetch 层强制 IPv4 / 协议回退 ----------
+def test_force_ipv4_limits_address_family():
+    """强制 IPv4：消除双栈优先 v6 + 无 v6 路由的 [Errno 101] 误报。"""
+    import socket
+
+    from crawler import fetch
+    from urllib3.util import connection as conn_util
+
+    fetch.force_ipv4(True)
+    assert conn_util.allowed_gai_family() == socket.AF_INET
+
+    # 可关闭（出口确实只有 v6 的机器）
+    assert fetch.force_ipv4(False) is False
+
+
+def test_alt_scheme_url():
+    """协议回退 URL：同主机同路径换 http↔https。"""
+    from crawler.fetch import _alt_scheme_url
+
+    assert _alt_scheme_url("https://gs.x.edu.cn/a.htm") == "http://gs.x.edu.cn/a.htm"
+    assert _alt_scheme_url("http://gs.x.edu.cn/a.htm") == "https://gs.x.edu.cn/a.htm"
+    assert _alt_scheme_url("ftp://gs.x.edu.cn/a.htm") == ""
+
+
+def test_http_get_falls_back_to_alt_scheme(monkeypatch):
+    """https 拿不到时回退 http，且只在落点仍是 http 时采纳。"""
+    from crawler import fetch
+
+    calls = []
+
+    class _Resp:
+        def __init__(self, text, url):
+            self.text = text
+            self.url = url
+            self.encoding = "utf-8"
+            self.apparent_encoding = "utf-8"
+
+        def raise_for_status(self):
+            pass
+
+    def fake_get(url, **kw):
+        calls.append(url)
+        if url.startswith("https://"):
+            raise ConnectionError("443 挂起")
+        return _Resp("<html>" + "x" * 900 + "</html>", "http://gs.x.edu.cn/")
+
+    monkeypatch.setattr(fetch.requests, "get", fake_get)
+    monkeypatch.setattr(fetch, "ensure_public_target", lambda u: u)
+    monkeypatch.setattr(fetch.time, "sleep", lambda *a: None)
+    out = fetch.http_get("https://gs.x.edu.cn/", retries=0)
+    assert "x" * 100 in out
+    assert calls[-1].startswith("http://")
+
+
+def test_http_get_rejects_scheme_bounce_back(monkeypatch):
+    """回退后又被跳回原协议（http→301→https）视为没救，不误判成功。"""
+    from crawler import fetch
+
+    class _Resp:
+        def __init__(self, text, url):
+            self.text = text
+            self.url = url
+            self.encoding = "utf-8"
+            self.apparent_encoding = "utf-8"
+
+        def raise_for_status(self):
+            pass
+
+    def fake_get(url, **kw):
+        if url.startswith("https://"):
+            raise ConnectionError("443 挂起")
+        # http 请求最终落到 https：相当于 301 跳回
+        return _Resp("<html>" + "y" * 900 + "</html>", "https://gs.x.edu.cn/")
+
+    monkeypatch.setattr(fetch.requests, "get", fake_get)
+    monkeypatch.setattr(fetch, "ensure_public_target", lambda u: u)
+    monkeypatch.setattr(fetch.time, "sleep", lambda *a: None)
+    with pytest.raises(RuntimeError):
+        fetch.http_get("https://gs.x.edu.cn/", retries=0)
+
+
+# ---------- find_list_url TCP 预检 ----------
+def test_tcp_reachable_skips_unreachable_host(monkeypatch):
+    """80/443 都连不上的主机：跳过浏览器渲染（避免 280s 拖死）。"""
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+    import socket as _socket
+
+    import find_list_url as fl
+
+    monkeypatch.setattr(fl, "safe_url", lambda u: True)
+
+    # 解析得出 v4 地址，但 connect 一律失败（模拟 SYN 不通）
+    monkeypatch.setattr(
+        fl.socket, "getaddrinfo",
+        lambda *a, **k: [(_socket.AF_INET, _socket.SOCK_STREAM, 6, "",
+                          ("203.0.113.9", 443))])
+
+    class _DeadSock:
+        def __init__(self, *a, **k):
+            pass
+
+        def settimeout(self, *a):
+            pass
+
+        def connect(self, *a):
+            raise OSError("Connection timed out")
+
+        def close(self):
+            pass
+
+    monkeypatch.setattr(fl.socket, "socket", _DeadSock)
+    assert fl._tcp_reachable("https://dead.example.edu.cn/") is False
+
+    called = {"render": False}
+
+    def fake_http_get(*a, **k):
+        called["render"] = True
+        return "<html></html>"
+
+    monkeypatch.setattr(fl.fetch, "http_get", fake_http_get)
+    assert fl._render("https://dead.example.edu.cn/") == ""
+    assert called["render"] is False   # 预检失败就不该起浏览器

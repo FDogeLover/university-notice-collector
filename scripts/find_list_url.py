@@ -131,14 +131,56 @@ def _parse_count(url, domain, html, stype=None):
         return 0
 
 
+def _tcp_reachable(url, timeout=5):
+    """同主机 80 或 443 能否在 timeout 内建立 TCP 连接（不做 HTTP 请求）。
+
+    浏览器兜底（_render）代价极高：瑞数类站点首次渲染要等 JS 挑战，不可达主机
+    会让真实浏览器通道连续重试——`--school 华中科技大学 --source 研究生院` 曾因
+    https 443 挂起、浏览器兜底重试而 280s 不返回（review-2026-09-23 工具侧现象）。
+    先花几秒做 TCP 预检，连 SYN 都不通的主机直接判定"渲染也没用"，跳过兜底。
+    """
+    p = urlparse(url)
+    host = p.hostname
+    if not host:
+        return False
+    tried = []
+    for port in (p.port or (443 if p.scheme == "https" else 80), 80, 443):
+        if port in tried:
+            continue
+        tried.append(port)
+        try:
+            infos = socket.getaddrinfo(host, port, proto=socket.IPPROTO_TCP)
+        except OSError:
+            continue
+        for fam, st, proto, cn, sa in infos:
+            if fam != socket.AF_INET:      # 与 fetch 层一致：只走 IPv4
+                continue
+            s = socket.socket(fam, socket.SOCK_STREAM)
+            s.settimeout(timeout)
+            try:
+                s.connect(sa)
+                return True
+            except OSError:
+                continue
+            finally:
+                s.close()
+    return False
+
+
 def _render(url):
     """浏览器渲染取 HTML（URL 先过边界校验；实际请求由 crawler 层负责）。
 
     先试真实浏览器通道（本机 Chrome 或服务器 Xvfb 下能过瑞数类 WAF），再试
     无头。瑞数站点对无头 chromium 直接回空壳，只试无头会把"生产端其实正常
     出数"的栏目误判成拿不到。
+
+    渲染前先 TCP 预检：80/443 都连不上的主机（443 挂起类）渲染同样拿不到，
+    直接返回空，避免浏览器通道重试把单栏目诊断拖过数分钟。
     """
     if not safe_url(url):
+        return ""
+    if not _tcp_reachable(url):
+        print(f"  · TCP 预检失败（80/443 均不可达），跳过浏览器渲染: {url}")
         return ""
     for kwargs in ({"use_real_browser": True}, {"use_browser": True}):
         try:

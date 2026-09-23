@@ -5,6 +5,7 @@
 可用 use_browser=True 走 Playwright 真实浏览器渲染，跨请求复用同一浏览器实例。
 """
 import os
+import socket
 import threading
 import time
 from pathlib import Path
@@ -14,6 +15,31 @@ import requests
 import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+
+def force_ipv4(enabled=None):
+    """把 requests/urllib3 的解析地址族限制为 IPv4（幂等），返回是否启用。
+
+    为什么需要：校园网大量双栈站点同时有 A 与 AAAA 记录，而本机/服务器**没有
+    IPv6 出口路由**时，urllib3 会先试 AAAA 记录、直接 `[Errno 101] Network is
+    unreachable`，整站被判不可达（大连海事 5 项、北京理工大学 grd/jwb 的"秒失败
+    误报"就是这么来的——v4 实测均 200）。限制为 IPv4 后按 A 记录正常连。
+
+    只改 requests/urllib3 这条链；Playwright 浏览器官道不受影响（浏览器自己处理
+    happy-eyeballs）。默认开启，环境变量 `UNIV_FORCE_IPV4=0` 可关闭（出口确实只有
+    IPv6 的机器）。
+    """
+    from urllib3.util import connection as _conn
+
+    if enabled is None:
+        enabled = os.environ.get("UNIV_FORCE_IPV4", "1").strip().lower() not in (
+            "0", "false", "no", "off")
+    if enabled:
+        _conn.allowed_gai_family = lambda: socket.AF_INET
+    return enabled
+
+
+force_ipv4()
 
 # UA 池：轮换使用，降低被单一 UA 反爬识别/拦截的概率
 UA_POOL = [
@@ -617,6 +643,33 @@ def _http_get_browser_inner(url, wait_ms=4500):
         page.close()
 
 
+def _alt_scheme_url(url):
+    """返回同主机同路径的另一种协议 URL（http↔https）；无法构造时返回 ""。"""
+    p = urlparse(url)
+    if p.scheme == "https":
+        alt = "http"
+    elif p.scheme == "http":
+        alt = "https"
+    else:
+        return ""
+    if not p.netloc:
+        return ""
+    return p._replace(scheme=alt).geturl()
+
+
+def _requests_get_text(url, timeout, encoding):
+    """requests 抓取并解码（单次，不重试）。返回 (text, final_scheme)。"""
+    resp = requests.get(
+        url, headers=_browser_headers(url), timeout=timeout, verify=True
+    )
+    resp.raise_for_status()
+    if encoding:
+        resp.encoding = encoding
+    else:
+        resp.encoding = resp.apparent_encoding or "utf-8"
+    return resp.text, urlparse(resp.url or url).scheme
+
+
 def http_get(url, timeout=20, retries=2, encoding=None, use_browser=False,
              use_real_browser=False):
     """下载页面文本。
@@ -624,8 +677,13 @@ def http_get(url, timeout=20, retries=2, encoding=None, use_browser=False,
     use_real_browser=True 时用真实 Chrome（有头+持久化 cookie）抓取，可过瑞数反爬；
     use_browser=True 时走 Playwright 无头渲染；否则 requests 直接抓取。
 
-    三种通道都先过 block_private_target()：附件/iframe 的目标由页面内容决定，
+    三种通道都先过 ensure_public_target()：附件/iframe 的目标由页面内容决定，
     不校验就等于把内网地址交给采集器（与 scripts/find_list_url.py 同一套口径）。
+
+    requests 通道失败时做一次**协议回退**：同主机换 http↔https 再试。华中科技大学
+    就是"443 挂起、80 正常"，改协议即恢复；但武大、对外经贸 yjsy 那类 http 是
+    301 跳回 https 的站点探不进——故回退后校验最终落点协议仍是目标协议（被跳回
+    原协议即视为没救，不误判成功），只对真能出内容的换协议才采纳。
     """
     ensure_public_target(url)
     if use_real_browser:
@@ -650,18 +708,21 @@ def http_get(url, timeout=20, retries=2, encoding=None, use_browser=False,
     last_err = None
     for i in range(retries + 1):
         try:
-            resp = requests.get(
-                url, headers=_browser_headers(url), timeout=timeout, verify=True
-            )
-            resp.raise_for_status()
-            if encoding:
-                resp.encoding = encoding
-            else:
-                resp.encoding = resp.apparent_encoding or "utf-8"
-            return resp.text
+            text, _ = _requests_get_text(url, timeout, encoding)
+            return text
         except Exception as e:  # noqa: BLE001
             last_err = e
             time.sleep(1.5 * (i + 1))
+
+    # 原协议彻底失败 → 试另一种协议（先探测再回退，落点被跳回原协议则不算数）
+    alt = _alt_scheme_url(url)
+    if alt:
+        try:
+            text, final_scheme = _requests_get_text(alt, timeout, encoding)
+            if final_scheme == urlparse(alt).scheme and len(text or "") >= 500:
+                return text
+        except Exception as e:  # noqa: BLE001
+            last_err = e
     raise RuntimeError(f"抓取失败 {url}: {last_err}")
 
 def http_get_bytes(url, timeout=30, retries=2):
