@@ -37,7 +37,8 @@ RULE_META_FIELDS = ("deadline", "period", "target", "college", "deadline_iso")
 # 本轮运行的收尾自检计数：crawl_source 逐栏目累加，main 结束前据此决定是否
 # 以非零退出告警（见 check_run_health）。原实现逐栏目异常只 print，python 正常
 # 退出 → 定时任务 last_status 永远是 ok，日志里堆着几千条失败也没人知道。
-RUN_STATS = {"sources": 0, "errors": 0, "zero_output": 0, "new": 0}
+RUN_STATS = {"sources": 0, "errors": 0, "zero_output": 0, "new": 0,
+             "skipped": 0}
 
 
 def _save_notice_meta(conn, notice_id, content_md, title, published_at=""):
@@ -247,6 +248,22 @@ def crawl_source(conn, school, school_id, source, args):
     source_id = conn.execute(
         "SELECT id FROM sources WHERE url=?", (url,)
     ).fetchone()["id"]
+    # 出口不可达标记（yaml: unreachable: true）：本出口到该站长期拿不到，但仍照常
+    # 请求——失败只记 "skipped"，不计入错误率、不刷 fetch_logs 的 error（否则每轮
+    # 都把它算成失败，错误率虚高、journal 也被刷）。站点一旦恢复可自动重新采到。
+    unreachable = bool(source.get("unreachable", False))
+
+    def _fail(e):
+        if unreachable:
+            store.log_fetch(conn, source_id, school_id, "skipped", 0,
+                            f"出口不可达（已标记，不计失败）: {e}")
+            print(f"  · [{school['name']}][{source['name']}] 出口不可达（跳过计数）: {e}")
+            RUN_STATS["skipped"] += 1
+        else:
+            store.log_fetch(conn, source_id, school_id, "error", 0, str(e))
+            print(f"  !! [{school['name']}][{source['name']}] 抓取失败: {e}")
+            RUN_STATS["errors"] += 1
+
     RUN_STATS["sources"] += 1
     try:
         html = fetch.http_get(url, use_browser=use_browser,
@@ -257,14 +274,10 @@ def crawl_source(conn, school, school_id, source, args):
             try:
                 html = fetch.http_get(url, use_browser=True)
             except Exception:  # noqa: BLE001
-                store.log_fetch(conn, source_id, school_id, "error", 0, str(e))
-                print(f"  !! [{school['name']}][{source['name']}] 抓取失败: {e}")
-                RUN_STATS["errors"] += 1
+                _fail(e)
                 return 0
         else:
-            store.log_fetch(conn, source_id, school_id, "error", 0, str(e))
-            print(f"  !! [{school['name']}][{source['name']}] 抓取失败: {e}")
-            RUN_STATS["errors"] += 1
+            _fail(e)
             return 0
 
     items = parse.parse_list(html, url, domain, max_items=args.max_items,
@@ -320,7 +333,8 @@ def check_run_health(error_ratio=0.25):
         return
     ratio = RUN_STATS["errors"] / total
     print(f"\n[自检] 本轮栏目 {total}：抓取失败 {RUN_STATS['errors']}"
-          f"（{ratio:.0%}）、列表零产出 {RUN_STATS['zero_output']}、"
+          f"（{ratio:.0%}）、出口不可达跳过计数 {RUN_STATS['skipped']}、"
+          f"列表零产出 {RUN_STATS['zero_output']}、"
           f"新增 {RUN_STATS['new']} 条")
     if ratio > error_ratio:
         sys.exit(f"[自检] 抓取失败占比 {ratio:.0%} > {error_ratio:.0%}，"

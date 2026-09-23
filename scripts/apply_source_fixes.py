@@ -59,6 +59,14 @@ REPLACE = [
     # 南昌：招生信息网域名已注销，本科招生网原指根地址只解析 1 条 —— 把本科招生网
     # 指到 /zs（parse 10），招生信息网按重复栏目删除（见 DELETE）
     ("南昌大学", "本科招生网", "https://bkzs.ncu.edu.cn/zs"),
+    # 华中科技大学：本出口到该校 443 间歇性挂起（v4 TCP 不通），同主机 80 正常；
+    # 改协议不改域名。本科生院/学生工作部顺带改到通知列表页，产出更多
+    # （首页 4/9 条 → 列表页 19/13 条），见 review-2026-09-23.md 第 3 节。
+    ("华中科技大学", "研究生院", "http://gs.hust.edu.cn/"),
+    ("华中科技大学", "研究生招生信息网", "http://gszs.hust.edu.cn/"),
+    ("华中科技大学", "信息公开网", "http://xxgk.hust.edu.cn/"),
+    ("华中科技大学", "本科生院", "http://ugs.hust.edu.cn/tzgg.htm"),
+    ("华中科技大学", "学生工作部", "http://student.hust.edu.cn/index/tzgg.htm"),
 ]
 
 # 加标记：(学校, 栏目, 字段, 值)
@@ -72,6 +80,15 @@ FLAGS = [
     ("石河子大学", "教务处", "browser", "true"),
     ("石河子大学", "学工部", "browser", "true"),
     ("电子科技大学", "信息公开网", "stype", "综合信息"),
+    # 出口不可达：本出口（服务器）到该站长期拿不到（近 30 天零成功 + 双协议实测
+    # 失败），但**仍照常请求**——失败只记 "skipped"、不计错误率，站点恢复即自动
+    # 重新采到。判据与实测见 review-2026-09-23.md；陕师大 job.snnu（http/80 可达）、
+    # 上外 www.osa.shisu（TLS 证书问题）不属此类，不打标。
+    ("武汉大学", "本科生院", "unreachable", "true"),
+    ("武汉大学", "党委学生工作部", "unreachable", "true"),
+    ("武汉大学", "本科招生网", "unreachable", "true"),
+    ("复旦大学", "研究生招生网", "unreachable", "true"),
+    ("四川农业大学", "教务处", "unreachable", "true"),
 ]
 
 # 删栏目（站点已死/无通知流/语义重复；历史通知由 sync_sources.py 决定去留）
@@ -235,7 +252,8 @@ def apply_all(dry=True):
             for j in range(start, end):
                 key = lines[j].lstrip().split(":", 1)[0]
                 if lines[j].startswith("    ") and key in (
-                        "url", "category", "stype", "browser", "real_browser"):
+                        "url", "category", "stype", "browser", "real_browser",
+                        "unreachable"):
                     last_key = j
             lines.insert(last_key + 1, f"    {field}: {value}")
             report.append(f"加标记: {school} / {source} {field}: {value}")

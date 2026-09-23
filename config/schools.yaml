@@ -155,20 +155,20 @@ schools:
   domain: hust.edu.cn
   sources:
   - name: 研究生院
-    url: https://gs.hust.edu.cn/
+    url: http://gs.hust.edu.cn/
     category: 通知公告
   - name: 研究生招生信息网
-    url: https://gszs.hust.edu.cn/
+    url: http://gszs.hust.edu.cn/
     category: 招生
   - name: 信息公开网
-    url: https://xxgk.hust.edu.cn/
+    url: http://xxgk.hust.edu.cn/
     category: 信息公开
   - name: 本科生院
-    url: https://ugs.hust.edu.cn/
+    url: http://ugs.hust.edu.cn/tzgg.htm
     category: 通知公告
     stype: 综合信息
   - name: 学生工作部
-    url: https://student.hust.edu.cn/
+    url: http://student.hust.edu.cn/index/tzgg.htm
     category: 通知公告
     stype: 综合信息
   - name: 就业信息网
@@ -223,10 +223,12 @@ schools:
     url: https://uc.whu.edu.cn
     category: 通知公告
     stype: 综合信息
+    unreachable: true
   - name: 党委学生工作部
     url: https://xgbnew.whu.edu.cn
     category: 通知公告
     stype: 综合信息
+    unreachable: true
   - name: 学生就业指导中心
     url: https://xsjy.whu.edu.cn
     category: 通知公告
@@ -235,6 +237,7 @@ schools:
     url: https://aoff.whu.edu.cn
     category: 通知公告
     stype: 本科招生
+    unreachable: true
   tags:
   - '985'
 - name: 中山大学
@@ -746,6 +749,7 @@ schools:
   - name: 研究生招生网
     url: https://yz.fudan.edu.cn/
     category: 招生
+    unreachable: true
   - name: 信息公开网
     url: https://xxgk.fudan.edu.cn/
     category: 信息公开
@@ -2635,6 +2639,7 @@ schools:
     url: https://jiaowu.sicau.edu.cn/
     category: 通知公告
     stype: 综合信息
+    unreachable: true
   - name: 学工部
     url: https://xsc.sicau.edu.cn/
     category: 通知公告

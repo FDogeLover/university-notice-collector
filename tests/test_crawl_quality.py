@@ -218,3 +218,87 @@ def test_published_ignores_insane_year():
     html2 = html.replace("2052年", "2026年")
     d2 = parse.parse_detail(html2, "https://gs.x.edu.cn/p/4.htm")
     assert d2["published_at"] == "2026-09-01"
+
+
+# ---------- 出口不可达标记（unreachable）----------
+def _crawl_args(**kw):
+    args = type("A", (), {})()
+    args.max_items = 20
+    args.no_detail = True
+    args.sleep = 0
+    args.workers = 1
+    for k, v in kw.items():
+        setattr(args, k, v)
+    return args
+
+
+@pytest.fixture()
+def crawl_db(tmp_path, monkeypatch):
+    """临时库：一校一栏目，URL 可由用例指定。"""
+    monkeypatch.setenv("UNIV_DB", str(tmp_path / "crawl.db"))
+    from db import store
+
+    store.init_db()
+    conn = store.connect()
+    return store, conn
+
+
+def test_unreachable_source_logs_skipped_not_error(crawl_db, monkeypatch):
+    """打了 unreachable 的栏目抓取失败时记 skipped，不计入错误率。"""
+    store, conn = crawl_db
+    url = "https://uc.unreachable.edu.cn/"
+    store.import_schools(conn, [{
+        "name": "测试大学", "domain": "unreachable.edu.cn",
+        "sources": [{"name": "本科生院", "url": url, "category": "通知公告",
+                     "unreachable": True}],
+    }])
+    sid = store.school_id_by_name(conn, "测试大学")
+
+    def boom(*a, **k):
+        raise RuntimeError("Connection aborted")
+
+    monkeypatch.setattr(run_mod.fetch, "http_get", boom)
+    run_mod.RUN_STATS.update(sources=0, errors=0, zero_output=0, new=0,
+                             skipped=0)
+    school = {"name": "测试大学", "domain": "unreachable.edu.cn"}
+    source = {"name": "本科生院", "url": url, "unreachable": True}
+    n = run_mod.crawl_source(conn, school, sid, source, _crawl_args())
+
+    assert n == 0
+    assert run_mod.RUN_STATS["errors"] == 0   # 不计失败
+    assert run_mod.RUN_STATS["skipped"] == 1  # 记一次跳过
+    row = conn.execute(
+        "SELECT status, message FROM fetch_logs ORDER BY id DESC LIMIT 1"
+    ).fetchone()
+    assert row["status"] == "skipped"
+    assert "出口不可达" in row["message"]
+    conn.close()
+
+
+def test_unmarked_source_still_counts_error(crawl_db, monkeypatch):
+    """未打标的栏目失败仍记 error、计入错误率（行为不回退）。"""
+    store, conn = crawl_db
+    url = "https://gs.normal.edu.cn/"
+    store.import_schools(conn, [{
+        "name": "测试大学", "domain": "normal.edu.cn",
+        "sources": [{"name": "研究生院", "url": url, "category": "通知公告"}],
+    }])
+    sid = store.school_id_by_name(conn, "测试大学")
+
+    def boom(*a, **k):
+        raise RuntimeError("ConnectTimeout")
+
+    monkeypatch.setattr(run_mod.fetch, "http_get", boom)
+    run_mod.RUN_STATS.update(sources=0, errors=0, zero_output=0, new=0,
+                             skipped=0)
+    school = {"name": "测试大学", "domain": "normal.edu.cn"}
+    source = {"name": "研究生院", "url": url}
+    n = run_mod.crawl_source(conn, school, sid, source, _crawl_args())
+
+    assert n == 0
+    assert run_mod.RUN_STATS["errors"] == 1
+    assert run_mod.RUN_STATS["skipped"] == 0
+    row = conn.execute(
+        "SELECT status FROM fetch_logs ORDER BY id DESC LIMIT 1").fetchone()
+    assert row["status"] == "error"
+    conn.close()
