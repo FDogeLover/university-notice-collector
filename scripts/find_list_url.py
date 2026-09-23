@@ -131,18 +131,24 @@ def _parse_count(url, domain, html, stype=None):
         return 0
 
 
-def _tcp_reachable(url, timeout=5):
-    """同主机 80 或 443 能否在 timeout 内建立 TCP 连接（不做 HTTP 请求）。
+def _tcp_reachable(url, timeout=3, total_budget=6):
+    """同主机 80 或 443 能否在限定时间内建立 TCP 连接（不做 HTTP 请求）。
 
     浏览器兜底（_render）代价极高：瑞数类站点首次渲染要等 JS 挑战，不可达主机
     会让真实浏览器通道连续重试——`--school 华中科技大学 --source 研究生院` 曾因
     https 443 挂起、浏览器兜底重试而 280s 不返回（review-2026-09-23 工具侧现象）。
-    先花几秒做 TCP 预检，连 SYN 都不通的主机直接判定"渲染也没用"，跳过兜底。
+    先做 TCP 预检，连 SYN 都不通的主机直接判定"渲染也没用"，跳过兜底。
+
+    total_budget 是**整个预检的总时间上限**：多 IP 站点（如复旦 3 个 A 记录）逐 IP
+    各等一次 timeout 会累加到几十秒，违背"快速跳过"的初衷，故到点即停。
     """
+    import time as _time
+
     p = urlparse(url)
     host = p.hostname
     if not host:
         return False
+    deadline = _time.monotonic() + total_budget
     tried = []
     for port in (p.port or (443 if p.scheme == "https" else 80), 80, 443):
         if port in tried:
@@ -155,8 +161,11 @@ def _tcp_reachable(url, timeout=5):
         for fam, st, proto, cn, sa in infos:
             if fam != socket.AF_INET:      # 与 fetch 层一致：只走 IPv4
                 continue
+            remaining = deadline - _time.monotonic()
+            if remaining <= 0:
+                return False
             s = socket.socket(fam, socket.SOCK_STREAM)
-            s.settimeout(timeout)
+            s.settimeout(min(timeout, remaining))
             try:
                 s.connect(sa)
                 return True
