@@ -161,6 +161,10 @@ _PROFILE_NAME = ".university_info_profile"
 # 把这类提示语当拦截信号会把好页面误判成被拦。
 _CHALLENGE_HINTS = ("$_ts", "$_ss", "dynamic_challenge", "访问被限制",
                     "浏览器环境不被允许")
+# 形似挑战页时的最大重载轮数。瑞数类挑战页**会自解**（政法信息公开实测冷启动
+# +2s 时 3MB/解析 0，+4s 时出 63 个链接/解析 7），原地等待即可，频繁 reload 反而
+# 打断自解、重新计时。故：先原地等自解，仍像挑战页才 reload，最多这么多轮。
+_CHALLENGE_RELOAD_ROUNDS = 3
 # 句柄失效类异常的特征串（浏览器崩溃/被强杀后必须重建，不能原样抛给站点层）
 _GONE_HINTS = ("has been closed", "targetclosed", "browser has been closed",
                "connection closed", "epipe", "browser closed",
@@ -510,13 +514,16 @@ def _http_get_real_inner(url, wait_ms=5000):
     try:
         _real_page.goto(url, timeout=30000, wait_until="domcontentloaded")
         _smart_wait(_real_page, fallback_ms=wait_ms)
-        # 反爬挑战：首访后刷新一次再取（阈值放宽到"像挑战页就刷新"——
-        # 政法那次 1245 字节的挑战页因为原阈值 1000 被漏过，记成了静默 0）
-        html = _get_real_content(_real_page)
-        if _looks_like_challenge(html):
+        # 反爬挑战：先原地等自解（瑞数首访会自行放行），仍像挑战页才 reload，
+        # 最多 _CHALLENGE_RELOAD_ROUNDS 轮。原实现直接 reload 一次，会打断
+        # 正在自解的挑战页并把计时清零 → 政法信息公开长期记成解析 0 条。
+        html = _settle_challenge(_real_page)
+        for _ in range(_CHALLENGE_RELOAD_ROUNDS):
+            if not _looks_like_challenge(html):
+                break
             _real_page.reload(wait_until="domcontentloaded")
             _smart_wait(_real_page, fallback_ms=wait_ms)
-            html = _get_real_content(_real_page)
+            html = _settle_challenge(_real_page)
         if _is_block_page(html):
             raise RuntimeError(
                 f"疑似被反爬拦截（{len(html)} 字节，含挑战/拦截特征）: {url}")
@@ -589,6 +596,50 @@ def _smart_wait(page, fallback_ms=5000, idle_ms=3500):
             page.wait_for_timeout(min(fallback_ms, 2000))
         except Exception:  # noqa: BLE001
             pass
+
+
+def _settle_challenge(page, polls=3, poll_ms=2000):
+    """瑞数挑战页自解等待：原地轮询直到内容稳定（返回最新 HTML）。
+
+    瑞数首访会先弹挑战页，随后 JS 自解并逐步渲染真实内容。实测自解存在
+    **中间态**：体积已过 3KB、无挑战特征、但内容还没渲染完（政法信息公开
+    +2s 时 3MB/解析 0，+4s 时 5MB/解析 7）。因此：
+
+    - 取到**不像挑战页**的内容时，还需一拍确认体积不再增长才算成品
+      （中间态体积大但仍在增长，不会误判成品）；
+    - 若仍像挑战页：继续原地等待，绝不立刻 reload——reload 会打断 JS 自解、
+      让挑战计时从头再来（政法信息公开一直解析 0 条正是这个原因）；
+    - 最多 polls 轮后仍无解，返回最后一次内容交上层决定（含自动：上层在
+      `_http_get_real_inner` 还会对仍像挑战页的内容做 reload 重试）。
+
+    非挑战页（北邮/兰大/华科这类正常站点）只需额外等一拍确认，约 2s，
+    一次到位不满足"下一拍稳定"时仍会正确返回。
+    """
+
+    def _growth(a, b):
+        if not a or not b:
+            return 1.0
+        return abs(len(a) - len(b)) / max(len(a), len(b)) if len(b) else 1.0
+
+    prev = ""
+    for _ in range(polls + 1):
+        html = _get_real_content(page)
+        if not _looks_like_challenge(html):
+            # 挑战已解除
+            if prev and _growth(prev, html) < 0.15:
+                return html            # 与上一拍相比体积稳定 → 成品
+            if not prev:
+                prev = html            # 首拍：记下基准，下一拍判稳定
+                if polls == 0:
+                    return html        # 不允许等待时直接用
+            # prev 已有但仍在增长 → 中间态，继续等
+        else:
+            prev = ""                  # 挑战未解除，重置稳定基准
+        try:
+            page.wait_for_timeout(poll_ms)
+        except Exception:  # noqa: BLE001
+            break
+    return html
 
 
 def _http_get_browser(url, wait_ms=4500):
