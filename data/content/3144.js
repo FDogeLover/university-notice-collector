@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3144"]={"content": "https://ibs.hainanu.edu.cn/info/1016/11921.htm"};

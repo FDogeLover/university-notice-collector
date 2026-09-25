@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6834"]={"content": "举办时间： 2026-09-14 11:20 — 2026-11-01 11:20\nXstar顶尖人才计划：\nRC/RM 人才专项："};

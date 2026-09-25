@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5475"]={"content": "We're sorry but Vue Admin Template doesn't work properly without JavaScript enabled. Please enable it to continue."};

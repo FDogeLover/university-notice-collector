@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5462"]={"content": "教职工争议解决办法： https://xgh.swjtu.edu.cn/info/1039/1729.htm\n人事政策法规： https://rsc.swjtu.edu.cn/zcfg.htm\n人事办事指南： https://rsc.swjtu.edu.cn/bszn.htm"};

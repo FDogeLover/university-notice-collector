@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1154"]={"content": "说明：1.使用chrome或IE10+浏览器（360浏览器版本8.1以上） 2.1280*800分辨率以上浏览本系统 3.请不要屏蔽弹出窗口 4.技术支持：南京南软(版本:5.0)"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3809"]={"content": "现将党委学生工作部 202 5 年 暑 假值班安排通知如下：\n值班时间为 上午 8:30-11:30， 下午 13:30-16:30 。\n\n【正文图片1】下载失败: https://xsc.dlut.edu.cn/virtual_attach_file.vsb?afc=WL7lHDUm"};

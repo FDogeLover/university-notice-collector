@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["8238"]={"content": "身份安全认证管理平台 简体中文\nCopyright©2021 All right reserved 东华大学 松江校区：上海市松江区人民北路2999号 201620 延安路校区：上海市长宁区延安西路1882号 200051"};

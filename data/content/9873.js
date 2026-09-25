@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["9873"]={"content": "【正文图片1】下载失败: http://job.hust.edu.cn/common/getEditorImg?filePath=/upload/\n\n【正文图片2】下载失败: http://job.hust.edu.cn/common/getEditorImg?filePath=/upload/\n\n【正文图片3】下载失败: http://job.hust.edu.cn/common/getEditorImg?filePath=/upload/"};

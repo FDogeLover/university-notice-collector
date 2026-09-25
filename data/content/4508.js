@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4508"]={"content": "附件1：研究生制定培养计划、网上选课系统操作说明.doc\n附件2：导师审核培养计划操作步骤.docx\n附件3：院系研究生教务秘书联系方式.xls\n附件4：2026级硕士研究生公共课程分班名单.xls"};

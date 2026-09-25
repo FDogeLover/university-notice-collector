@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6853"]={"content": "English\nUnified Identity Authentication Login\nInformation Service: 66133370 Technical Support: Shanghai University IT Office Address: 99 Shangda Road, Baoshan District, Shanghai, 200444 Copyright © 2026 Shanghai University, All Rights Reserved."};

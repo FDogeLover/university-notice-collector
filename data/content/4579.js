@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4579"]={"content": "我校 202 6 年强基计划高校考核成绩已公布， 考生可登录中国科学技术大学强基计划报名平台（ 网址： https://bm.chsi.com.cn/jcxkzs/sch/10358 ）查询本人成绩。\n学校将在各省市高考成绩发布后，尽快完成综合成绩 计 算与录取工作。请考生耐心等待，及时关注我校本科招生网（https://zsb.ustc.edu.cn）发布的通知公告。\n感谢报考中国科学技术大学 ， 期待与你 在科教报国的道路上 共同前行。"};

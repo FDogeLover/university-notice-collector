@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6771"]={"content": "公示名单见附件，有异议者可向相关学院或负责单位反映，本科生院咨询电话0731-88876069。\n本科生院\n2026年9月13日"};

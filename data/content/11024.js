@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11024"]={"content": "大华集团宣讲会\n宣讲时间： 2026年10月09日\n \n15:00 - 17:00\n宣讲地点： 晨读厅\n备注： 无"};

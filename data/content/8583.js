@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["8583"]={"content": "关于2026年秋季学期博士生《研究方法与论文写作》精品资源共享计划（第一期）开放旁听的通知\n发布日期：2026-09-18\n浏览次数：4"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11447"]={"content": "首页\n学院发布\n文章\n上一篇： 陕投集团2026年春季校园招聘公告发布，专业+岗位多多！\n下一篇： 中国港湾2026“领航者”全球春季校园招聘，行业领先薪酬！"};

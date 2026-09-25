@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["10149"]={"content": "公告内容\n中标结果公示\n工程编号 | FZZCA02600067\n建设单位名称 | 中国政法大学\n工程名称 | 中国政法大学体育场地及设施更新项目一期\n建设地点 | 府学路 27 号\n中标人 | 中国建筑第四工程局有限公司\n中标价（元） | 11137777.01\n公示开始时间 | 2026-09-23\nhttps://ggzyfw.beijing.gov.cn/jyxxzbgg/20260922/5723099.html"};

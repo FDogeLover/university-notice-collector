@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5372"]={"content": "四川省大学生就业服务平台学生使用手册.docx (10.64 MB)\n四川省大学生就业服务平台用人单位使用手册.docx (5.41 MB)"};

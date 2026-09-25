@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2040"]={"content": "当前位置： 首页 > 学生工作 > 研究生风采\n学生工作\n热点专题\n资料下载\n通知公告\n研究生文化生活\n友情链接\n规章制度\n研究生风采\n《启贤》采撷\n联系我们\n我校研究生在国际会议上表现优异\n2018 年 5 月 8 日 ~11 日，我校循证医学中心刘建平教授率团队师生共计 12 人前往美国巴尔的摩，参加 2018 International Congress Integrative Medicine & Health 国际大会。此次会议录用了中心投稿的 19 份壁报。其中， 4 人获得最佳壁报奖， 1 人获得最佳壁报提名奖。"};

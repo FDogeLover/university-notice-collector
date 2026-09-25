@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1593"]={"content": "提示：您当前ip并非校内地址，该信息仅允许校内地址访问 首页 关闭此页"};

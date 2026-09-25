@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["575"]={"content": "地址：北京市海淀区 清华大学研究生招生办公室 邮编：100084\n中国（境内）：电话：010-62782192   传真：010-62770325   Email：yjszb@tsinghua.edu.cn\n中国（港澳台）及国际：电话：010-62781380   传真：010-62770325   Email：grad@tsinghua.edu.cn\nCopyright © 2021 All rights reserved. 清华大学 版权所有"};

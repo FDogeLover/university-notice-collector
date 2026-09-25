@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3429"]={"content": "第一章总则第一条为加强对硕士学位研究生招生工作的管理，保证硕士研究生的入学质量和招生工作顺利进行，根..."};

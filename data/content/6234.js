@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6234"]={"content": "附件1.青海大学2026届毕业生信息手册\n附件2.青海大学2026届校园招聘申请表"};

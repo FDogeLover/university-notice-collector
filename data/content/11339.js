@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11339"]={"content": "选调公考 » 文章\n上一篇: 【人才引进】新疆生产建设兵团2026年下半年面向社会公开招聘事业单位工作人员公告\n下一篇: 【人才引进】张掖市2026年事业单位公开招聘工作人员公告"};

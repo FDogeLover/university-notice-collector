@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11411"]={"content": "中国传媒大学 2023 年各培养单位全国优秀大学生夏令营考核成绩及考评结果均已发布，考生可登录“中国传媒大学优秀大学生夏令营报名系统”查询。\n查询网址为：\nhttps://yzbm.cuc.edu.cn/10033/user/user/center\n查询二维码为："};

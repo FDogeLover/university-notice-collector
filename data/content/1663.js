@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1663"]={"content": "质量管理\n学位授权点管理\n研究生教育督导工作\n博士、硕士学位论文抽检\n博士学位论文质量分析报告\n科学道德与学风建设\n管理条例\n关于开展2023年春季学期研究生学位论文答辩专项督导工作的通知 2023-05-06\n研究生院培养办 yjspy@ccnu.edu.cn\n研究生院招办 yjszb@ccnu.edu.cn\n研究生院学位办 xwb@ccnu.edu.cn\n版权所有：华中师范大学研究生院（专业学位管理中心） 2012 All Rights Reserved.\n今日访问: 累计访问:"};

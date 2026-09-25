@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["10530"]={"content": "单位 | 通知链接 | 联系电话 | 咨询邮箱\n006海洋生命学院 | 点击查看 | 0532-82031601 | 631196504@qq.com\n013经济学院 | 点击查看 | 0532-66782576 | niumanzhu@ouc.edu.cn\n015文学与新闻传播学院 | 点击查看 | 0532-66787202 | 2025320@ouc.edu.cn\n017材料科学与工程学院 | 点击查看 | 0532-60891690 | guojiyu@ouc.edu.cn"};

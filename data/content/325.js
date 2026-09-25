@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["325"]={"content": "我校 2026 年拟录取硕士研究生调档函下载系统已开放，请全日制非定向就业的考生（不含北京邮电大学应届生）和少数民族骨干计划考生即日起登录下方网址下载调档函 ( 建议彩色打印 ) ，并在规定时间内将个人档案通过 机要或 EMS 方式 邮寄至我校，若因档案邮寄方式不符合要求发生档案丢失损毁，须自行承担责任。\n下载网址：\n2026年统考生： http://yzfs.bupt.edu.cn/Open/Master/Signin.aspx\n2026年推免生： http://yzfs.bupt.edu.cn/Open/Master/SigninTm.aspx"};

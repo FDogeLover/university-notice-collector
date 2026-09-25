@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6818"]={"content": "当前位置： 首页 > 招生考试信息 > 研究生招生 > 招生简章（含招生规定、专业目录、复试录取、招生计划）\n武汉理工大学2023年硕士研究生招生简章\n发布时间：2022-11-15      作者：研究生院\n附件下载"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["8882"]={"content": "公安部2027年\n公务员招录宣讲会\n2027年 | 公职就业 | 大有作为\n宣讲时间\n2026年10月9日（周五）\n下午14：30\n宣讲地点\n天津大学北洋园校区\n大装置 茅以升报告厅\n报名方式\n请扫描下方二维码报名"};

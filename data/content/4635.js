@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4635"]={"content": "附件1：关于印发《北京化工大学本科微专业管理办法（试行）》的通知.pdf\n附件2：2025微专业招生简章.zip"};

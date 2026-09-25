@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11603"]={"content": "各位任课教师和全体研究生：\n关于《2026年上半年全国大学外语四六级考试期间停课及考试注意事项的通知》 https://jiaowu.sicau.edu.cn/web/web/web/gwshenshow_x_2019.asp?bianhao=6974 已于教务处网页发布，请注意查看。"};

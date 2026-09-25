@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["512"]={"content": "自假期开始至开学前，博士学位论文送审时间为每周四下午4点，无冷静期。外审更新每周至少两次。望周知\n2026年7月24日"};

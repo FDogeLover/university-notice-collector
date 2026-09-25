@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4523"]={"content": "各位考生：\n我校2026年第二学士学位校测成绩及录取结果已公布，考生可登录“东南大学招生报名管理”系统（http://bkzs.seu.edu.cn/bkzs/sys/zsbmglappseu/login/index.do）查看测试成绩及录取结果。\n根据《东南大学2026年第二学士学位招生简章》规定，我校根据考生笔试成绩及招生计划数择优确定录取名单。现将录取名单公示如下。\n公示时间：2026年7月9日至7月13日\n公示期间若对公示名单有疑问或异议请与我办联系，邮箱：zhaoban@seu.edu.cn。\n东南大学招生办公室\n2026年7月9日\n拟录取名单公示.pdf"};

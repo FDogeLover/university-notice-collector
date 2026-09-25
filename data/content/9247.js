@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["9247"]={"content": "研究生教育教学管理系统 Postgraduate Education and Teaching Management System\n云智能 慧感知 优服务\n流程化 规范化 一体化\n轻办公 高效率 全过程\n教师及管理人员用户用工号或管理员账号和密码登录系统。\n确定 取消"};

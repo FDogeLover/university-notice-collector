@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2676"]={"content": "培养管理办公室电子邮箱：pyg@ustb.edu.cn"};

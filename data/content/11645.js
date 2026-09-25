@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11645"]={"content": "教务处（本科生院 ） 2026年暑假值班表\n注意事项：\n1.值班时间：8：30-12：00，14：00-17：00。\n2.值班期间原则上不办理业务，但提供业务咨询服务，相关咨询请联系对应科室值班人员。\n3.科室职责可在本科生院网站首页的“本科生院概况”和“办事流程”两个板块查询。链接网址为：\n教务处（ 本科生院 ） 概况： http://www.jwc.ynu.edu.cn/bksygk.htm\n办事流程： http://www.jwc.ynu.edu.cn/bslc.htm"};

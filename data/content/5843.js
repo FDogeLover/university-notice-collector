@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5843"]={"content": "各单位：\n学校已 于 2026 年 6 月 30 日将 2025- 202 6 学 年毕业 班本科生优秀学生奖学金发放至与获奖学生学号关联的银行卡中，请各单位通知获奖同学注意查收。\n学生资助管理中心\n202 6 年 7 月 2 日"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4350"]={"content": "新生请假条。\n长安大学本科招生【微信二维码】欢迎【扫一扫】关注"};

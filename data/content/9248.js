@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["9248"]={"content": "研究生教育教学管理系统 Graduate Management Information System\n云智能 慧感知 优服务\n流程化 规范化 一体化\n轻办公 高效率 全过程\n学生用户用学号和密码登录系统， 初始密码是本人身份证上面出生日期(例如：19990124)。"};

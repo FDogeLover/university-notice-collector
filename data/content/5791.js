@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5791"]={"content": "附件1：本研一体班综合评价表.docx\n附件2：本研一体班学生综合评价结果汇总表.docx\n附件3：本研一体班学生年度考核不合格结果汇总表.docx\n附件4：本研一体班学生增补名单.docx"};
