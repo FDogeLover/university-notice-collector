@@ -153,6 +153,10 @@ _BROWSER_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
 # chromium 进程匹配特征（拼装避免 pkill 匹配到调用方自身 cmdline）
 _CHROMIUM_MATCH = "chrome-headless" + "-shell-linux64" + "/chrome-headless-shell"
+# playwright node 驱动进程匹配特征（同样拼装）。看门狗超时时浏览器与驱动必须
+# 一起杀：实测 chrome 被杀后驱动可能存活但已卡死（不响应任何命令），python
+# 侧同步调用在驱动管道上永久阻塞——只杀浏览器救不回来（9/25 冻结根因）。
+_DRIVER_MATCH = "playwright" + "/driver/node"
 # 本项目持久化 profile 目录名：真实 Chrome 的 cmdline 里带它，强杀时据此
 # 只杀本项目自己的浏览器，不误伤同机其它 Chrome
 _PROFILE_NAME = ".university_info_profile"
@@ -217,6 +221,10 @@ def _kill_browser_processes():
               "Name='chrome-headless-shell.exe'\" | Where-Object "
               "{ $_.ExecutablePath -like '*ms-playwright*' } | "
               "ForEach-Object { Stop-Process -Id $_.ProcessId -Force "
+              "-ErrorAction SilentlyContinue }; "
+              "Get-CimInstance Win32_Process -Filter \"Name='node.exe'\" | "
+              "Where-Object { $_.ExecutablePath -like '*playwright*driver*' } | "
+              "ForEach-Object { Stop-Process -Id $_.ProcessId -Force "
               "-ErrorAction SilentlyContinue }")
         try:
             subprocess.run(["powershell", "-NoProfile", "-Command", ps],
@@ -225,7 +233,7 @@ def _kill_browser_processes():
         except Exception:  # noqa: BLE001  看门狗线程里绝不能抛异常
             pass
         return
-    for pattern in (_CHROMIUM_MATCH, _PROFILE_NAME):
+    for pattern in (_CHROMIUM_MATCH, _DRIVER_MATCH, _PROFILE_NAME):
         try:
             subprocess.run(["pkill", "-9", "-f", pattern], check=False,
                            timeout=30, stdout=subprocess.DEVNULL,
@@ -240,20 +248,26 @@ def _invalidate_browser_handles():
     这是"一个栏目卡死 → 同进程后续所有浏览器栏目报 closed"的根因：原实现
     只用 pkill 杀进程，句柄仍是旧对象，_get_browser()/_get_real_context()
     见非 None 就直接复用，于是接连报 Target page/context closed。
+    2026-09-26: 连 _playwright（驱动）一起作废——看门狗现在把驱动进程一并
+    击杀，旧驱动对象指向的进程已死或已卡死；若只保留驱动句柄，下次
+    launch() 会在卡死的驱动管道上永久阻塞（9/25 冻结的根因：页面级护栏
+    只会杀浏览器进程，驱动卡死时杀浏览器救不回来）。重建由 _get_browser
+    的 except → _restart_playwright 完成（含僵尸事件循环兜底）。
     """
-    global _browser, _real_ctx, _real_page
+    global _browser, _real_ctx, _real_page, _playwright
     _browser = None
     _real_ctx = None
     _real_page = None
+    _playwright = None
 
 
 def _browser_call_with_timeout(fn, *args, **kwargs):
     """以超时护栏执行浏览器操作 fn。
 
     主线程同步执行 fn（playwright 必须与启动它的线程一致），daemon 线程
-    计时；超时后由 watchdog 强杀 chromium 进程 → fn 内阻塞调用因连接
-    断开抛异常 → 恢复控制并抛 _BrowserTimeout（浏览器已损坏，调用方需
-    重建实例）。
+    计时；超时后由 watchdog 强杀 chromium 进程与 playwright 驱动 → fn 内
+    阻塞调用因连接断开抛异常 → 恢复控制并抛 _BrowserTimeout（浏览器与
+    驱动均已损坏，调用方需重建实例）。
     """
     import threading
 
@@ -274,7 +288,8 @@ def _browser_call_with_timeout(fn, *args, **kwargs):
     except Exception as e:  # noqa: BLE001
         if timed_out.is_set():
             raise _BrowserTimeout(
-                f"browser page exceeded {_BROWSER_PAGE_TIMEOUT}s (chromium killed): {e}"
+                f"browser page exceeded {_BROWSER_PAGE_TIMEOUT}s "
+                f"(chromium/driver killed): {e}"
             ) from e
         raise
     finally:
@@ -655,11 +670,11 @@ def _http_get_browser(url, wait_ms=4500):
             return _browser_call_with_timeout(_http_get_browser_inner, url,
                                               wait_ms)
         except _BrowserTimeout:
-            # 浏览器已损坏（chromium 被强杀）：丢句柄、保留驱动，
-            # 下次 _get_browser() 自动重建（驱动若也坏了会自动重启）
+            # 浏览器与驱动均已损坏（看门狗一并强杀）：句柄全丢（含 _playwright），
+            # 下次 _get_browser() 起全新驱动并重建（僵尸循环由 _restart_playwright 兜底）
             _invalidate_browser_handles()
             raise RuntimeError(
-                f"浏览器渲染超时（>{_BROWSER_PAGE_TIMEOUT}s，chromium 已重建）: {url}")
+                f"浏览器渲染超时（>{_BROWSER_PAGE_TIMEOUT}s，chromium/驱动已重建）: {url}")
         except Exception as e:  # noqa: BLE001
             if not _is_browser_gone(e) or attempt == 2:
                 raise
