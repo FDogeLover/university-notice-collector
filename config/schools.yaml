@@ -2971,3 +2971,340 @@ schools:
     stype: 本科招生
   tags:
   - '211'
+- name: 北京协和医学院
+  domain: pumc.edu.cn
+  sources:
+  - name: 研究生招生网（通知列表，首页即列表）
+    url: https://graduate.pumc.edu.cn/zsw/
+    category: 招生
+  tags:
+  - '双一流'
+- name: 首都师范大学
+  domain: cnu.edu.cn
+  sources:
+  - name: 研究生院-硕士招生（通知列表）
+    url: https://grad.cnu.edu.cn/zs1/sszs/index.htm
+    category: 招生
+  - name: 本科招生网-公示公告
+    url: https://bkzs.cnu.edu.cn/gsgg/index.htm
+    category: 招生
+  tags:
+  - '双一流'
+- name: 外交学院
+  domain: cfau.edu.cn
+  sources:
+  - name: 研究生部-新闻中心通知（col460）
+    url: https://yjsb.cfau.edu.cn/col41/col460/index.htm
+    category: 通知公告
+  - name: 本科生招生信息网-招生快讯
+    url: https://zs.cfau.edu.cn/col2999/index.htm
+    category: 招生
+  tags:
+  - '双一流'
+- name: 中国人民公安大学
+  domain: ppsuc.edu.cn
+  sources:
+  - name: 公大研招网-硕士招生（通知列表）
+    url: https://yzb.ppsuc.edu.cn/sszs.htm
+    category: 招生
+  - name: 本科招生就业网-招就动态
+    url: https://zsjy.ppsuc.edu.cn/list.jsp?PAGENUM=1&totalpage=15&wbtreeid=1167
+    category: 招生
+  tags:
+  - '双一流'
+- name: 北京体育大学
+  domain: bsu.edu.cn
+  sources:
+  - name: 研究生院-通知公告
+    url: https://grs.bsu.edu.cn/tzgg/index.htm
+    category: 通知公告
+  - name: 本科招生网（bkzsw）
+    url: https://zs.bsu.edu.cn/bkzsw/
+    category: 招生
+  tags:
+  - '双一流'
+- name: 中国音乐学院
+  domain: ccmusic.edu.cn
+  sources:
+  - name: 研究生院-通知公告
+    url: https://yjsy.ccmusic.edu.cn/tzgg/index.htm
+    category: 通知公告
+  - name: 本科招生网-招生专题
+    url: https://bkzs.ccmusic.edu.cn/zytg/index.htm
+    category: 招生
+  tags:
+  - '双一流'
+- name: 中央美术学院
+  domain: cafa.edu.cn
+  sources:
+  - name: 招生-硕士（研究生招生通知列表）
+    url: https://www.cafa.edu.cn/sp/zs/?ci=803
+    category: 招生
+  - name: 本科招生处通知
+    url: http://zsw.cafa.edu.cn/
+    category: 招生
+  tags:
+  - '双一流'
+- name: 中央戏剧学院
+  domain: chntheatre.edu.cn
+  sources:
+  - name: 研究生招生-硕士研究生
+    url: https://www.chntheatre.edu.cn/cn/recruit/shuoshi.html
+    category: 招生
+  tags:
+  - '双一流'
+- name: 天津工业大学
+  domain: tiangong.edu.cn
+  sources:
+  - name: 研究生院-硕士招生
+    url: https://yjsb.tiangong.edu.cn/sszs/list.htm
+    category: 招生
+  - name: 本科招生网
+    url: https://zsb.tiangong.edu.cn/
+    category: 招生
+  tags:
+  - '双一流'
+- name: 天津中医药大学
+  domain: tjutcm.edu.cn
+  sources:
+  - name: 研究生院-硕士招生考试
+    url: https://yjsy.tjutcm.edu.cn/yjszs/sszsks.htm
+    category: 招生
+  tags:
+  - '双一流'
+- name: 山西大学
+  domain: sxu.edu.cn
+  sources:
+  - name: 研究生院-通知公告
+    url: https://gs.sxu.edu.cn/tzgg/index.htm
+    category: 通知公告
+  tags:
+  - '双一流'
+- name: 上海海洋大学
+  domain: shou.edu.cn
+  sources:
+  - name: 研究生院-通知公告
+    url: https://yjs.shou.edu.cn/18594/list.htm
+    category: 通知公告
+  tags:
+  - '双一流'
+- name: 上海中医药大学
+  domain: shutcm.edu.cn
+  sources:
+  - name: 研究生院-招生信息
+    url: https://yjsy.shutcm.edu.cn/1143/list.htm
+    category: 招生
+  tags:
+  - '双一流'
+- name: 上海音乐学院
+  domain: shcmusic.edu.cn
+  sources:
+  - name: 研究生部-通知公告
+    url: https://yjsb.shcmusic.edu.cn/219/list.htm
+    category: 通知公告
+  tags:
+  - '双一流'
+- name: 南京邮电大学
+  domain: njupt.edu.cn
+  sources:
+  - name: 研究生院-重要通知
+    url: https://pg.njupt.edu.cn/1049/list.psp
+    category: 通知公告
+  - name: 本科招生网
+    url: https://zs.njupt.edu.cn/
+    category: 招生
+  tags:
+  - '双一流'
+- name: 南京林业大学
+  domain: njfu.edu.cn
+  sources:
+  - name: 研究生招生信息网-通知公告
+    url: https://yz.njfu.edu.cn/
+    category: 通知公告
+  tags:
+  - '双一流'
+- name: 南京信息工程大学
+  domain: nuist.edu.cn
+  sources:
+  - name: 研究生招生信息网
+    url: https://yzb.nuist.edu.cn/index.htm
+    category: 通知公告
+    browser: true
+  - name: 招生网-招考公告
+    url: https://zs.nuist.edu.cn/zsxx/zkgg.htm
+    category: 招生
+  tags:
+  - '双一流'
+- name: 南京医科大学
+  domain: njmu.edu.cn
+  sources:
+  - name: 研究生院-通知公告
+    url: https://yjsy.njmu.edu.cn/tzgg_10421/list.htm
+    category: 通知公告
+  - name: 本科招生网-招生动态
+    url: https://zs.njmu.edu.cn/3425/list.htm
+    category: 通知公告
+  tags:
+  - '双一流'
+- name: 南京中医药大学
+  domain: njucm.edu.cn
+  sources:
+  - name: 研工部/研究生院-通知公告
+    url: https://gra.njucm.edu.cn/tzgg/list.htm
+    category: 通知公告
+  - name: 本科招生网-招生动态
+    url: https://zs.njucm.edu.cn/4375/list.htm
+    category: 通知公告
+  tags:
+  - '双一流'
+- name: 中国美术学院
+  domain: caa.edu.cn
+  sources:
+  - name: 研工部/研究生处-新闻公告
+    url: https://grs.caa.edu.cn/xwgg.htm
+    category: 通知公告
+  - name: 本科招生办-通知公告
+    url: https://zb.caa.edu.cn/bkzs/tzgg.htm
+    category: 通知公告
+  tags:
+  - '双一流'
+- name: 河南大学
+  domain: henu.edu.cn
+  sources:
+  - name: 研究生院-通知公告
+    url: https://grs.henu.edu.cn/xxzx/tzgg.htm
+    category: 通知公告
+  - name: 招生信息网-招生发布
+    url: https://zs.henu.edu.cn/zsdt/zxfb.htm
+    category: 通知公告
+  tags:
+  - '双一流'
+- name: 湘潭大学
+  domain: xtu.edu.cn
+  sources:
+  - name: 研究生院-通知公告
+    url: https://yjsc.xtu.edu.cn/tzgg.htm
+    category: 通知公告
+  tags:
+  - '双一流'
+- name: 华南农业大学
+  domain: scau.edu.cn
+  sources:
+  - name: 研究生院-通知公告
+    url: https://yjsy.scau.edu.cn/208/list.htm
+    category: 通知公告
+  tags:
+  - '双一流'
+- name: 广州医科大学
+  domain: gzhmu.edu.cn
+  sources:
+  - name: 研究生院-招生工作通知列表
+    url: https://yjs.gzhmu.edu.cn/zsgz.htm
+    category: 招生
+  tags:
+  - '双一流'
+- name: 广州中医药大学
+  domain: gzucm.edu.cn
+  sources:
+  - name: 研究生院-招生工作通知列表
+    url: https://yjsy.gzucm.edu.cn/zsgz1.htm
+    category: 招生
+  tags:
+  - '双一流'
+- name: 西南石油大学
+  domain: swpu.edu.cn
+  sources:
+  - name: 研究生院-招生工作通知公告
+    url: https://www.swpu.edu.cn/gs/zsgz/tzgg.htm
+    category: 招生
+  tags:
+  - '双一流'
+- name: 成都中医药大学
+  domain: cdutcm.edu.cn
+  sources:
+  - name: 研究生院-通知公告
+    url: https://zyd.cdutcm.edu.cn/yjs/yjsh
+    category: 通知公告
+  tags:
+  - '双一流'
+- name: 西南大学
+  domain: swu.edu.cn
+  sources:
+  - name: 研究生院-通知公告
+    url: https://pgs.swu.edu.cn/index/tzgg.htm
+    category: 通知公告
+  tags:
+  - '双一流'
+- name: 宁波大学
+  domain: nbu.edu.cn
+  sources:
+  - name: 研究生院-招生工作通知
+    url: https://graduate.nbu.edu.cn/zsgz/zsgz/zssy.htm
+    category: 招生
+  - name: 本科招生网-招生快讯
+    url: https://zsb.nbu.edu.cn/zskx.htm
+    category: 招生
+  tags:
+  - '双一流'
+- name: 南方科技大学
+  domain: sustech.edu.cn
+  sources:
+  - name: 研究生院-招生工作>通知公告
+    url: https://gs.sustech.edu.cn/#/common/index?current_id=88&id=88
+    category: 通知公告
+    browser: true
+  - name: 本科招生网-通知公告
+    url: https://zs.sustech.edu.cn/#/public/index
+    category: 通知公告
+    browser: true
+  tags:
+  - '双一流'
+- name: 上海科技大学
+  domain: shanghaitech.edu.cn
+  sources:
+  - name: 研究生招生网-硕士招生>通知公告
+    url: https://yanzhao.shanghaitech.edu.cn/tzgg_1621/list.htm
+    category: 通知公告
+  tags:
+  - '双一流'
+- name: 中国科学院大学
+  domain: ucas.ac.cn
+  sources:
+  - name: 招生信息网-通知公告（硕士/博士）
+    url: https://admission.ucas.ac.cn/showarticle/newslist/4c7e0e9f-2311-47a0-8f12-b0ec992078ac
+    category: 通知公告
+  - name: 招生信息网-本科公告
+    url: https://admission.ucas.ac.cn/ShowArticle/newslist1/0659c1ad-c6df-4c2a-8c53-dacb1c2b69e8
+    category: 招生
+  tags:
+  - '双一流'
+- name: 国防科技大学
+  domain: nudt.edu.cn
+  sources:
+  - name: 研究生招生信息网-通知公告
+    url: https://yjszs.nudt.edu.cn/pubweb/homePageList/collegeNotice.view?keyId=40
+    category: 通知公告
+  - name: 本科招生网-通知公告
+    url: https://www.nudt.edu.cn/bkzs/tzgg/index.htm
+    category: 通知公告
+  tags:
+  - '双一流'
+- name: 海军军医大学
+  domain: smmu.edu.cn
+  sources:
+  - name: 招生信息网-研究生招生
+    url: https://www.smmu.edu.cn/yjszs/list.htm
+    category: 招生
+  tags:
+  - '双一流'
+- name: 空军军医大学
+  domain: fmmu.edu.cn
+  sources:
+  - name: 研究生院-通知公告
+    url: https://www.fmmu.edu.cn/yjsy/index/tzgg.htm
+    category: 通知公告
+  - name: 本科招生网
+    url: https://www.fmmu.edu.cn/zhaosheng/
+    category: 招生
+  tags:
+  - '双一流'
