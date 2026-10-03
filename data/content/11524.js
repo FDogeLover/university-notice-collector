@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11524"]={"content": "2024年上海外国语大学研究生学业奖学金评审通知已发布校园信息平台，请点击链接查看：\n2024年上海外国语大学研究生学业奖学金评审通知 | 上外信息门户 https://portal.shisu.edu.cn/r/w?cmd=com.awspaas.user.apps.datamanager_html&appId=com.awspaas.user.apps.newonline&html=details.html&ext2=NEWS2024-09-270013"};

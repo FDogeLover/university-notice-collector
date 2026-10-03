@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1369"]={"content": "根据 安徽省 教育厅要求， 安徽省 2026级本研衔接公费师范生履约任教 范围 调整如下。\n东北师范大学招生办公室\n2026年6月"};

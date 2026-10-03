@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["8582"]={"content": "2026年秋季学期博士生《研究方法与论文写作》精品资源共享计划开放课程信息总览\n发布日期：2026-09-18\n浏览次数：5"};

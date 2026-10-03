@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1911"]={"content": "http://yz.snnu.edu.cn/info/1008/7751.htm"};

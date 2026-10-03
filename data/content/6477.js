@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6477"]={"content": "附件：1. 2026年本科教学观摩课程列表.xlsx\n2. 青年教师教学观摩听课记录表.doc\n3. 新教工课程观摩学分登记汇总表.docx"};

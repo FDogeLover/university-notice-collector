@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13224"]={"content": "研招网和专业目录公布的人数均为拟招生人数，招收项士推免生以最后推免系统确认的录取人数为准，各专业最终招生计划将根据考生实际报考情况及上级部门下达我校招生指标进行调整，可能有增、减。"};

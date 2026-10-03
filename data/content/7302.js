@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["7302"]={"content": "各教学单位：\n2026-2027 学年秋季学期课程补退选已经结束，对选修人数不足的部分选修课（具体见附件）予以停开，请各教学单位及时通知相关教师和学生。\n教务处\n2026 年 9 月 15 日"};

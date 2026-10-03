@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3390"]={"content": "详细信息请关注“西交研招”公众号。"};

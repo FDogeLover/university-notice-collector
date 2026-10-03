@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2331"]={"content": "南开大学研究生外国语学习管理规定（2026）.pdf 研究生选课界面外语免修申请操作说明(学生版).docx 2026级硕博第一外国语免修名单_.xlsx"};

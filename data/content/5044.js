@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5044"]={"content": "2023级、2024级、2025级军事技能训练还没有通过的同学，请于2026年8月29日前到主楼514报名参加补训。\n联系电话：55191597\n学生工作部（学生处）（武装部）\n2026年8月22日"};

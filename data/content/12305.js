@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12305"]={"content": "各位研究生新生，南京信息工程大学研究生入学指南（须知）现予以公布，请按照要求做好入学报到工作。\n南京信息工程大学研究生工作部 研究生院\n2026 年 7 月 2 日"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4792"]={"content": "首页\n通知公告\n文章\n上一篇： 关于2026届毕业生网上填报就业方案（升学、出国、就业）和 户口、档案信息的通知\n下一篇： 关于公布2026“我的未来不是梦”求职经历征文大赛评选结果的通知"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["269"]={"content": "欢迎报考华中科技大学2021年硕士研究生!\n请考生用电脑端查看我校招生简章及专业目录，及时关注我校研招网发布的各项公告。"};

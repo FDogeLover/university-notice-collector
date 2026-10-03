@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13400"]={"content": "中华人民共和国公安部2027年度公务员招录宣讲会 南开大学学生就业指导中心代发 时间： 2026-10-09 18:30 地点： [津南校区]津南校区大通学生中心大音乐厅 浏览量： 59 招收专业："};

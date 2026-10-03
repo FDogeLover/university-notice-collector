@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5416"]={"content": "点击附件下载陕西师范大学2026年美术与设计类专业招生简章"};

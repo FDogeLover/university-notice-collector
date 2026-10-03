@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11514"]={"content": "详见信息平台通知： https://portal.shisu.edu.cn/r/w?cmd=com.awspaas.user.apps.datamanager_html&appId=com.awspaas.user.apps.newonline&html=details.html&ext2=NEWS2025-10-290017"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["960"]={"content": "2026年硕士研究生招生系统\n考生编号\n*\n登录密码\n*\n验证码\n登录\n忘密\n如忘记考生编号，点\n此处\n查询\n说明：\n1. 考生编号为以报考单位代码开头的15位数字，初始密码为身份证号。\n2.\n进入复试名单且审核通过的考生才可以登陆"};

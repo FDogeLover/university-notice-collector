@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12664"]={"content": "临床医学类、金融学类、经济学类、统计学类、计算机类、工商管理类、邮政管理类或其他相关专业。"};

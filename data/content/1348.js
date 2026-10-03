@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1348"]={"content": "延边大学非学历教育项目收费标准公示（艺术培训班）"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["9208"]={"content": "学校硕士研究生复试及录取办法、成绩查询、复试安排、拟录取查询等信息均在研究生院网站（http://gs.cufe.edu.cn）中公布，研究生院和各学院招生联系方式见研究生院网站链接 https://gs.cufe.edu.cn/info/1028/2683.htm，研究生招生办公室咨询电话为:010-62289034，学校纪委办公室、监察处研究生招生专用监督电话为：010-62289024。"};

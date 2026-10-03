@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["8288"]={"content": "附件2：石河子大学优秀学位论文申报表.doc.doc\n附件3：推荐校级优秀博士、硕士学位论文汇总表.xls.xls"};

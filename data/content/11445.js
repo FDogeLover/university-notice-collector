@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11445"]={"content": "首页\n学院发布\n文章\n上一篇： 校招职位搜索＂水利科学与工程水利方向＂\n下一篇： 中国矿产资源集团有限公司所属单位2026届校园招聘公告"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["55"]={"content": "现将 接收 202 4 年推荐 免试攻读研究生拟录取名单进行公示（具体名单见附件），公示时间为 202 3 年10月 17 日 -10月 30 日。考生对拟录取名单如有疑问，请在公示期内 与 研究生招生办公室联系。\n联系电话： 02 5-84303162 电子邮箱： yjszs@ njust .edu.cn\n接收2024年推免生拟录取名单.pdf"};

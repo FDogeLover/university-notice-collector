@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2530"]={"content": "申诉渠道： 我校纪检监察部门负责全程监督，受理举报或投诉（通信地址：青岛市松岭路238号中国海洋大学监察处，邮政编码：266100；电话：0532-66782733；E-mail： jiancha@ouc.edu.cn )。"};

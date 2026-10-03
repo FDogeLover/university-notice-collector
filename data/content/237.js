@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["237"]={"content": "请大家务必及时下载附件《课表》，根据课表安排上课。\n医学研究生处\n2026年8月31日"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["562"]={"content": "2. 每名考生最多可申请三个志愿（可跨学院）。首次注册请点击“申请”按钮，信息全部提交后，如需申请其他学院，请点击“二次报名”按钮。 3. 浏览器推荐使用谷歌、火狐及Safari，360、UC等双核浏览器要选用极速模式（不建议使用IE，IE须10以上版本）"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5990"]={"content": "扫描二维码关注 上海财经大学招生办咨询热线\n\n【正文图片1】下载失败: https://zs.sufe.edu.cn/_upload/article/images/5a/6e/adbb73c6"};

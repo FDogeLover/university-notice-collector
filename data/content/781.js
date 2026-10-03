@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["781"]={"content": "用户名\n*\n密 码\n*\n验证码\n看不清？\n登录帐号说明\n忘记密码\n说明：1.使用IE6以上  2.1024*768分辨率浏览本系统  3.请不要屏蔽弹出窗口\n编号：130822000-Noft-GRMIS 研究生招生管理系统软件v2.0"};

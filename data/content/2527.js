@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2527"]={"content": "统一身份认证 研究生院 用户名 密码 验证码 测试短信 此页面为兼容性视图 请使用Chrome等现代浏览器以获取最佳体验\nzh_cn"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12165"]={"content": "浏览器兼容性提示\n您当前使用的浏览器版本过旧,可能无法正常使用系统的某些功能。\n为了获得最佳的使用体验,我们建议您升级到以下浏览器的最新版本:\nGoogle Chrome\nMozilla Firefox\nApple Safari\nMicrosoft Edge"};

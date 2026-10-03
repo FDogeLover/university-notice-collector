@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["8270"]={"content": "Mobile Phone Number Overseas mobile phone in the format of \"country code-mobile phone number\", such as: 1-888888\nGraph code\nDynamic code"};

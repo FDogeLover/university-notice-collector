@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11459"]={"content": "首页\n通知公告\n文章\n上一篇： “我的未来不是梦”中国石油大学（北京）2026年学生就业征文大赛\n下一篇： 关于2026届毕业生网上填报就业方案（升学、出国、就业）和 户口、档案信息的通知"};

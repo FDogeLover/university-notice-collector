@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["10332"]={"content": "附件9：2027届校园招聘简章-秋招版0910.docx\n\n【正文图片1】下载失败: https://career.hebut.edu.cn/Public/ueditor/dialogs/attachmen"};

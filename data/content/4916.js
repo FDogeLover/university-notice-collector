@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4916"]={"content": "各学院：\n为提升教师教学创新能力，现发布在线观摩第五届“超星杯”延边大学教师教学创新大赛决赛相关事宜：\n比赛时间：1月21日（星期二）8:20-15:30\n参赛海报：见海报\n在线观看地址：https://zhibo.chaoxing.com/8000273681238502\n延边大学教师教学发展中心\n2025年1月20日"};

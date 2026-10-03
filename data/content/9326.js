@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["9326"]={"content": "各位研究生：\n《关于2026年下半年全国大学外语四六级考试报名的通知》已于教务处网页发布，请及时查看并按通知中的要求报名， 网页链接： https://jiaowu.sicau.edu.cn/web/web/web/gwshenshow_x_2019.asp?bianhao=7046\n研究生院\n2026年9月16日"};

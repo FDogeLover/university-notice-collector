@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12234"]={"content": "各位同学：\n现转发研究生院思政科《广州中医药大学2026年非定向就业博士研究生调档通知》，请仔细查阅： https://yjsy.gzucm.edu.cn/info/1028/19176.htm 。\n收件人：刘老师，联系电话：020-39358985。"};

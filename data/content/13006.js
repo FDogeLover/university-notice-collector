@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13006"]={"content": "�� 联系我们\n官方QQ交流群： 792345737 / 569142323\n秘书处 ：刘老师、姜老师\n电话： 025-58109529、13585200992\n邮箱： rcpxb@nctieda.com、jiangtian@icisc.cn\n校内组队QQ群 ：1030172152\n校内参赛交流QQ群： 610467106\n官网链接：\nhttps://cpipc.acge.org.cn/cw/hp/2c9080158ee9c272018f229208b610a6"};

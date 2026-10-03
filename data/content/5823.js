@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5823"]={"content": "录取概况\n年份 类别 省份 科类 专业数 最低分\n分专业录取情况\n年份 类别 省份 录取专业 科类 投档最低分"};

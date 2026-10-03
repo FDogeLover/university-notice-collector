@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13362"]={"content": "2027年硕士研究生招生考试自命题科目考试大纲查询网址：\nhttp://yzsbm.nuaa.edu.cn/sskmdg/index.html\n注：考试科目参考书仅供参考。"};

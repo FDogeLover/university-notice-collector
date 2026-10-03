@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1366"]={"content": "根据教育部有关文件精神和《东北师范大学2026年第二学士学位招生简章》规定，经学校审核，现已确定初审合格名单，考生可登录东北师范大学第二学士学位网上报名系统( https://tslxbm.nenu.edu.cn/login )查询初审结果。"};

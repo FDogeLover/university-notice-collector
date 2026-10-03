@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12778"]={"content": "各位考生：\n海南大学2027年硕士研究生招生考试初试自命题科目的考试大纲已发布，具体查看方法如下：\n1. 登录海南大学研究生院主页（https://gs.hainanu.edu.cn/index.htm），点击“研究生招生”栏，在网页右侧点击“硕士生招生”下的“招生简章”按钮。\n2. 进入考试大纲板块，点击初试自命题科目名称即可查看。（仅支持电脑端查看）"};

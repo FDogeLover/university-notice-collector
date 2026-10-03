@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11335"]={"content": "选调公考 » 文章\n上一篇: 【人才引进】金昌市医疗卫生系统2026年第二批引进高层次和急需紧缺人才公告\n下一篇: 全国各地2027年面向中南大学招录选调生、公务员、人才引进信息汇总"};

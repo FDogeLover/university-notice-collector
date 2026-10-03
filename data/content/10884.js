@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["10884"]={"content": "更多考试资讯请关注“华中科技大学研究生招生”微信号。"};

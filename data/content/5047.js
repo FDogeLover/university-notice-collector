@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5047"]={"content": "考试课程：基础化学实验II（补考、重考）\n考试时间：8月21日18:30-20:30\n考试方式：开卷考试\n考试地点：成栋楼910\n联系电话：55190222刘老师\n化学与分子工程学院\n2026年8月18日"};

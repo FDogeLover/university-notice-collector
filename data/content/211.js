@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["211"]={"content": "这与公共数据库的用户名、密码无关\n预毕业信息设置完成3-5小时后，方可以在学位申请系统中查看到信息。"};

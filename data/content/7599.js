@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["7599"]={"content": "关于2026年下半年全国大学英语四、六级考试报名工作的通知.pdf\n附件1.【其他】学籍审批表.doc\n附件2.合理便利类型.pdf\n附件3.全国大学英语四、六级考试合理便利申请表.docx\n附件4.关于考生准备全国大学英语四六级考试听力接收设备的通知.pdf"};

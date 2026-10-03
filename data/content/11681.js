@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11681"]={"content": "欢迎报考北京交通大学硕士研究生！"};

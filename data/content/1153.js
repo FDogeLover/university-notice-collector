@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1153"]={"content": "统一身份认证\n温馨提示： 学生帐号为学号，教职工账号为职工号，初始密码均为身份证号码 校友账号为电子校友卡卡号，初始密码为BFU@身份证后8位\n360浏览器请使用极速模式 (如何使用?)\n建议浏览器： Edge 火狐 谷歌"};

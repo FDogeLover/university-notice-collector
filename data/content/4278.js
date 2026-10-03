@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4278"]={"content": "系统提示 抱歉，您是在校外访问本网站。 请您先登录学校的VPN后再访问:https://webvpn.nwu.edu.cn/"};
