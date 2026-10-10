@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6236"]={"content": "请点： http://chesicc.moe.edu.cn/jycyzc/"};

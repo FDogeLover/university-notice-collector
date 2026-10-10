@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12309"]={"content": "各位考生：\n202 6 年硕士研究生录取通知书已经发往邮局，预计今日寄出 （ 博士研究生录取通知书待上级部门批准后寄出 ） ，各位考生可 扫以下二维码或者点击链接，输入姓名和考生编号后查询 。\n链接： https://www.kdocs.cn/etapps/query/q/EeS0vVSB\n注：推免生考生编号可至本网站 5 月 9 号发布的 “ 调档通知 ” 附件查询（ https://yzb.nuist.edu.cn/info/1006/2994.htm ）。\n研究生招生办公室\n202 6 年 7 月 1 日"};

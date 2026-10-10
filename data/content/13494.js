@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13494"]={"content": "计算机、自动化、通信、电子、光学、精密仪器、机电、测控、信号与信息处理、电子信息等相关专业"};

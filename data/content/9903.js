@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["9903"]={"content": "以上501名考生为第一批报考我校的推免生， 参加复试的考生以实际情况为准。 请各位考生按照各学院接收推免生工作办法积极准备复试。\n东北农业大学研究生院\n2026年9月22日"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11957"]={"content": "经个人申请，资格审查、专家评议，拟录取2025年国内访问学者12名、研修生2名，名单如下：\n研究生部综合办公室\n2025年6月23日\n\n【正文图片1】下载失败: https://yjsb.shcmusic.edu.cn/_upload/article/images/1f/f3/02"};

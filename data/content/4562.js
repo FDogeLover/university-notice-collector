@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4562"]={"content": "12:00\n预选与退课开始（选课操作成功后，等待抽签），当且仅当满足“选课人数上限未满”&“时间不冲突”时，换班即换即中。退课申请由学生所在院系教学秘书审核。(一年级课程暂不参选)"};

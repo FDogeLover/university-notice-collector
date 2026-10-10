@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3543"]={"content": "附件1：“综合素质系列课程”简介.pdf 附件2：“综合素质系列课程”线上课程选课及学习考试方式.pdf"};

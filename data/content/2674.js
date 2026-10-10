@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2674"]={"content": "附件1：2027年研究生招生宣传项目汇总表.xlsx\n附件2：学院2027年研究生招生宣传工作方案模板.docx\n\n【正文图片1】下载失败: https://gs.ustb.edu.cn/ewebeditor/uploadfile/2026/06/12/2026\n\n【正文图片2】下载失败: https://gs.ustb.edu.cn/ewebeditor/uploadfile/2026/06/12/2026\n\n【正文图片3】下载失败: https://gs.ustb.edu.cn/ewebeditor/uploadfile/2026/06/12/2026"};

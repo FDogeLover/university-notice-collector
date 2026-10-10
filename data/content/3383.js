@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3383"]={"content": "2027级学历教育研究生收费一览表：\nhttps://www.jcc.uestc.edu.cn/article/detail?cid=1350"};

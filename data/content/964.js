@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["964"]={"content": "2026博士招生（申请考核制）报名系统\n密码登录\n扫码登录\nCopyright ©2026 华南理工大学 版权所有 粤ICP备05084312号\n粤公网安备 44010602010122号\n电话：020-87113401  传真：020-87112151\n邮箱：adyzb@scut.edu.cn\n地址：广东省广州市天河区五山华南理工大学笃行楼（2号楼）北座102室"};

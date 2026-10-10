@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5003"]={"content": "2026秋季学期各年级辅修专业教学安排见下述附件，请修读辅修专业的同学按课表上课。\n2026-2027学年 第1学期 辅修课表（2026年秋）.xlsx\n华东理工大学教务处\n2026年9月9日"};

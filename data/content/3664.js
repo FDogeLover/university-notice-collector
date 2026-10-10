@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3664"]={"content": "统一身份认证 您正在登录身份认证系统 English\n服务电话：027-82668837\n智慧华中大|统一身份认证系统 Copyright © 2023 总访问量 ：306329541 当日访问量：251991 日均访问量 ：123272"};

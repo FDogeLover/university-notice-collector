@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["8646"]={"content": "考试时间：9月29日（周二）晚上7:00\n考试地点：2号楼1大教室\n考试名单见附件！\n考试时，请务必携带学生证，否则，考试无效。\n医学研究生处\n2026年9月18日"};

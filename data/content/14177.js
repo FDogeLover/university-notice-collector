@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["14177"]={"content": "计算机类、电子信息类、自动化类、能源动力类、电气类等相关专业。"};

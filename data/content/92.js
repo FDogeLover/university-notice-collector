@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["92"]={"content": "各位研究生：\n现发布2026年春季学期研究生课表供各位同学参考（见附件），如部分课程上课时间、地点有所变动，以实际上课时间、地点为准。未排上课时间、地点的课程请具体咨询开课学院。"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2534"]={"content": "院系名称 是否 公布 联系方式\n没有信息数据"};

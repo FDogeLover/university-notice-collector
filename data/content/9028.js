@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["9028"]={"content": "2027联宝科技校园招聘简章(1).docx\n\n【正文图片1】下载失败: https://career.hebut.edu.cn/Public/ueditor/dialogs/attachmen"};

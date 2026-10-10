@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13167"]={"content": "各位考生：\n根据教育部文件要求，现将2027年地方推免生拟录取名单予以公示，公示期：9月30日-10月6日。\n附件：2027年地方推免生拟录取名单\n研究生院\n2026年9月30日"};

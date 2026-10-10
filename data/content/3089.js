@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3089"]={"content": "查询旧网页招生信息方式\n华南师范大学研究生招生信息网 / 办事指南 2014-03-14 10:22:00 来源：华南师范大学研究生招生信息网 评论： 0 点击： 收藏本文\n各位考生：\n由于我处网页整体改版，如您需查询研招办以前的新闻公告等信息，请登录 http://yjsy.scnu.edu.cn/hnyjs/work/firstpage/news/zsb.jsp 。\n研招办\n标签：# 方式 # 网页 # 信息\n第一页\n考生指南-华师吃住行\n热门消息\n本周图文\n全日制硕士招生工\n在职人员攻读硕士\n全日制博士招生工\n查询旧网页招生信"};

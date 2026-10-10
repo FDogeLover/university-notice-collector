@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6277"]={"content": "国家某部委及其直属机构2027年度公务员招录宣讲会 南开大学学生就业指导中心代发 时间： 2026-09-11 18:30 地点： [八里台校区]主楼小礼堂 浏览量： 414 招收专业："};

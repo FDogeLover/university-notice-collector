@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5982"]={"content": "招聘日历\n实习信息\n招聘信息\n招聘宣讲\n浙江广播电视集团2026创新英才招聘公告\n发布时间：2026-03-13 编辑：上海外国语大学学生就业创业服务网 浏览：loading..."};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["14120"]={"content": "附件1-研究生教育教学改革项目（学生专项）申请书.doc\n附件2-校研发〔2026〕32号-北京科技大学研究生教育教学改革项目(学生专项)管理办法（试行）.docx\n附件3-北京科技大学2026年研究生教育教学改革项目（学生专项）选题指南.docx"};

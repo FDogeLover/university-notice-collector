@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4433"]={"content": "学生就业事务\n电话：010-68932640 传真：010-68932410 邮箱：mucjyc@163.com\n学生就业指导\n电话：010-68933770 传真：010-68932410 邮箱：mucjyc@163.com\n用人单位服务\n电话：010-68939899 传真：010-68939899 邮箱：mucjyc@163.com"};

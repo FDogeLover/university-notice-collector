@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12507"]={"content": "附件1 内蒙古大学学术学位博士论文格式（2025年修订）.doc\n附件2 内蒙古大学专业学位博士论文格式（2025年修订）.doc\n附件3 内蒙古大学学术学位硕士论文格式（2025年修订）.doc\n附件4 内蒙古大学专业学位硕士论文格式（2025年修订）.doc"};

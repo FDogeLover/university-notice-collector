@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11554"]={"content": "我校现有全日制硕士9079人，非全日制硕士1732人，另有来华留学硕士160人。（2024年9月更新）"};

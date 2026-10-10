@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6186"]={"content": "您访问的网站正在维护或安全加固中，临时访问请登录校园VPN账号（http://vpn2.njau.edu.cn），给您造成的不便，敬请谅解！"};

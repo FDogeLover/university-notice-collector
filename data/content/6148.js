@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6148"]={"content": "我校艺术类专业与省统考子科类对照情况见附件。\n具体招生计划和录取原则以生源省（区、市）招生考试机构公布为准。\n其他未尽事宜见我校 2025年招生章程。\n特此说明。\n延边大学招生办公室\n2025年6月23日"};

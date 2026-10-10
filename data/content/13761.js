@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13761"]={"content": "请选修《心理压力与应对》课程的研究生，按照附件分班去上课。\n如确有特殊原因需要调整班级的，请及时与相关班级的上课老师联系、报备，便于记载平时成绩。\n分班名单见附件！\n医学研究生处\n2026年10月8日"};

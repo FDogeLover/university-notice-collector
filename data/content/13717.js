@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13717"]={"content": "首页\n招聘会\n详情\n胜利油田2026校园招聘会\n发布时间：2026-10-08 10:24\n浏览次数：89\n分享至\n招聘会类型： 线下招聘会\n举办时间： 2026-10-09 10:30-11:30（周五）\n举办地址： 三教104"};

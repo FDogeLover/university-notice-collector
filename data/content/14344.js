@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["14344"]={"content": "工商管理、市场营销、经济、财会、广告、新闻传播、法学、设计等相关专业优先"};

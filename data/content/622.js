@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["622"]={"content": "百度地图API自定义地图\n校园地址\n北京市海淀区学院路 37号知行南楼\n邮编:100191\n联系方式\n010-82317695\n校园邮箱\n邮箱：zsbgs@buaa.edu.cn\n办公时间\n周一至周五\n8:00-12:00,14:00-18:00"};

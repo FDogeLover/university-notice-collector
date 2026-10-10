@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["417"]={"content": "各相关考生：\n我校2026年硕士研究生招生考试复试录取工作中有一名考生放弃拟录取资格，已按照招生工作办法完成补录，现将具体情况公示如下：\n公示时间：2026年5月14日-5月21日；\n公示电话：0531-88364334；\n公示邮箱：shandayanzhaoban@sdu.edu.cn。\n山东大学研究生招生办公室\n2026年5月14日\n附件：公示已结束"};

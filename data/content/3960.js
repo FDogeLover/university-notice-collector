@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3960"]={"content": "各位考生：\n我校 2026 年强基计划高校考核成绩及录取结果已公布，考生可登录浙江大学强基计划报名平台（网址： https://bm.chsi.com.cn/jcxkzs/sch/10335 ）进行查看。\n浙江大学本科生招生办公室\n2026 年 6 月 29 日"};

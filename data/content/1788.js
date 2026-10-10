@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1788"]={"content": "序号 年份 院系所 专业 学习方式 专业复试成绩最低要求\n总分 科目1 科目2 科目3 科目4 备注\n未查询到相关数据"};

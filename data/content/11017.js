@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11017"]={"content": "https://jyzd.bfsu.edu.cn/front/showContent.jspa?channelId=970&contentId=113698"};

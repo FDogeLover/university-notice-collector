@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4998"]={"content": "校本部入学指南.pdf 海南国际学院入学指南.pdf\n\n【正文图片1】下载失败: https://zhaosheng.nefu.edu.cn/system/resource/images/fileTyp\n\n【正文图片2】下载失败: https://zhaosheng.nefu.edu.cn/system/resource/images/fileTyp"};

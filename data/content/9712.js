@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["9712"]={"content": "各学院、全校同学：\n2025-2026学年度非毕业年级学生综合素质测评成绩（定版）已经通过学工系统发布，该成绩可用于2025-2026学年度评优评奖。\n学生处\n2026年9月21日"};

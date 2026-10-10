@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11336"]={"content": "选调公考 » 文章\n上一篇: 【人才引进】金昌市2026年第二批引进高层次和急需紧缺人才公告\n下一篇: 【人才引进】金昌市教育系统2026年第二批引进高层次和急需紧缺人才公告"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12498"]={"content": "中美物流研究院2024年（2025级）全日制物流工程与管理推免夏令营招生宣传手册.pdf"};

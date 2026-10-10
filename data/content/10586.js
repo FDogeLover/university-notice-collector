@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["10586"]={"content": "研究生管理服务系统\n请使用信息门户密码登录\n此认证基于北京师范大学 信息门户"};

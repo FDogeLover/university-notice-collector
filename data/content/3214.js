@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3214"]={"content": "具体各批次专业（类）招生计划以各省教育考试机构公布 为准！\n如果您无法在线浏览此 PDF 文件，则可以\n下载免费小巧的 福昕(Foxit) PDF 阅读器 ,安装后即可在线浏览  或\n下载免费的 Adobe Reader PDF 阅读器 ,安装后即可在线浏览  或\n下载此 PDF 文件"};

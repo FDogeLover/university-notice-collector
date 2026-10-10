@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12376"]={"content": "高考录取查询\n考生姓名： 考生号： 身份证号：\n考生姓名：\n考生号：\n身份证号："};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["9255"]={"content": "我单位派遣人才招聘笔试成绩已发布，请参加笔试的考生自行登录招聘系统进行查阅。\n进入面试的考生请保持通讯畅通，面试时间和地点另行通知。\n特此通知。\n东北林业大学研究生院\n2026 年 7 月 28 日"};

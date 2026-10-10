@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["14683"]={"content": "四川郎酒股份有限公司2027年应届毕业生招聘\n登录 后可见"};

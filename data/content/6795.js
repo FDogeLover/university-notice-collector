@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6795"]={"content": "2027 年湖北省定向选调生（选聘生）招录宣讲会 南开大学学生就业指导中心代发 时间： 2026-09-14 10:00 地点： [八里台校区]学生活动中心1楼111-1 浏览量： 1004 招收专业："};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13251"]={"content": "请选修本门课程的同学扫描 海报下方二维码报名，截止时间：10月5日。\n\n【正文图片1】下载失败: https://hitgs.hit.edu.cn/_upload/article/images/5b/06/e8dad5\n\n【正文图片2】下载失败: https://hitgs.hit.edu.cn/_upload/article/images/5b/06/e8dad5\n\n【正文图片3】下载失败: https://hitgs.hit.edu.cn/_upload/article/images/5b/06/e8dad5"};

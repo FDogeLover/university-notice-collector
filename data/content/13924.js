@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13924"]={"content": "通知公告\nAnnouncements\n2020级研究生新生报到通知\n发布时间：2020-08-17\n来源：\n新生同学：\n你好，根据疫情防控要求和学校教学总体安排，校本部研究生新生（内地及港澳台新生，不含深研院）报到日期确定为9月14日。具体到校要求请按学院进一步通知做好准备。\n燕园见！"};

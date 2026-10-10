@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11248"]={"content": "研究生管理信息系统 Graduate Management Information System\n云智能 慧感知 优服务\n流程化 规范化 一体化\n轻办公 高效率 全过程\n请使用学号和密码登录。"};

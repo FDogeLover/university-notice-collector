@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3541"]={"content": "华东理工大学研究生学号查询\n学号查询说明\n1、\n申请查询结果禁止使用于任何其他目的。造成不良后果的，将依法追究责任。\n2、\n请输入完整的身份证号码和姓名，否则将无法查询到相关信息。\n3、\n查询结束后，\n应及时关闭本页面，避免个人信息的泄露\n。\n查询信息填写\nCopyright 2018-2026 ©  All Rights Reserved.\n版权所有：\n华东理工大学"};

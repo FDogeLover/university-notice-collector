@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5358"]={"content": "学生职业规划与就业指导中心： 028-87092225； wuyiran@swufe.edu.cn\n纪检监察办公室： 028-87092833； xinfang@swufe.edu.cn"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13042"]={"content": "中国银河金控2027年“新苗计划” 校园招聘公告\n登录 后可见"};

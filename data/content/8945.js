@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["8945"]={"content": "* 专业要求：\n* 职位描述：\nhttps://mp.weixin.qq.com/s/rp_AJiEvN8Ix6eErST5aCA?color_scheme=light&scene=1"};

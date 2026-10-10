@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["427"]={"content": "信息化公共服务平台 English 账号登录 短信登录 login.scan.desc.face login.scan.desc.face2 login.scan.desc.face.error\n温馨提示：\n手机号已经更换的用户，请点击查看手机号更换方法\nlogin.scan.desc.face2"};

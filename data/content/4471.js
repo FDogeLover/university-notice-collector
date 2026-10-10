@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4471"]={"content": "亲爱的2026级萌新们\n恭喜您正式成为一名 NEUer\n为帮助大家更全面的了解学校\n提前做好入学前的各项准备\n期待萌新到来的小招为大家带来了\n全面的 新生入学须知\n附件：2026年东北大学新生入学须知.pdf"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6794"]={"content": "2026年直接选拔招录军官专场招聘会 南开大学学生就业指导中心代发 时间： 2026-09-14 09:00 地点： [津南校区]大通学生中心F202 浏览量： 867 招收专业：\n工科类都可参加"};

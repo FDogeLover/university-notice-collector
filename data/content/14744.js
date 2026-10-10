@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["14744"]={"content": "山东省2027年度选调生招录政策宣讲会——南开大学专场 南开大学学生就业指导中心代发 时间： 2026-10-12 09:30 地点： [八里台校区]学生活动中心多功能厅 浏览量： 238 招收专业：\n选调公告：https://xds.nankai.edu.cn/newsDetail.html?id=98af8fac-16b7-9175-4f1f-6e4c082aff6f&active=6"};
