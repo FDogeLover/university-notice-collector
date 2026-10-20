@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5373"]={"content": "就业管理系统使用手册（企业用户）V3.0.pdf (4.100 MB)\n就业管理系统使用手册（学生用户）V3.0.pdf (8.24 MB)"};

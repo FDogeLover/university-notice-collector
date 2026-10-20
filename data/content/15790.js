@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["15790"]={"content": "“智汇潇湘 才聚湖南”北京专场招聘活动\n宣讲时间： 2026年10月17日\n \n09:00 - 16:00\n宣讲地点： 校外\n备注： 无"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3909"]={"content": "附件：开课单位教学办公室联系电话.pdf\n2026-2027学年第一学期选课手册（2026.8.31更新）.pdf"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["16113"]={"content": "首页\n新闻快递\n文章\n上一篇： 中石大石油工程学院成功举办长城钻探博士专场招聘会\n下一篇： 中石大地球物理学院举办中石化经纬有限公司2027年度校园招聘专场宣讲会"};

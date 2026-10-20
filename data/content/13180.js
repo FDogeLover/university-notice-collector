@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13180"]={"content": "扫码登录 微信企业号 微信登录 新用户请先点击，扫码绑定 已绑定，我要扫码登录 温馨提示：QQ、微信只能在激活账号的第二天绑定\n账号查询 学生账号激活\n新教工账号注册 校外人员账号激活"};

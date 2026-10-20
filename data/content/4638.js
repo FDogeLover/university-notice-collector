@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4638"]={"content": "附件1：转专业申请条件.docx\n附件2：申请转专业操作指南.docx\n附件3：各专业可接收人数.docx\n附件4：各院系转专业企业微信群二维码.docx"};

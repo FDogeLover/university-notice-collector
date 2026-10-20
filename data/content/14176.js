@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["14176"]={"content": "通信、工程、电子、计算机等相关专业，计算机、信息化、软件、数学、统计、通信、设计等相关专业，市场营销、销售等相关专业，人力资源、财务、法务、招投标管理、物业管理、供应链管理等相关专业"};

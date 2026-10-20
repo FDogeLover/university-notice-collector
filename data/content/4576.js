@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4576"]={"content": "联系我们\n办公地址：\n安徽省合肥市包河区金寨路96号中国科大东区老图书馆一楼\n电子邮箱：\njybgs@ustc.edu.cn\n就业热线\n就业手续办理：\n0551-63602554\n单位服务热线：\n0551-63607164\n生涯规划咨询：\n0551-63602557\n教师登录\n“科大就业”公众号\nCopyright © 2022 中国科学技术大学就业信息网 All Rights Reserved. 皖ICP备05002528号 Designed\r\n by Wanhu."};

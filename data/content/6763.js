@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6763"]={"content": "各位同学：\n无论是情绪内耗、压力难解，还是心里藏着小烦恼无处诉说，学生心理健康教育中心的专业咨询师已整装待发，为你提供温暖的心理疏导与专业支持！预约方式、接待时间与地点全攻略来啦！"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11486"]={"content": "宣讲图文.png\n\n【正文图片1】下载失败: https://career.hebut.edu.cn/Public/ueditor/dialogs/attachmen"};

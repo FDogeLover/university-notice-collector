@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["14575"]={"content": "化学工程与技术、材料与化工、材料科学与工程、纺织科学与工程、电子信息（计算机技术、人工智能专业方向）、信息资源管理（情报学方向）、电气工程等，详见招聘公告"};

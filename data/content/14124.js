@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["14124"]={"content": "外交部宣讲会\n宣讲时间： 2026年10月13日\n \n08:10 - 09:30\n宣讲地点： 千人礼堂\n备注： 无"};

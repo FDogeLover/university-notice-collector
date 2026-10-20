@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2680"]={"content": "校发〔2021〕72号（关于印发《北京科技大学2022版研究生培养方案原则意见》的通知）.pdf\n\n【正文图片1】下载失败: https://gs.ustb.edu.cn/ewebeditor/uploadfile/2026/04/15/2026\n\n【正文图片2】下载失败: https://gs.ustb.edu.cn/ewebeditor/uploadfile/2026/04/15/2026\n\n【正文图片3】下载失败: https://gs.ustb.edu.cn/ewebeditor/uploadfile/2026/04/15/2026"};

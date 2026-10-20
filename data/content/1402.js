@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1402"]={"content": "华东理工大学 2026 年招生专业介绍 ( 文字版 )\n点击学院名称了解各学院及招生专业介绍\n化工学院\n化学与分子工程学院\n生物工程学院\n药学院\n材料科学与工程学院\n信息科学与工程学院\n机械与动力工程学院\n资源与环境工程学院\n数学学院\n物理学院\n商学院\n社会与公共管理学院\n艺术设计与传媒学院\n外国语学院\n法学院\n国际卓越工程师学院\n体育科学与工程学院\n“华东理工招生”微信公众号发布的 华东理工大学 2026 年招生专业合集 ，详见 https://mp.weixin.qq.com/s/y8uBQRDNIgVAchwCIr14cQ"};

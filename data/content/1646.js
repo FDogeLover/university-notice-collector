@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1646"]={"content": "友情链接\n教育部\n阳光高考\n武汉理工大学\n学工广场\n就业信息网\n联系方式\n地址：武汉理工大学招生办公室(南湖校区立德楼301) 电话：027-87859017、027-87858399(传真) 邮箱：zhaosheng@whut.edu.cn 版权所有：武汉理工大学招生办公室\n本科招生微信\n武汉理工大学微信"};

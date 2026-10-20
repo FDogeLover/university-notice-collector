@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12737"]={"content": "船舶与海洋工程、轮机工程、机电工程、能源与动力工程、机械工程、机械电子工程、电气工程及自动化等相关专业"};

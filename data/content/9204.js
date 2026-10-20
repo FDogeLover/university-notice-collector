@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["9204"]={"content": "在线咨询\n招生办公室：\n咨询电话：010－62288332;E-mail： zsb@cufe.edu.cn ;网址： http://zs.cufe.edu.cn/static/front/cufe/basic/html_cms/\n纪检监察举报投诉电话：010-62289024;E-mail： xxjw@cufe.edu.cn"};

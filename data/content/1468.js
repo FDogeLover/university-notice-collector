@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1468"]={"content": "新闻动态\n首页 / 新闻动态\n首页\n上海财经大学人文学院2025年通过夏令营选拔推荐免试硕士研究生候选人名单\n本页内容未经许可，禁止一切形式的转载。\n发布时间：2024-07-05\n阅读量：19464\nCopyRight 2021-2026 © 上海财经大学研究生院 版权所有\n沪ICP 备05052068号-1"};

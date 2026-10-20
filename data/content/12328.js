@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12328"]={"content": "南京信息工程大学2025年博士学位研究生招生专业简表和专业目录现予以发布。欢迎符合条件的优秀学子报考！"};

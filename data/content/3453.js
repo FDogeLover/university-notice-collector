@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3453"]={"content": "根据相关文件精神，现发布我校2024年度《研究生教育发展质量年度报告》，详见附件。 附件：《研究生教育发展质量年度报告》"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2836"]={"content": "数字工大\n硕士点（个）\n27个一级学科硕士学位授权点+19个硕士专业学位类别"};

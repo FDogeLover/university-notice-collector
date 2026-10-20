@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["16112"]={"content": "首页\n新闻快递\n文章\n上一篇： 中石大新能源科学与工程学院成功举办中国原子能科学研究院2027届毕业生专场招聘会\n下一篇： 中石大机械学院 举办中船黄埔文冲船舶有限公司专场招聘会"};

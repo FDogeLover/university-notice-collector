@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["10069"]={"content": "招生办公室电话：027-87541746\n招生办微信号：hust_gszs"};

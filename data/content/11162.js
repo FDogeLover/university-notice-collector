@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11162"]={"content": "http://gaokao.chsi.com.cn/gkxx/zcdh/201406/20140627/1067337821.html"};

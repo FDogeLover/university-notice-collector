@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["16104"]={"content": "首页\n学院发布\n文章\n上一篇： 盈新而行，共赴未来！——盈新发展2026校园招聘简章\n下一篇： 中石化经纬有限公司2027年度校园招聘"};

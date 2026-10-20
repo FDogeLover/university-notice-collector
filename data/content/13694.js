@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13694"]={"content": "校园招聘简章（2027）.docx\n\n【正文图片1】下载失败: https://job.tju.edu.cn/Public/ueditor/dialogs/attachment/fil"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11461"]={"content": "首页\n通知公告\n文章\n上一篇： 寒假期间致2026届毕业生的一封信\n下一篇： “我的未来不是梦”中国石油大学（北京）2026年学生就业征文大赛"};

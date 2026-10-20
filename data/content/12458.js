@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12458"]={"content": "大型央企集团招聘：通用技术集团2027校园招聘\n登录 后可见"};

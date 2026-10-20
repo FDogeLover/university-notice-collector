@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1915"]={"content": "研究生招生信息网\nGraduates Enrollment of Shaanxi Normal University\n办公地址：陕西师范大学长安校区文汇楼A段509室    通讯地址：陕西省西安市长安区西长安街620号陕西师范大学研究生招生办公室 邮编：710119    电子邮件：yjsc4@snnu.edu.cn    电话：029-85310346"};

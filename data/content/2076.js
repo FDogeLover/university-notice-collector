@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2076"]={"content": "选修《人工智能及其医学应用》研究生：\n原定在公卫楼 401 教室的 《人工智能及其医学应用》课程 调整至公共教学楼 503 教室上课。\n望周知！\n研究生院\n2026 年 9 月 4 日"};

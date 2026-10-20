@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4038"]={"content": "关于组建2026级机器人科创班的通知\n相关附件\n附件北京科技大学机器人科创班2026级申请表.docx"};

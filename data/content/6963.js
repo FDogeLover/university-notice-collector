@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6963"]={"content": "附件1：“2026年度智慧课程典型案例”申报表——智慧慕课典型案例.docx\n附件2：“2026年度智慧课程典型案例”申报表——校本智慧课程典型案例.docx"};

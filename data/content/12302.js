@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12302"]={"content": "电气类、机械类、材料类、电子类、计算机类等理工科相关专业以及经管类"};

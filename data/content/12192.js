@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12192"]={"content": "（按报名号排序）\n本名单公示期为 2026 年 6 月 25 日至 7 月 1 日（共 7 日）。\n如有异议，请在公示期内进行联系，联系方式： 021-51322530 。\n上海中医药大学研究生院\n2026 年 6 月 25 日"};

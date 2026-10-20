@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["192"]={"content": "深圳大学学生住宿管理办法（修订）\n见附件\n附件【 深大校发〔2024〕146号：深圳大学学生住宿管理办法（修订）.pdf 】\n下一条：深大校发〔2024〕124号：关于印发《深圳大学印章管理办法》的通知"};

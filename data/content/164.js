@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["164"]={"content": "系统提示\n抱歉，您是在校外访问本网站。\n请您先下载学校的aTrust零信任系统后访问。aTrust零信任系统使用手册： 《点击此处》"};

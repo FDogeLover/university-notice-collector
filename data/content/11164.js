@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11164"]={"content": "2027年\n新疆大学硕士研究生招生系统\n*\n*"};

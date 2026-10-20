@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11509"]={"content": "各单位：\n2026年国家留学基金委管理委员会国家公派出国留学项目申请受理工作已启动，现特发布我校关于做好2026年国家留学基金资助出国留学项目申报工作的通知，请各单位及有关申请人员按各项目的申请程序和时间节点做好申报推荐工作，详见信息平台通知。\n信息平台通知链接：\nhttps://portal.shisu.edu.cn/r/w?cmd=com.awspaas.user.apps.datamanager_html&appId=com.awspaas.user.apps.newonline&html=details.html&ext2=NEWS2026-01-160016"};

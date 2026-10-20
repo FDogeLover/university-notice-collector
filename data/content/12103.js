@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12103"]={"content": "答:无军籍地方生和生长军官学员录取批次不同，生长军官学员为提前批次录取，无军籍地方生为普通本科批次录取。"};

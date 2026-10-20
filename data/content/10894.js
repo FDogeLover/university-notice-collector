@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["10894"]={"content": "学科 外国语 业务一 业务二 总分\n学科\n外国语\n业务一\n业务二\n总分\n医学 6 0 60 60 215\n医学\n6 0\n60\n215\n注：此分数线为我校博士研究生（附属医院在职医务人员 计划）复试基本分数线。具体复试要求和安排详见我校医学院网站 https://med.xmu.edu.cn/ 。"};

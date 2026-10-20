@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2898"]={"content": "用户名是准考证号（入学后可用学号做用户名），第一次登录密码是身份证号。\n查询准考证号\n地址：上海市宝山区上大路99号 邮编：200444\nCopyright © 2012- 2021 Shanghai University, All Rights Reserved."};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["15006"]={"content": "信息与通信工程类、电子信息类、计算机类、工商管理类、应用经济学类、财政学类、电子科学与技术类、土木工程类、电气工程类、金融学类、"};

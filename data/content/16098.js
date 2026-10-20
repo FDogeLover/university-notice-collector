@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["16098"]={"content": "首页\n学院发布\n文章\n上一篇： 中建八局新型建造工程有限公司2027届校园招聘简章\n下一篇： 中国航发长春控制科技有限公司2027年校园招聘"};

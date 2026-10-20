@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["15773"]={"content": "研究生电子可信成绩单申请 网址： https://yjscjd.ustb.edu.cn/\n办理过程中如遇问题，请联系研究生院培养管理办公室。\n联系电话：010-62332452，邮箱：pyg@ustb.edu.cn。"};

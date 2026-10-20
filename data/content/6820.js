@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6820"]={"content": "���� SSI �ļ�ʱ����\n武汉理工大学2022年硕士研究生招生简章\n发布时间：2021-09-18      作者：研究生院招生办\n附件下载"};

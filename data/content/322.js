@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["322"]={"content": "我校 202 6 年拟录取的博士研究生即日起可登录： http://yzfs.bupt.edu.cn/Doctor/SigninLq.aspx下载调档函，其中：定向生、本校直博生、硕博连读及本校应届毕业生无需下载调档函，其他非定向考生请在规定时间内将个人档案 通过机要或 EMS方式（其他快递公司一概拒收） 邮寄至我校，若因档案邮寄方式不符合要求发生档案丢失损毁，责任自负。\n注：考生编号可在登录页面左下方第一条说明处查询。"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["14929"]={"content": "发布单位：[研究生院]\n发布时间：[2026-10-12 10:09:00]\n信息索引：[10574-2101-2026-25-1]\n发文文号：[]\n公开方式：[主动公开]\n信息类别：[信息公开_招生考试信息_研究生招生咨询及申诉渠道]\n主题词：[研究生招生咨询、监督与申诉渠道]\n电话： 020-85213863\n邮箱： zsb03@scnu.edu.cn\n网站 ：https://yjsy.scnu.edu.cn"};

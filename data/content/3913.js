@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3913"]={"content": "附件1：南开大学本科课程助教工作管理办法.pdf\n附件2：助教岗位需求表.xlsx\n附件3：助教选聘汇总表.xlsx\n附件4：助教津贴发放表（月度）.xlsx\n附件5：助教期末考核合格名单.xlsx"};

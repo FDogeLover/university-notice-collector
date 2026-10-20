@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13845"]={"content": "2026—2027年度武警特色医学中心直接选拔招录警官公告"};

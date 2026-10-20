@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["15789"]={"content": "中铁资源宣讲会\n宣讲时间： 2026年10月19日\n \n09:30 - 11:30\n宣讲地点： 晨读厅\n备注： 无"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["7066"]={"content": "各单位：\n经学生个人申请、学院推荐、综合 审核 ，现将2027届“2+3”辅导员拟聘人员 推免资格 进行公示。\n公示内容： 学院、 姓名、学号\n公示地点：南校区行政楼216\n公示时间：202 6 年 9 月 14-16 日\n联系人： 郭冰洁、李喆\n电 话：81891096\n邮 箱： xsgzc@xidian.edu.cn\n本科生院\n202 6 年 9 月 14 日"};

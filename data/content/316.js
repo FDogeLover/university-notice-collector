@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["316"]={"content": "亲爱的2026级研究生新同学:\n祝贺你成为北京邮电大学2026级研究生!\n请认真阅读《2026级研究生新生入学须知》，并按要求完成报到准备。\n期待在金秋时节与你相约北邮，共同开启崭新的求学之旅！"};

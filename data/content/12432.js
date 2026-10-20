@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12432"]={"content": "冶金工程、材料工程、化学工程、机械设计制造、电气自动化、人工智能、智能制造、控制科学、财务管理、统计学、法学等"};

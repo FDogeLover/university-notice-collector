@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["16119"]={"content": "中国船舶集团公司第七一八研究所2027年人才招聘简章.doc\n具体见招聘简章\n\n【正文图片1】下载失败: https://career.hebut.edu.cn/Public/ueditor/dialogs/attachmen"};

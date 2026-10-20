@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1863"]={"content": "2026 年上半年博硕士研究生已进入学位论文答辩环节，现将各培养单位答辩安排在附件中进行公布（逐步更新中），欢迎有兴趣的师生到答辩现场进行旁听。"};

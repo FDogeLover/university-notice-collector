@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2522"]={"content": "中国海洋大学2024年博士研究生招生专业目录（ 点击下载 ）\n注： 最终招生人数将根据教育部下达的招生计划和报考情况进 行调整。"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5346"]={"content": "2026年华南师范大学本科招生简介.pdf"};

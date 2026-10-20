@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4688"]={"content": "9月8日（周三）5-6节学科方向课《语言与大数据》因故停课一周，不安排补课，授课内容按周顺延，原定最后一周“总结与辅导”正常安排教学内容。特此通知。\n教务处\n2021年9月8日"};

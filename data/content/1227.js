@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1227"]={"content": "怀柔实验室2027年校企联合培养专项招生校园宣讲会，线下进行，请及时关注。\n宣讲时间：2026年9月4日（周五）下午2:30开始\n宣讲地点：教四楼D207\n怀柔实验室联合培养招生简介"};

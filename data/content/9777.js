@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["9777"]={"content": "首页\n招聘会\n详情\n曼迪匹艾科技服务有限公司招聘\n发布时间：2026-03-25 13:57\n浏览次数：7013\n分享至\n招聘会类型： 线下招聘会\n举办时间： 2026-03-27 11:00-12:00（周五）\n举办地址： 化工楼B403"};

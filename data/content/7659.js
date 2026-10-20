@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["7659"]={"content": "单位名称：\n单位规模：\n单位性质：\n单位行业：\n单位网址：\n微信公众号：\n单位标签：\n宣讲会时间：\n宣讲会地点："};

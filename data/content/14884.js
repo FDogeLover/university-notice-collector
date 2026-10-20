@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["14884"]={"content": "现公布我校 202 7 年统招硕士招生导师名单，供统考考生报名参考，最后招生计划以教育部正式下达计划为准。\n招生 就业 处\n202 6 年 10月1 2 日"};

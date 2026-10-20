@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["15123"]={"content": "黑龙江省2027年度定向选调生招录宣讲会 南开大学学生就业指导中心代发 时间： 2026-10-13 10:00 地点： [八里台校区]学生活动中心420 浏览量： 233 招收专业：\n【黑龙江省2027年度定向选调应届优秀大学毕业生公告】https://xds.nankai.edu.cn/newsDetail.html?id=1f2453bd-a125-098b-1125-84c3e91fcd50&active=6"};

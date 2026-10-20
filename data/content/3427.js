@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3427"]={"content": "提 示 您现在使用的是校外IP，需通过VPN访问，请查看VPN相关说明。 VPN入口 WebVPN入口 福州大学VPN使用说明\n福州大学VPN使用说明"};

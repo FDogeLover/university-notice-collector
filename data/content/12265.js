@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12265"]={"content": "以 下考生申请复 核上海科技大学2026 年硕士研究生招生考试初试自命题科目成绩， 经学校和各学院专人联合逐一认真复核 ， 成绩均无误。\n上海科技大学研究生院\n2026年3月4日"};

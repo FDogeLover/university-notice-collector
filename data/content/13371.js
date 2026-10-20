@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13371"]={"content": "各位考生：\n我校2027年硕士研究生招生考试部分科目公布考试大纲（仅供参考），请点击 https://yzbm.tongji.edu.cn/zsml/ssksdg/index/2027 ，查看即时更新的大纲信息进行备考。"};

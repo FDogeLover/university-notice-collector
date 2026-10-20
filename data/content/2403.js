@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2403"]={"content": "附件一：2026年各学院政审调档联系人信息\n补充：上文内第二条：修改和确认通信地址和档案保管单位的截止时间调整为7月1日"};

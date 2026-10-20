@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2681"]={"content": "校发〔2021〕33号（关于印发《北京科技大学本硕贯通培养实施办法》的通知）.pdf\n\n【正文图片1】下载失败: https://gs.ustb.edu.cn/ewebeditor/uploadfile/2026/03/02/2026\n\n【正文图片2】下载失败: https://gs.ustb.edu.cn/ewebeditor/uploadfile/2026/03/02/2026\n\n【正文图片3】下载失败: https://gs.ustb.edu.cn/ewebeditor/uploadfile/2026/03/02/2026"};

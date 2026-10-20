@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6811"]={"content": "招生电话: 027-87859017 027-87858399（本科生） 027-87651413（研究生） 地址：武汉市珞狮路122号 联系电话：87651442 Email：xxgk@whut.edu.cn\nCopyright © 武汉理工大学 版权所有\n武汉理工大学新浪微博\n武汉理工大学腾讯微博\n武汉理工大学官方微信"};

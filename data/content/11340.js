@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11340"]={"content": "选调公考 » 文章\n上一篇: 【人才引进】冷水江市2026年公开招聘事业单位工作人员公告\n下一篇: 【人才引进】河北省省直事业单位2026年下半年公开招聘(统一招聘)工作人员公告"};

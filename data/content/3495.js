@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["3495"]={"content": "您当前访问的页面出错\n提示：您当前ip并非校内地址，该信息仅允许校内地址访问"};

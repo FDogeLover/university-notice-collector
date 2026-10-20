@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["8301"]={"content": "当前位置： 首页 > 名师讲堂\n名师大讲堂开讲通知（2025年4月3日和4月7日）\n在讲座结束后现场扫码登记信息、回答问卷，成功提交的问卷将作为名师大讲堂听课凭据。"};

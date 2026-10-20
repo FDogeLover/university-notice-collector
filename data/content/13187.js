@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13187"]={"content": "商务部宣讲会\n宣讲时间： 2026年10月14日\n \n15:00 - 19:30\n宣讲地点： 千人礼堂\n备注： 无"};

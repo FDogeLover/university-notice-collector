@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5478"]={"content": "请使用微信扫码进行\n密码重置\n温馨提示\n交大ID：教职工为人事编号(10位编码)，学生为学号(10位编码)\n密码说明：请参考在线帮助。可使用“忘记密码”功能找回密码\n咨询服务：交大网络服务QQ群 1043566925\n咨询邮箱： infosys@ swjtu.edu.cn\nCopyright 2020 西南交通大学. All rights reserved.技术支持：信息化与网络管理处"};

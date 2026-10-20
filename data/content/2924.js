@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2924"]={"content": "简体中文\nEnglish\nEng 中文\n“e江南”app Scan code login\nWeChat Login\nMobile Phone Number Overseas mobile phone in the format of \"country code-mobile phone number\", such as: 1-888888\nGraph code\nDynamic code\nJiangsu Wisedu Limited Company"};

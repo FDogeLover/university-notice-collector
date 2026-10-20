@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11343"]={"content": "选调公考 » 文章\n上一篇: 江西省2026年度从中南大学选调应届优秀大学毕业生拟录用人员补充公示公告\n下一篇: 【人才引进】张家界市2026年事业单位公开招聘（选调）工作人员公告"};

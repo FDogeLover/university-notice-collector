@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5837"]={"content": "新疆大学(10755)\n硕士研究生招生(2027年)初试成绩查询\n当前功能未开放\n开放时间：具体开放时间以新疆大学研究生院网站相关公示为准"};

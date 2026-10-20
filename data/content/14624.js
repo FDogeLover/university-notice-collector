@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["14624"]={"content": "序号 | 姓名 | 本科院校 | 报考 专业代码 | 报考 专业名称 | 招生类型 | 备注\n1 | 黄丹丹 | 安徽医科大学 | 100 214 | 肿瘤学 | 硕士\n2 | 秦宇豪 | 苏州大学 | 105300 | 公共卫生 | 硕士"};

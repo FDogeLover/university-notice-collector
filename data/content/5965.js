@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["5965"]={"content": "一、答疑时间\n2026 年 9 月 5 日（周六） 14:00 — 16:30\n二、答疑地点\n奉贤校区 A 教学楼二楼教师休息室\n请同学们相互转告，特此通知。\n物理学院\n2026 年 9 月 4 日"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13622"]={"content": "【附件正文：7aa79374-a937-4c9f-8cf4-8d676c398422.pdf】\n- 1 -\n关于免去朱安洁职务的通知\n各院（部）、各直属单位、机关各处室：\n2026 年 9 月 29 日学校党委常委会研究决定：\n免去朱安洁财务处副处长职务。\n特此通知。\n上海财经大学\n2026 年 9 月 29 日"};

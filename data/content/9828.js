@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["9828"]={"content": "2026年广西重点领域急需紧缺高层次人才招聘会\n扫描二维码，在手机中查看\n具体时间： 2026-09-23 14:00-18:00 (周三)\n举办地址： 中南大学 潇湘校区 体育场副场\n学生报名参加 信息来源： 中南大学就业信息网\n原文链接： https://mp.weixin.qq.com/s/wTUcz2UK4Xb3yawcXHUB-A"};

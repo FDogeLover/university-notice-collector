@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["647"]={"content": "绿色高质谋变革，以教为先育领军——北理工研究生教育 2025 精彩瞬间\n供稿：谢文龙、曹珊珊\n审核：邓方"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["15362"]={"content": "计科/网络;通信/电子;数学/物理;化工/材料类;机电/自动化;文史法哲教;管理/贸易;财务/金融;土木房地产;艺术类"};

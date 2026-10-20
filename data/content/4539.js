@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4539"]={"content": "各位同学： 2016年秋季学期，“Access数据库程序设计（ 3学分 ）”两个班由于选课人数过少，取消开课 。另新增“Access程序设计（ 4学分 ）”两个班，任课教师刘士才，选课号分别为18001057、18001058。\n请涉及的同学及时补选新课程。\n教务处\n2016年8月21日"};

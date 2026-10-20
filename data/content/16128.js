@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["16128"]={"content": "理工类：计算机、软件工程、自动化、通信、电子、网络安全、工业设计等 数理类：数学、统计、物理等 金融类：金融工程、金融数学等"};

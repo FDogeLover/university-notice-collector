@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["12979"]={"content": "* 专业要求：\n* 职位描述：\nhttps://mp.weixin.qq.com/s/EfAnqUnUjTwbMnugKDazfw?scene=1&click_id=2015027965"};

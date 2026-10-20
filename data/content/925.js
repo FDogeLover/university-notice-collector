@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["925"]={"content": "用户名：\n*\n密 码：\n*\n验证码：\n看不清？\n登录账号说明\n重置密码\n说明：1.使用IE5.5或以上 2.1024*768分辩率浏览本系统\n3.请不要屏蔽弹出窗口 4.技术支持：南软科技"};

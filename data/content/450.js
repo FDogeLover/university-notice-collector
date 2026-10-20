@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["450"]={"content": "扫描二维码或点击链接加入群聊【厦大港澳台地区招生咨询QQ群】：https://qm.qq.com/q/nddikwhvfG\n\n【正文图片1】下载失败: https://zs.xmu.edu.cn/virtual_attach_file.vsb?afc=_Um6Fko7VR"};

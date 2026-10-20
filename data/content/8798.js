@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["8798"]={"content": "查询\nCopyright (C) 2015 苏州大学本科招生办公室 All Rights Reserved 电话：0512－67507943，67507949 传真：0512－67507942 邮编：215021 地址：苏州市东环路50号苏州大学招生办 微信公众平台：\"苏大本科招生\",\"sudazsb\" Email：zsb@suda.edu.cn"};

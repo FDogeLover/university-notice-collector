@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["15496"]={"content": "根据上海交通大学大学物理课程分层教学的相关规定，通过选拔考试，已完成2026级部分本科生可修读2026-2027-2学期大学物理（荣誉）（1）的资格认可工作，现将结果予以通告，请点击链接查询是否通过选拔考试： https://wj.sjtu.edu.cn/f/6ad1c83f2b8ed5b5d178294d\n如有异议，请联系刘老师，电话：13917652049，E-mail：liusy@sjtu.edu.cn。\n物理与天文学院\n2026年10月19日"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13156"]={"content": "各位同学：\n因国庆假期A楼、C楼教室设备升级，10月1日-7日将对A楼、C楼教室进行施工作业，在此期间A楼、C楼所有教室将暂停使用。\n不便之处敬请谅解，感谢大家的理解和配合！\n特此通知\n本科生院教育技术中心\n2026年9月30日"};

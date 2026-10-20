@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["10317"]={"content": "1\n2\n3\n4\n5\n北京理工大学研究生院祝大家月满人安，家国同圆！"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["10532"]={"content": "贵州省2027年度党政机关定向选调和省管企业招聘南开大学优秀毕业生宣讲会 南开大学学生就业指导中心代发 时间： 2026-09-29 15:30 地点： [八里台校区]学生活动中心1楼111-1 浏览量： 218 招收专业：\n选调公告：https://xds.nankai.edu.cn/newsDetail.html?id=e9c36067-e257-0817-40cd-3d90097a08b7&active=6"};

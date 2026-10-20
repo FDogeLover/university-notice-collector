@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11885"]={"content": "一、如何登录系统：请点击 → 宁波大学三位一体报名系统\n二、进入登录界面后，点击“ 忘记密码 ”\n三、验证身份证号码以及短信验证码\n四、自行设置密码后登录"};

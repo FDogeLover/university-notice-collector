@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11794"]={"content": "声明：\n1.我校招生信息以本网站发布的为准。\n2.我校不开设任何形式的考前辅导班，不与任何培训机构开展合作关系，请考生谨防受骗！"};

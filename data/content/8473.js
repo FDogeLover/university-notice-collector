@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["8473"]={"content": "延边大学非学历教育项目收费标准公示（AI动漫短视频与商业变现实战培训）"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["15410"]={"content": "计算机、信息科技、软件工程、数理统计等相关专业，经济金融、财务会计、法学、计算机、信息科技、软件工程、数理统计等相关专业"};

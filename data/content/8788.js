@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["8788"]={"content": "接收推荐免试研究生预报名\n登录\n注册 | 忘记密码\n用户注册\n请选择证件类型 居民身份证 港澳台身份证 华侨身份证\n去登录\n设置密码\n设置成功！\nCopyright © 2026 Copyright © 暨南大学研究生院 All rights reserved."};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["2066"]={"content": "欢迎报考中国石油大学（北京）"};

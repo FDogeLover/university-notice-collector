@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["13683"]={"content": "举办时间： 2026-10-08 18：30 — 2027-5-30 23：00\n新东方深圳学校-27校招正式批进行时！ 直播时间：2026年10月8日（周） 18：30 形式：视频号直播 预约直播地址：https://mp.weixin.qq.com/s/_zPQpBXiqVAyVHdP6qo-WQ"};

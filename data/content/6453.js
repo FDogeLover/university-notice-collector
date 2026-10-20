@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["6453"]={"content": "学生就业创业指导中心 地址：厦门大学凌峰11号楼二层（厦门市思明南路422号） 用人单位服务热线：0592-2184550 邮箱：jiuyezhaopin@xmu.edu.cn 邮编：361005 厦门大学24365就业育人数智平台 ：https://jy.xmu.edu.cn\nCopyright ©厦门大学  推荐使用浏览器极速模式、谷歌浏览器，分辨率1280＊768以上访问以获取最佳浏览效果"};

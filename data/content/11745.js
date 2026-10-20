@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11745"]={"content": "现公布我校 2026 年“申请 - 考核”博士研究生招生专业目录及招生导师（参考）。我校2026年博士研究生招生计划以教育部最终下达计划为准。\n北京协和医学院研究生招生处 2025 年 11 月 20 日"};

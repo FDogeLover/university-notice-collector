@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["15811"]={"content": "详见辽宁省建设工程信息网：\n大连海事大学学生公寓建设项目（一期）EPC总承包招标公告http://218.60.147.115/project/1037845"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["14604"]={"content": "经济学、理学、工学、管理学、法学等学科门类下相关专业，重点招收经济金融类、财会审计类、管理类、法学类、数理统计类、信息科技类等与本行业务发展具有相关性的专业。"};

@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11458"]={"content": "首页\n通知公告\n文章\n上一篇： 2025年辅导员与就业工作主题征文获奖名单\n下一篇： 关于2026届毕业生申报赴基层、海上平台就业奖的通知"};

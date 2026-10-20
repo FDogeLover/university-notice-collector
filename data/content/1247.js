@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["1247"]={"content": "是否添加常用设备？ 记住选择 是 否\n是否移除常用设备？ 记住选择 是 否"};

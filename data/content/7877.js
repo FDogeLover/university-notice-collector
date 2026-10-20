@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["7877"]={"content": "各相关同学：\n2026-2027学年秋季学期部分课程停开，请同学们在退改补选课开始后及时改选其它课程。\n2026-2027学年秋季学期课程停开清单.xlsx\n教务科\n2026.9.17"};

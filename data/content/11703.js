@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["11703"]={"content": "材料类，电气，机械类，智能制造，自动化，数控\n会计，审计，信息化，数据统计及分析\n请同学们将简历以“姓名+学校+专业”打包发至 hr@dalipal.com"};

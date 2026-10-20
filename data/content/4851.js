@@ -1,0 +1,1 @@
+window.SITE_CONTENT=window.SITE_CONTENT||{};window.SITE_CONTENT["4851"]={"content": "亲爱的新同学：\n祝贺你成为太原理工大学2026级本科新生！这份 《新生入学须知》 ，是你顺利开启大学生活的第一份行动指南。请逐项认真阅读，按要求准备和办理。愿你在太原理工笃行致远，逐梦前行！"};
